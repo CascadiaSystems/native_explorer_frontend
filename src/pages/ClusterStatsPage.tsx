@@ -19,9 +19,11 @@ import { useAccountInfo, useFetchAccountInfo } from "providers/accounts";
 import { FetchStatus } from "providers/cache";
 import { useVoteAccounts } from "providers/accounts/vote-accounts";
 
-import { Paper, Typography } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 // @ts-ignore
 import * as CoinGecko from "coingecko-api";
+
+import ContentCard from '../components/common/ContentCard';
 
 enum CoingeckoStatus {
   Success,
@@ -38,16 +40,14 @@ export function ClusterStatsPage() {
   return (
     <div className="mt-6">
       <StakingComponent />
-      <div className="card">
-        <div className="card-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h4 className="card-header-title">Live Cluster Stats</h4>
-            </div>
-          </div>
-        </div>
+      <ContentCard
+        title={
+          <Typography variant="h3"> Live Cluster Stats </Typography>
+        }
+        className="mt-6"
+      >
         <StatsCardBody />
-      </div>
+      </ContentCard>
       <TpsCard />
     </div>
   );
@@ -257,50 +257,52 @@ function StatsCardBody() {
   const { blockHeight, absoluteSlot } = epochInfo;
 
   return (
-    <TableCardBody>
-      <tr>
-        <td className="w-100">Slot</td>
-        <td className="text-lg-right text-monospace">
-          <Slot slot={absoluteSlot} link />
-        </td>
-      </tr>
-      {blockHeight !== undefined && (
-        <tr>
-          <td className="w-100">Block height</td>
-          <td className="text-lg-right text-monospace">
-            <Slot slot={blockHeight} />
-          </td>
-        </tr>
-      )}
-      {blockTime && (
-        <tr>
-          <td className="w-100">Cluster time</td>
-          <td className="text-lg-right text-monospace">
-            {displayTimestampUtc(blockTime)}
-          </td>
-        </tr>
-      )}
-      <tr>
-        <td className="w-100">Slot time (1min average)</td>
-        <td className="text-lg-right text-monospace">{averageSlotTime}ms</td>
-      </tr>
-      <tr>
-        <td className="w-100">Slot time (1hr average)</td>
-        <td className="text-lg-right text-monospace">{hourlySlotTime}ms</td>
-      </tr>
-      <tr>
-        <td className="w-100">Epoch</td>
-        <td className="text-lg-right text-monospace">{currentEpoch}</td>
-      </tr>
-      <tr>
-        <td className="w-100">Epoch progress</td>
-        <td className="text-lg-right text-monospace">{epochProgress}</td>
-      </tr>
-      <tr>
-        <td className="w-100">Epoch time remaining (approx.)</td>
-        <td className="text-lg-right text-monospace">~{epochTimeRemaining}</td>
-      </tr>
-    </TableCardBody>
+    <TableContainer>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Slot</TableCell>
+            <TableCell align="right"><Slot slot={absoluteSlot} link /></TableCell>
+          </TableRow>
+          {
+            blockHeight !== undefined && (
+              <TableRow>
+                <TableCell>Block Height</TableCell>
+                <TableCell align="right"><Slot slot={blockHeight} /></TableCell>
+              </TableRow>
+            )
+          }
+          {
+            blockTime && (
+              <TableRow>
+                <TableCell>Cluster Time</TableCell>
+                <TableCell align="right"> { displayTimestampUtc(blockTime) } </TableCell>
+              </TableRow>
+            )
+          }
+          <TableRow>
+            <TableCell>Slot time (1min average)</TableCell>
+            <TableCell align="right"> {`${averageSlotTime} ms`} </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Slot time (1hr average)</TableCell>
+            <TableCell align="right"> {`${hourlySlotTime} ms`} </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Epoch</TableCell>
+            <TableCell align="right"> { currentEpoch } </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Epoch progress</TableCell>
+            <TableCell align="right"> { epochProgress } </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Epoch time remaining (approx.)</TableCell>
+            <TableCell align="right"> { `~${epochTimeRemaining}` } </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 

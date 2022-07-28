@@ -32,7 +32,34 @@ const componentStyleOverrides = (theme) => {
           padding: 0
         }
       }
+    },
+    MuiCardHeader: {
+      styleOverrides: {
+        root: {
+          borderBottom: `1px solid ${theme.colors?.grey.light}`
+        }
+      }
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          '&:last-child': {
+            padding: 0
+          }
+        }
+      }
+    },
+    // MuiTable
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontSize: '1rem',
+          borderBottom: `1px solid ${theme.colors?.grey.light}`
+        }
+      }
     }
+
   }
 };
 
