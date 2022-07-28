@@ -1,25 +1,31 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import CountUp from "react-countup";
+
+import { Table, TableContainer, TableBody, TableRow, TableCell, Typography } from '@mui/material'
+
 import {
   usePerformanceInfo,
   PERF_UPDATE_SEC,
   ClusterStatsStatus,
 } from "providers/stats/solanaClusterStats";
 import classNames from "classnames";
-import { TableCardBody } from "components/common/TableCardBody";
 import { ChartOptions, ChartTooltipModel } from "chart.js";
 import { PerformanceInfo } from "providers/stats/solanaPerformanceInfo";
 import { StatsNotReady } from "pages/ClusterStatsPage";
 
+import ContentCard from '../components/common/ContentCard';
+
 export function TpsCard() {
   return (
-    <div className="card">
-      <div className="card-header">
-        <h4 className="card-header-title">Live Transaction Stats</h4>
-      </div>
+    <ContentCard
+      title={
+        <Typography variant="h3"> Live Transaction Stats </Typography>
+      }
+      className="mt-6"
+    >
       <TpsCardBody />
-    </div>
+    </ContentCard>
   );
 }
 
@@ -95,11 +101,11 @@ const CUSTOM_TOOLTIP = function (this: any, tooltipModel: ChartTooltipModel) {
 
 const CHART_OPTIONS = (historyMaxTps: number): ChartOptions => {
   return {
-    tooltips: {
-      intersect: false, // Show tooltip when cursor in between bars
-      enabled: false, // Hide default tooltip
-      custom: CUSTOM_TOOLTIP,
-    },
+    // tooltips: {
+    //   intersect: false, // Show tooltip when cursor in between bars
+    //   enabled: false, // Hide default tooltip
+    //   custom: CUSTOM_TOOLTIP,
+    // },
     legend: {
       display: false,
     },
@@ -159,8 +165,8 @@ function TpsBarChart({ performanceInfo }: TpsBarChartProps) {
     }),
     datasets: [
       {
-        backgroundColor: "#00D192",
-        hoverBackgroundColor: "#00D192",
+        backgroundColor: "#B0B3B8",
+        hoverBackgroundColor: "#E4E6EB",
         borderWidth: 0,
         data: seriesData.map((val) => val || 0),
       },
@@ -169,51 +175,46 @@ function TpsBarChart({ performanceInfo }: TpsBarChartProps) {
 
   return (
     <>
-      <TableCardBody>
-        <tr>
-          <td className="w-100">Transaction count</td>
-          <td className="text-lg-right text-monospace">{transactionCount} </td>
-        </tr>
-        <tr>
-          <td className="w-100">Transactions per second (TPS)</td>
-          <td className="text-lg-right text-monospace">{averageTps} </td>
-        </tr>
-        <tr>
-          <td className="w-100">TPS Max</td>
-          <td className="text-lg-right text-monospace">50k+ </td>
-        </tr>
-      </TableCardBody>
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>Transaction count</TableCell>
+              <TableCell align="right"> { transactionCount } </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Transactions per second (TPS)</TableCell>
+              <TableCell align="right"> { averageTps } </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>TPS Max</TableCell>
+              <TableCell align="right"> 50k+ </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      <hr className="my-0" />
+      <div className="p-4">
+        <div className="flex justify-between items-center">
+          <span className="mb-0 font-size-sm">TPS history</span>
 
-      <div className="card-body py-3">
-        <div className="align-box-row align-items-start justify-content-between">
-          <div className="d-flex justify-content-between w-100">
-            <span className="mb-0 font-size-sm">TPS history</span>
-
-            <div className="font-size-sm">
-              {SERIES.map((key) => (
-                <button
-                  key={key}
-                  onClick={() => setSeries(key)}
-                  className={classNames("btn btn-sm btn-white ml-2", {
-                    active: series === key,
-                  })}
-                >
-                  {SERIES_INFO[key].interval}
-                </button>
-              ))}
-            </div>
+          <div className="font-size-sm">
+            {SERIES.map((key) => (
+              <button
+                key={key}
+                onClick={() => setSeries(key)}
+                className={classNames("btn btn-sm btn-white ml-2", {
+                  active: series === key,
+                })}
+              >
+                {SERIES_INFO[key].interval}
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div
-            id="perf-history"
-            className="mt-3 d-flex justify-content-end flex-row w-100"
-          >
-            <div className="w-100">
-              <Bar data={chartData} options={chartOptions} height={80} />
-            </div>
-          </div>
+        <div className="w-full mt-3">
+          <Bar data={chartData} options={chartOptions} height={80} />
         </div>
       </div>
     </>

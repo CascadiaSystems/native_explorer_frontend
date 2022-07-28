@@ -1,4 +1,9 @@
-import React, { ReactNode, useState } from "react";
+import { useState, ReactNode } from "react";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClone } from '@fortawesome/free-regular-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { IconButton, Typography } from "@mui/material";
 
 type CopyState = "copy" | "copied" | "errored";
 
@@ -26,10 +31,13 @@ export function Copyable({
   function CopyIcon() {
     if (state === "copy") {
       return (
-        <span className="fe fe-copy c-pointer" onClick={handleClick}></span>
+        // <FontAwesomeIcon icon={faCheck} />
+        <IconButton disableRipple onClick={handleClick} size="small" color="primary">
+          <FontAwesomeIcon icon={faClone} />          
+        </IconButton>
       );
     } else if (state === "copied") {
-      return <span className="fe fe-check-circle"></span>;
+      return <FontAwesomeIcon icon={faCheck} />          
     } else if (state === "errored") {
       return (
         <span
@@ -41,58 +49,20 @@ export function Copyable({
     return null;
   }
 
-  let message = "";
-  let textColor = "";
-  if (state === "copied") {
-    message = "Copied";
-    textColor = "text-info";
-  } else if (state === "errored") {
-    message = "Copy Failed";
-    textColor = "text-danger";
-  }
-
-  function PrependCopyIcon() {
-    return (
-      <>
-        <span className="font-size-tiny mr-2">
-          <span className={textColor}>
-            <span className="mr-2">{message}</span>
-            <CopyIcon />
-          </span>
-        </span>
-        {children}
-      </>
-    );
-  }
-
-  function ReplaceWithMessage() {
-    return (
-      <span className="d-flex flex-column flex-nowrap">
-        <span className="font-size-tiny">
-          <span className={textColor}>
-            <CopyIcon />
-            <span className="ml-2">{message}</span>
-          </span>
-        </span>
-        <span className="v-hidden">{children}</span>
-      </span>
-    );
-  }
-
-  if (state === "copy") {
-    return <PrependCopyIcon />;
-  } else if (replaceText) {
-    return <ReplaceWithMessage />;
-  }
-
+  // let message = "";
+  // let textColor = "";
+  // if (state === "copied") {
+  //   message = "Copied";
+  //   textColor = "text-info";
+  // } else if (state === "errored") {
+  //   message = "Copy Failed";
+  //   textColor = "text-danger";
+  // }
+  
   return (
-    <>
-      <span className="d-none d-lg-inline">
-        <PrependCopyIcon />
-      </span>
-      <span className="d-inline d-lg-none">
-        <ReplaceWithMessage />
-      </span>
-    </>
+    <div className="flex items-center gap-2 justify-end">
+      <CopyIcon />
+      { children }
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { TableCardBody } from "components/common/TableCardBody";
 import { Slot } from "components/common/Slot";
 import {
   ClusterStatsStatus,
@@ -18,8 +17,12 @@ import { LoadingCard } from "components/common/LoadingCard";
 import { useAccountInfo, useFetchAccountInfo } from "providers/accounts";
 import { FetchStatus } from "providers/cache";
 import { useVoteAccounts } from "providers/accounts/vote-accounts";
+
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 // @ts-ignore
 import * as CoinGecko from "coingecko-api";
+
+import ContentCard from '../components/common/ContentCard';
 
 enum CoingeckoStatus {
   Success,
@@ -34,18 +37,16 @@ const PRICE_REFRESH = 10000;
 
 export function ClusterStatsPage() {
   return (
-    <div className="container mt-4">
+    <div className="mt-6">
       <StakingComponent />
-      <div className="card">
-        <div className="card-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h4 className="card-header-title">Live Cluster Stats</h4>
-            </div>
-          </div>
-        </div>
+      <ContentCard
+        title={
+          <Typography variant="h3"> Live Cluster Stats </Typography>
+        }
+        className="mt-6"
+      >
         <StatsCardBody />
-      </div>
+      </ContentCard>
       <TpsCard />
     </div>
   );
@@ -129,169 +130,77 @@ function StakingComponent() {
   }
 
   return (
-    // <div className="card staking-card">
-    //   <div className="card-body">
-    //     <div className="d-flex flex-md-row flex-column">
-    //       <div className="p-2 flex-fill">
-    //         <h4>Circulating Supply</h4>
-    //         <h1>
-    //           <em>{displayLamports(supply.circulating)}</em> /{" "}
-    //           <small>{displayLamports(supply.total)}</small>
-    //         </h1>
-    //         <h5>
-    //           <em>{circulatingPercentage}%</em> is circulating
-    //         </h5>
-    //       </div>
-    //       <hr className="hidden-sm-up" />
-    //       <div className="p-2 flex-fill">
-    //         <h4>Active Stake</h4>
-    //         <h1>
-    //           <em>{displayLamports(stakeHistory.effective)}</em> /{" "}
-    //           <small>{displayLamports(supply.total)}</small>
-    //         </h1>
-    //         {delinquentStakePercentage && (
-    //           <h5>
-    //             Delinquent stake: <em>{delinquentStakePercentage}%</em>
-    //           </h5>
-    //         )}
-    //       </div>
-    //       <hr className="hidden-sm-up" />
-    //       {solanaInfo && (
-    //         <div className="p-2 flex-fill">
-    //           <h4>
-    //             Price{" "}
-    //             <span className="ml-2 badge badge-primary rank">
-    //               Rank #{solanaInfo.market_cap_rank}
-    //             </span>
-    //           </h4>
-    //           <h1>
-    //             <em>${solanaInfo.price.toFixed(2)}</em>{" "}
-    //             {solanaInfo.price_change_percentage_24h > 0 && (
-    //               <small className="change-positive">
-    //                 &uarr; {solanaInfo.price_change_percentage_24h.toFixed(2)}%
-    //               </small>
-    //             )}
-    //             {solanaInfo.price_change_percentage_24h < 0 && (
-    //               <small className="change-negative">
-    //                 &darr; {solanaInfo.price_change_percentage_24h.toFixed(2)}%
-    //               </small>
-    //             )}
-    //             {solanaInfo.price_change_percentage_24h === 0 && (
-    //               <small>0%</small>
-    //             )}
-    //           </h1>
-    //           <h5>
-    //             24h Vol: <em>${abbreviatedNumber(solanaInfo.volume_24)}</em>{" "}
-    //             MCap: <em>${abbreviatedNumber(solanaInfo.market_cap)}</em>
-    //           </h5>
-    //         </div>
-    //       )}
-    //       {coinInfo.status === CoingeckoStatus.FetchFailed && (
-    //         <div className="p-2 flex-fill">
-    //           <h4>Price</h4>
-    //           <h1>
-    //             <em>$--.--</em>
-    //           </h1>
-    //           <h5>Error fetching the latest price information</h5>
-    //         </div>
-    //       )}
-    //     </div>
-    //     {solanaInfo && (
-    //       <p className="updated-time text-muted mb-0">
-    //         Updated at{" "}
-    //         {displayTimestampWithoutDate(solanaInfo.last_updated.getTime())}
-    //       </p>
-    //     )}
-    //   </div>
-    // </div>
-    <div className="row staking-card">
-      <div className="col-12 col-lg-4 col-xl">
-        <div className="card">
-          <div className="card-body">
-            <h4>Circulating Supply
-            <span className="ml-2 badge badge-primary rank" style={{opacity: 0.0}}>{displayLamports(supply.circulating)}</span>
-            </h4>
-            <h1>
-              <em>{displayLamports(supply.circulating)}</em> /{" "}
-              <small>{displayLamports(supply.total)}</small>
-            </h1>
-            <h5>
-              <em>{circulatingPercentage}%</em> is circulating
-            </h5>
-          </div>
+    <div className="grid grid-cols-3 gap-6">
+      <Paper className="p-4">
+        <Typography color="secondary"> Circulating Supply </Typography>
+        {/* <span className="ml-2 badge badge-primary rank" style={{opacity: 0.0}}>{displayLamports(supply.circulating)}</span> */}
+        <div className="flex flex-row items-end gap-1 py-1">
+          <Typography variant="h3"> { `${displayLamports(supply.circulating)} /` } </Typography>
+          <Typography color="secondary"> { displayLamports(supply.total) } </Typography>
         </div>
-      </div>
-      <div className="col-12 col-lg-4 col-xl">
-        <div className="card">
-          <div className="card-body">
-            <h4>Active Stake{" "}
-                  <span className="ml-2 badge badge-primary rank" style={{opacity: 0.0}}>{displayLamports(stakeHistory.effective)}</span>
-                  </h4>
-            <h1>
-              <em>{displayLamports(stakeHistory.effective)}</em> /{" "}
-              <small>{displayLamports(supply.total)}</small>
-            </h1>
-            {delinquentStakePercentage && (
-              <h5>
-                Delinquent stake: <em>{delinquentStakePercentage}%</em>
-              </h5>
-            )}
-          </div>
+        <Typography color="secondary" variant="body2"> { `${circulatingPercentage}% is circulating` } </Typography>
+      </Paper>
+
+      <Paper className="p-4">
+        <Typography color="secondary"> Active Staking </Typography>
+        {/* <span className="ml-2 badge badge-primary rank" style={{opacity: 0.0}}>{displayLamports(stakeHistory.effective)}</span> */}
+        <div className="flex flex-row items-end gap-1 py-1">
+          <Typography variant="h3"> {`${displayLamports(stakeHistory.effective)} /`}</Typography>
+          <Typography color="secondary"> { displayLamports(supply.total) } </Typography>
         </div>
-      </div>
-      <div className="col-12 col-lg-4 col-xl">
-        <div className="card">
-          <div className="card-body">
-            {solanaInfo && (
-              <>
-                <h4>
-                  Price{" "}
-                  <span className="ml-2 badge badge-primary rank">
-                    Rank #{solanaInfo.market_cap_rank}
-                  </span>
-                </h4>
-                <h1>
-                  <em>${solanaInfo.price.toFixed(2)}</em>{" "}
-                  {solanaInfo.price_change_percentage_24h > 0 && (
-                    <small className="change-positive">
+        {
+          delinquentStakePercentage && (
+            <Typography color="secondary" variant="body2">
+              { `Delinquent stake: ${delinquentStakePercentage}%` }
+            </Typography>
+          )
+        }        
+      </Paper>
+
+      <Paper className="p-4">
+        {
+          solanaInfo && (
+            <>
+              <div className="flex flex-row gap-4">
+                <Typography color="secondary"> Price </Typography>
+                <Typography> { `Rank #${solanaInfo.market_cap_rank}` } </Typography>
+              </div>
+              <div className="flex flex-row gap-4 items-end py-1">
+                <Typography variant="h3">{ `$${solanaInfo.price.toFixed(2)}` } </Typography>
+                {
+                  solanaInfo.price_change_percentage_24h > 0 && (
+                    <Typography color="secondary">
                       &uarr; {solanaInfo.price_change_percentage_24h.toFixed(2)}
                       %
-                    </small>
-                  )}
-                  {solanaInfo.price_change_percentage_24h < 0 && (
-                    <small className="change-negative">
-                      &darr; {solanaInfo.price_change_percentage_24h.toFixed(2)}
-                      %
-                    </small>
-                  )}
-                  {solanaInfo.price_change_percentage_24h === 0 && (
-                    <small>0%</small>
-                  )}
-                </h1>
-                <h5>
-                  24h Vol: <em>${abbreviatedNumber(solanaInfo.volume_24)}</em>{" "}
-                  MCap: <em>${abbreviatedNumber(solanaInfo.market_cap)}</em>
-                </h5>
-              </>
-            )}
-            {coinInfo.status === CoingeckoStatus.FetchFailed && (
-              <>
-                <h4>Price</h4>
-                <h1>
-                  <em>$--.--</em>
-                </h1>
-                <h5>Error fetching the latest price information</h5>
-              </>
-            )}
-            {solanaInfo && (
-              <p className="updated-time text-muted">
-                Updated at{" "}
-                {displayTimestampWithoutDate(solanaInfo.last_updated.getTime())}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
+                    </Typography>
+                  )
+                }
+                {solanaInfo.price_change_percentage_24h < 0 && (
+                  <Typography color="secondary">
+                    &darr; {solanaInfo.price_change_percentage_24h.toFixed(2)}
+                    %
+                  </Typography>
+                )}
+                {solanaInfo.price_change_percentage_24h === 0 && (
+                  <small>0%</small>
+                )}
+              </div>
+              <Typography color="secondary" variant="body2">
+                { `24h Vol: $${abbreviatedNumber(solanaInfo.volume_24)}, MCap: $${abbreviatedNumber(solanaInfo.market_cap)}` }
+              </Typography>
+            </>
+          )
+        }
+        {
+          coinInfo.status === CoingeckoStatus.FetchFailed && (
+            <>
+              <Typography color="secondary"> Price </Typography>
+              <Typography variant="h3"> $--.-- </Typography>
+              <Typography color="secondary" variant="body2"> Error fetching the latest price information </Typography>
+            </>
+          )
+        }
+      </Paper>
     </div>
   );
 }
@@ -347,50 +256,52 @@ function StatsCardBody() {
   const { blockHeight, absoluteSlot } = epochInfo;
 
   return (
-    <TableCardBody>
-      <tr>
-        <td className="w-100">Slot</td>
-        <td className="text-lg-right text-monospace">
-          <Slot slot={absoluteSlot} link />
-        </td>
-      </tr>
-      {blockHeight !== undefined && (
-        <tr>
-          <td className="w-100">Block height</td>
-          <td className="text-lg-right text-monospace">
-            <Slot slot={blockHeight} />
-          </td>
-        </tr>
-      )}
-      {blockTime && (
-        <tr>
-          <td className="w-100">Cluster time</td>
-          <td className="text-lg-right text-monospace">
-            {displayTimestampUtc(blockTime)}
-          </td>
-        </tr>
-      )}
-      <tr>
-        <td className="w-100">Slot time (1min average)</td>
-        <td className="text-lg-right text-monospace">{averageSlotTime}ms</td>
-      </tr>
-      <tr>
-        <td className="w-100">Slot time (1hr average)</td>
-        <td className="text-lg-right text-monospace">{hourlySlotTime}ms</td>
-      </tr>
-      <tr>
-        <td className="w-100">Epoch</td>
-        <td className="text-lg-right text-monospace">{currentEpoch}</td>
-      </tr>
-      <tr>
-        <td className="w-100">Epoch progress</td>
-        <td className="text-lg-right text-monospace">{epochProgress}</td>
-      </tr>
-      <tr>
-        <td className="w-100">Epoch time remaining (approx.)</td>
-        <td className="text-lg-right text-monospace">~{epochTimeRemaining}</td>
-      </tr>
-    </TableCardBody>
+    <TableContainer>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Slot</TableCell>
+            <TableCell align="right"><Slot slot={absoluteSlot} link /></TableCell>
+          </TableRow>
+          {
+            blockHeight !== undefined && (
+              <TableRow>
+                <TableCell>Block Height</TableCell>
+                <TableCell align="right"><Slot slot={blockHeight} /></TableCell>
+              </TableRow>
+            )
+          }
+          {
+            blockTime && (
+              <TableRow>
+                <TableCell>Cluster Time</TableCell>
+                <TableCell align="right"> { displayTimestampUtc(blockTime) } </TableCell>
+              </TableRow>
+            )
+          }
+          <TableRow>
+            <TableCell>Slot time (1min average)</TableCell>
+            <TableCell align="right"> {`${averageSlotTime} ms`} </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Slot time (1hr average)</TableCell>
+            <TableCell align="right"> {`${hourlySlotTime} ms`} </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Epoch</TableCell>
+            <TableCell align="right"> { currentEpoch } </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Epoch progress</TableCell>
+            <TableCell align="right"> { epochProgress } </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Epoch time remaining (approx.)</TableCell>
+            <TableCell align="right"> { `~${epochTimeRemaining}` } </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 

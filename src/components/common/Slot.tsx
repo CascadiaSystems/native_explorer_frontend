@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { clusterPath } from "utils/url";
@@ -12,7 +13,9 @@ export function Slot({ slot, link }: Props) {
     <Copyable text={slot.toString()}>
       <span className="text-monospace">
         <Link to={clusterPath(`/block/${slot}`)}>
-          {slot.toLocaleString("en-US")}
+          <Typography color="secondary">
+            { slot.toLocaleString("en-US") }
+          </Typography>
         </Link>
       </span>
     </Copyable>
