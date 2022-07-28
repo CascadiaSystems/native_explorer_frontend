@@ -3,7 +3,7 @@ import { useState, ReactNode } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { IconButton, Typography } from "@mui/material";
+import { IconButton } from "@mui/material";
 
 type CopyState = "copy" | "copied" | "errored";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Location } from "history";
 import { AccountBalancePair } from "@velas/web3";
 import { useRichList, useFetchRichList, Status } from "providers/richList";
@@ -9,6 +9,10 @@ import { SolBalance } from "utils";
 import { useQuery } from "utils/url";
 import { useSupply } from "providers/supply";
 import { Address } from "./common/Address";
+import { Button, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { SelectChangeEvent } from '@mui/material/Select';
+
+import ContentCard from "../components/common/ContentCard";
 
 type Filter = "circulating" | "nonCirculating" | "all" | null;
 
@@ -16,8 +20,10 @@ export function TopAccountsCard() {
   const supply = useSupply();
   const richList = useRichList();
   const fetchRichList = useFetchRichList();
-  const [showDropdown, setDropdown] = React.useState(false);
   const filter = useQueryFilter();
+  const location = useLocation();
+  const history = useHistory();
+
 
   if (typeof supply !== "object") return null;
 
@@ -60,62 +66,66 @@ export function TopAccountsCard() {
     }
   }
 
+  const handleChange = (event: SelectChangeEvent) => {
+    if (event.target.value === 'circulating') {
+      history.push({pathname: location.pathname});
+    } else {
+      history.push({pathname: location.pathname, search: `filter=${event.target.value}`});
+    }
+  }
+
   return (
     <>
-      {showDropdown && (
-        <div className="dropdown-exit" onClick={() => setDropdown(false)} />
-      )}
-
-      <div className="card">
-        <div className="card-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h4 className="card-header-title">Largest Accounts</h4>
-            </div>
-
-            <div className="col-auto">
-              <FilterDropdown
-                filter={filter}
-                toggle={() => setDropdown((show) => !show)}
-                show={showDropdown}
-              />
-            </div>
-          </div>
-        </div>
-
+      <ContentCard
+        className="mt-6"
+        title={
+          <Typography variant="h3"> Largest Accounts </Typography>
+        }
+        action={(
+          <Select size="small"
+            value={filter?filter:'circulating'}
+            onChange={handleChange}
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="circulating">Circulating</MenuItem>
+            <MenuItem value="nonCirculating">Non-Circulating</MenuItem>
+          </Select>
+        )}
+      >
         {richList === Status.Idle && (
-          <div className="card-body">
-            <span
-              className="btn btn-white ml-3 d-none d-md-inline"
+          <div className="p-4">
+            <Button variant="outlined"
+              color="primary"
+              disableRipple
               onClick={fetchRichList}
             >
               Load Largest Accounts
-            </span>
+            </Button>
           </div>
         )}
 
         {accounts && (
-          <div className="table-responsive mb-0">
-            <table className="table table-sm table-nowrap card-table">
-              <thead>
-                <tr>
-                  <th className="text-muted">Rank</th>
-                  <th className="text-muted">Address</th>
-                  <th className="text-muted text-right">Balance (VLX)</th>
-                  <th className="text-muted text-right">
-                    % of {header} Supply
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="list">
-                {accounts.map((account, index) =>
-                  renderAccountRow(account, index, supplyCount)
-                )}
-              </tbody>
-            </table>
-          </div>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell> Rank </TableCell>
+                  <TableCell> Address </TableCell>
+                  <TableCell align="right"> Balance (VLX) </TableCell>
+                  <TableCell align="right"> % of {header} Supply </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                  accounts.map((account, index) =>
+                    renderAccountRow(account, index, supplyCount)
+                  )
+                }
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
-      </div>
+      </ContentCard>
     </>
   );
 }
@@ -126,21 +136,12 @@ const renderAccountRow = (
   supply: number
 ) => {
   return (
-    <tr key={index}>
-      <td>
-        <span className="badge badge-soft-light badge-pill">{index + 1}</span>
-      </td>
-      <td>
-        <Address pubkey={account.address} link />
-      </td>
-      <td className="text-right">
-        <SolBalance lamports={account.lamports} maximumFractionDigits={0} />
-      </td>
-      <td className="text-right">{`${(
-        (100 * account.lamports) /
-        supply
-      ).toFixed(3)}%`}</td>
-    </tr>
+    <TableRow key={index}>
+      <TableCell> { index + 1 } </TableCell>
+      <TableCell> <Address pubkey={account.address} link /> </TableCell>
+      <TableCell align="right"> <SolBalance lamports={account.lamports} maximumFractionDigits={0} /> </TableCell>
+      <TableCell align="right"> {`${((100 * account.lamports) / supply).toFixed(3)}%`} </TableCell>
+    </TableRow>
   );
 };
 
@@ -156,71 +157,4 @@ const useQueryFilter = (): Filter => {
   } else {
     return null;
   }
-};
-
-const filterTitle = (filter: Filter): string => {
-  switch (filter) {
-    case "nonCirculating": {
-      return "Non-Circulating";
-    }
-    case "all": {
-      return "All";
-    }
-    case "circulating":
-    default: {
-      return "Circulating";
-    }
-  }
-};
-
-type DropdownProps = {
-  filter: Filter;
-  toggle: () => void;
-  show: boolean;
-};
-
-const FilterDropdown = ({ filter, toggle, show }: DropdownProps) => {
-  const buildLocation = (location: Location, filter: Filter) => {
-    const params = new URLSearchParams(location.search);
-    if (filter === null) {
-      params.delete("filter");
-    } else {
-      params.set("filter", filter);
-    }
-    return {
-      ...location,
-      search: params.toString(),
-    };
-  };
-
-  const FILTERS: Filter[] = ["all", null, "nonCirculating"];
-  return (
-    <div className="dropdown">
-      <button
-        className="btn btn-white btn-sm dropdown-toggle"
-        type="button"
-        onClick={toggle}
-      >
-        {filterTitle(filter)}
-      </button>
-      <div
-        className={`dropdown-menu-right dropdown-menu${show ? " show" : ""}`}
-      >
-        {FILTERS.map((filterOption) => {
-          return (
-            <Link
-              key={filterOption || "null"}
-              to={(location) => buildLocation(location, filterOption)}
-              className={`dropdown-item${
-                filterOption === filter ? " active" : ""
-              }`}
-              onClick={toggle}
-            >
-              {filterTitle(filterOption)}
-            </Link>
-          );
-        })}
-      </div>
-    </div>
-  );
 };
