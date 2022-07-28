@@ -1,11 +1,5 @@
 import { Switch, Route, Redirect } from "react-router-dom";
 
-// import { ClusterModal } from "components/ClusterModal";
-// import { MessageBanner } from "components/MessageBanner";
-import { Navbar } from "components/Navbar";
-// import { ClusterStatusBanner } from "components/ClusterStatusButton";
-// import { SearchBar } from "components/SearchBar";
-
 import { AccountDetailsPage } from "pages/AccountDetailsPage";
 import { TransactionInspectorPage } from "pages/inspector/InspectorPage";
 import { ClusterStatsPage } from "pages/ClusterStatsPage";
@@ -14,6 +8,7 @@ import { TransactionDetailsPage } from "pages/TransactionDetailsPage";
 import { BlockDetailsPage } from "pages/BlockDetailsPage";
 import { ThemeProvider } from "@emotion/react";
 import themes from './themes';
+import Layout from './layout';
 import { CssBaseline } from "@mui/material";
 
 const ADDRESS_ALIASES = ["account", "accounts", "addresses"];
@@ -23,12 +18,7 @@ function App() {
   return (
     <ThemeProvider theme={themes()}>
       <CssBaseline />
-      {/* <ClusterModal /> */}
-      <div className="main-content pb-4">
-        <Navbar />
-        {/* <MessageBanner />
-        <ClusterStatusBanner /> */}
-        {/* <SearchBar /> */}
+      <Layout>
         <Switch>
           <Route exact path={["/supply", "/accounts", "accounts/top"]}>
             <SupplyPage />
@@ -95,7 +85,7 @@ function App() {
             )}
           />
         </Switch>
-      </div>
+      </Layout>
     </ThemeProvider>
   );
 }

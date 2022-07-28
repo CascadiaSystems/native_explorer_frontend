@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { IconButton, List, ListItem,  SwipeableDrawer, Typography } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { NavLink } from "react-router-dom";
+import { Typography } from '@mui/material';
+// import { IconButton, List, ListItem,  SwipeableDrawer, Typography } from '@mui/material';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 
 import { clusterPath } from "utils/url";
-import { ClusterStatusButton } from "components/ClusterStatusButton";
-import Logo from "img/logos-solana/dark-explorer-logo.svg";
+// import { ClusterStatusButton } from "components/ClusterStatusButton";
+// import Logo from "img/logos-solana/dark-explorer-logo.svg";
 
 const navItems = [
   {
@@ -24,7 +25,7 @@ const navItems = [
   },
 ];
 
-export function Navbar() {
+const Navbar = () => {
   // TODO: use `collapsing` to animate collapsible navbar
   const [collapse, setCollapse] = useState(false);
   
@@ -140,3 +141,5 @@ export function Navbar() {
     </div>
   );
 }
+
+export default Navbar;
