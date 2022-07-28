@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import * as Sentry from "@sentry/react";
-import "./scss/theme-dark.scss";
+// import "./scss/theme-dark.scss";
 import "./index.css";
 import App from "./App";
 import { ClusterProvider } from "./providers/cluster";
@@ -21,24 +21,26 @@ if (process.env.NODE_ENV === "production") {
 }
 
 ReactDOM.render(
-  <Router>
-    <ClusterProvider>
-      <StatsProvider>
-        <SupplyProvider>
-          <RichListProvider>
-            <AccountsProvider>
-              <BlockProvider>
-                <MintsProvider>
-                  <TransactionsProvider>
-                    <App />
-                  </TransactionsProvider>
-                </MintsProvider>
-              </BlockProvider>
-            </AccountsProvider>
-          </RichListProvider>
-        </SupplyProvider>
-      </StatsProvider>
-    </ClusterProvider>
-  </Router>,
+  <React.StrictMode>
+    <Router>
+      <ClusterProvider>
+        <StatsProvider>
+          <SupplyProvider>
+            <RichListProvider>
+              <AccountsProvider>
+                <BlockProvider>
+                  <MintsProvider>
+                    <TransactionsProvider>
+                      <App />
+                    </TransactionsProvider>
+                  </MintsProvider>
+                </BlockProvider>
+              </AccountsProvider>
+            </RichListProvider>
+          </SupplyProvider>
+        </StatsProvider>
+      </ClusterProvider>
+    </Router>
+  </React.StrictMode>,
   document.getElementById("root")
 );
