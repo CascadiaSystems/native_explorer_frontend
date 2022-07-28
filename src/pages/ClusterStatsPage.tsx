@@ -1,5 +1,4 @@
 import React from "react";
-import { TableCardBody } from "components/common/TableCardBody";
 import { Slot } from "components/common/Slot";
 import {
   ClusterStatsStatus,
