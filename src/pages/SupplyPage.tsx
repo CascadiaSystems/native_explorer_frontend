@@ -4,7 +4,7 @@ import { SupplyCard } from "components/SupplyCard";
 
 export function SupplyPage() {
   return (
-    <div className="container mt-4">
+    <div className="mt-6">
       <SupplyCard />
       <TopAccountsCard />
     </div>

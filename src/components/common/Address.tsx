@@ -6,6 +6,7 @@ import { displayAddress } from "utils/tx";
 import { useCluster } from "providers/cluster";
 import { Copyable } from "./Copyable";
 import { useTokenRegistry } from "providers/mints/token-registry";
+import { Typography } from "@mui/material";
 
 type Props = {
   pubkey: PublicKey;
@@ -19,7 +20,6 @@ type Props = {
 
 export function Address({
   pubkey,
-  alignRight,
   link,
   raw,
   truncate,
@@ -46,8 +46,8 @@ export function Address({
   }
 
   const content = (
-    <Copyable text={address} replaceText={!alignRight}>
-      <span className="text-monospace">
+    <Copyable text={address}>
+      <Typography color="secondary">
         {link ? (
           <Link
             className={truncate ? "text-truncate address-truncate" : ""}
@@ -60,20 +60,11 @@ export function Address({
             {addressLabel}
           </span>
         )}
-      </span>
+      </Typography>
     </Copyable>
   );
 
-  return (
-    <>
-      <div
-        className={`d-none d-lg-flex align-items-center ${
-          alignRight ? "justify-content-end" : ""
-        }`}
-      >
-        {content}
-      </div>
-      <div className="d-flex d-lg-none align-items-center">{content}</div>
-    </>
+  return (      
+    <div className="flex justify-start">{content}</div>
   );
 }
