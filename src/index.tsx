@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import * as Sentry from "@sentry/react";
 import "./scss/theme-dark.scss";
+import "./index.css";
 import App from "./App";
 import { ClusterProvider } from "./providers/cluster";
 import { RichListProvider } from "./providers/richList";
