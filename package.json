@@ -14,6 +14,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@metamask/jazzicon": "^2.0.0",
+    "@mui/lab": "^5.0.0-alpha.92",
     "@mui/material": "^5.9.2",
     "@project-serum/serum": "^0.13.58",
     "@react-hook/debounce": "^4.0.0",

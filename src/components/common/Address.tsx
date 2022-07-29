@@ -47,7 +47,7 @@ export function Address({
 
   const content = (
     <Copyable text={address}>
-      <Typography color="secondary">
+      <Typography color="secondary" className="hover:text-primary">
         {link ? (
           <Link
             className={truncate ? "text-truncate address-truncate" : ""}
@@ -65,6 +65,6 @@ export function Address({
   );
 
   return (      
-    <div className="flex justify-start">{content}</div>
+    <div>{content}</div>
   );
 }

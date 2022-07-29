@@ -1,4 +1,6 @@
+import { Button } from "@mui/material";
 import React from "react";
+import ContentCard from "./ContentCard";
 
 export function ErrorCard({
   retry,
@@ -13,31 +15,28 @@ export function ErrorCard({
 }) {
   const buttonText = retryText || "Try Again";
   return (
-    <div className="card">
-      <div className="card-body text-center">
-        {text}
-        {retry && (
-          <>
-            <span
-              className="btn btn-white ml-3 d-none d-md-inline"
-              onClick={retry}
-            >
-              {buttonText}
-            </span>
-            <div className="d-block d-md-none mt-4">
-              <span className="btn btn-white w-100" onClick={retry}>
+    <>
+      <ContentCard>
+        <div className="text-center">
+          <div className="flex flex-row gap-4 items-center justify-center p-4">
+            {text}
+            {retry && (
+              <Button variant="outlined" size="small"
+                disableRipple onClick={retry}>
                 {buttonText}
-              </span>
-            </div>
-            {subtext && (
-              <div className="text-muted">
-                <hr></hr>
+              </Button>                
+            )}
+          </div>
+          {retry && subtext && (
+            <>
+              <hr  className="border-grey-light"/>
+              <div className="p-4">
                 {subtext}
               </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+            </>
+          )}
+        </div>
+      </ContentCard>
+    </>
   );
 }

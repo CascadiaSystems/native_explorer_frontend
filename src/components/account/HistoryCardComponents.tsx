@@ -1,5 +1,7 @@
 import React from "react";
 import { ConfirmedSignatureInfo, TransactionError } from "@velas/web3";
+import { Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 export type TransactionRow = {
   slot: number;
@@ -53,28 +55,19 @@ export function HistoryCardFooter({
   foundOldest: boolean;
   loadMore: Function;
 }) {
-  return (
-    <div className="card-footer">
-      {foundOldest ? (
-        <div className="text-muted text-center">Fetched full history</div>
-      ) : (
-        <button
-          className="btn btn-primary w-100"
-          onClick={() => loadMore()}
-          disabled={fetching}
-        >
-          {fetching ? (
-            <>
-              <span className="spinner-grow spinner-grow-sm mr-2"></span>
-              Loading
-            </>
-          ) : (
-            "Load More"
-          )}
-        </button>
-      )}
-    </div>
-  );
+  return foundOldest ? (
+    <div className="w-full text-center">Fetched full history</div>
+  ) : (
+    <LoadingButton
+      disableRipple
+      variant="contained"
+      className="w-full"
+      loading={fetching}
+      onClick={() => loadMore()}
+    >
+      Load More
+    </LoadingButton>
+  )
 }
 
 export function getTransactionRows(

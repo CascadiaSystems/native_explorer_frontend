@@ -10,11 +10,15 @@ import {
 import {
   getTransactionRows,
   HistoryCardFooter,
-  HistoryCardHeader,
 } from "../HistoryCardComponents";
 import { FetchStatus } from "providers/cache";
 import { LoadingCard } from "components/common/LoadingCard";
 import { ErrorCard } from "components/common/ErrorCard";
+import { Table, TableRow, TableCell, TableContainer, TableHead, TableBody, Button, Typography } from "@mui/material";
+import { LoadingButton }  from '@mui/lab';
+import ContentCard from "components/common/ContentCard";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRotate } from '@fortawesome/free-solid-svg-icons';
 
 export function TransactionHistoryCard({ pubkey }: { pubkey: PublicKey }) {
   const address = pubkey.toBase58();
@@ -54,57 +58,90 @@ export function TransactionHistoryCard({ pubkey }: { pubkey: PublicKey }) {
   const detailsList: React.ReactNode[] = transactionRows.map(
     ({ slot, signature, blockTime, statusClass, statusText }) => {
       return (
-        <tr key={signature}>
-          <td>
+        <TableRow key={signature}>
+          <TableCell>
             <Signature signature={signature} link truncate />
-          </td>
+          </TableCell>
 
-          <td className="w-1">
+          <TableCell>
             <Slot slot={slot} link />
-          </td>
+          </TableCell>
 
-          {hasTimestamps && (
-            <td className="text-muted">
-              {blockTime ? <Moment date={blockTime * 1000} fromNow /> : "---"}
-            </td>
+          {
+            hasTimestamps && (
+              <TableCell align="right">
+                {blockTime ? <Moment date={blockTime * 1000} fromNow /> : "---"}
+              </TableCell>
           )}
 
-          <td>
-            <span className={`badge badge-soft-${statusClass}`}>
+          <TableCell align="right">
+            { statusText }
+            {/* <span className={`badge badge-soft-${statusClass}`}>
               {statusText}
-            </span>
-          </td>
-        </tr>
+            </span> */}
+          </TableCell>
+        </TableRow>
       );
     }
   );
 
+  
   const fetching = history.status === FetchStatus.Fetching;
+
+  const ActionButton = () => {
+    return fetching ? (
+      <LoadingButton
+        variant="outlined"
+        color="primary"
+        size="small"
+        loading={fetching}
+        loadingPosition="start"
+      >
+        <div className="pl-6">
+          Loading...
+        </div>
+      </LoadingButton>
+    ) : (
+      <Button variant="outlined"
+        size="small"
+        disableRipple
+        startIcon={<FontAwesomeIcon icon={faRotate} />}
+        onClick={() => refresh()}
+      >
+        Refresh
+      </Button>
+    );
+  } 
+
   return (
-    <div className="card">
-      <HistoryCardHeader
-        fetching={fetching}
-        refresh={() => refresh()}
-        title="Transaction History"
-      />
-      <div className="table-responsive mb-0">
-        <table className="table table-sm table-nowrap card-table">
-          <thead>
-            <tr>
-              <th className="text-muted w-1">Transaction Signature</th>
-              <th className="text-muted w-1">Slot</th>
-              {hasTimestamps && <th className="text-muted w-1">Age</th>}
-              <th className="text-muted">Result</th>
-            </tr>
-          </thead>
-          <tbody className="list">{detailsList}</tbody>
-        </table>
-      </div>
-      <HistoryCardFooter
+    <ContentCard
+      title={(
+        <Typography variant="h4">
+          Transaction History
+        </Typography>
+      )}
+      action={<ActionButton />}
+      footer={<HistoryCardFooter
         fetching={fetching}
         foundOldest={history.data.foundOldest}
         loadMore={() => loadMore()}
-      />
-    </div>
+      />}
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell> Transaction Signature </TableCell>
+              <TableCell> Slot </TableCell>
+              { hasTimestamps && <TableCell align="right"> Age </TableCell> }
+              <TableCell align="right"> Result </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { detailsList }
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }

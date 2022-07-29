@@ -11,6 +11,7 @@ const componentStyleOverrides = (theme) => {
         }
       }
     },
+    // MuiButton
     MuiButton: {
       styleOverrides: {
         root: {
@@ -25,8 +26,21 @@ const componentStyleOverrides = (theme) => {
             backgroundColor: 'transparent',
           }
         },
+        contained: {
+          '&.Mui-disabled': {
+            backgroundColor: theme.colors?.grey.light
+          }
+        },
         outlined: {
-          borderColor: theme.colors?.grey.light
+          borderColor: theme.colors?.grey.light,
+          '&.MuiLoadingButton-loading.Mui-disabled': {
+            color: theme.colors?.text.secondary
+          }
+        },
+        startIcon: {
+          '& svg': {
+            fontSize: '0.875rem !important'
+          }
         }
       }
     },
@@ -37,6 +51,25 @@ const componentStyleOverrides = (theme) => {
         }
       }
     },
+    MuiLoadingButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            borderColor: theme.colors?.grey.light,
+            // color: theme.colors?.text.secondary
+          }
+        }
+      }
+    },
+    MuiCircularProgress: {
+      styleOverrides: {
+        circle: {
+          stroke: theme.colors?.text.secondary
+        }
+      }
+    },
+
+    // MuiCard
     MuiCardHeader: {
       styleOverrides: {
         root: {
@@ -54,6 +87,14 @@ const componentStyleOverrides = (theme) => {
           '&:last-child': {
             padding: 0
           }
+        }
+      }
+    },
+    MuiCardActions: {
+      styleOverrides: {
+        root: {
+          padding: '16px',
+          borderTop: `1px solid ${theme.colors?.grey.light}`
         }
       }
     },

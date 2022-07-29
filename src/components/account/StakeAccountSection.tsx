@@ -11,6 +11,8 @@ import {
 } from "validators/accounts/stake";
 import BN from "bn.js";
 import { StakeActivationData } from "@velas/web3";
+import ContentCard from "components/common/ContentCard";
+import { Button, Typography, TableContainer, Table, TableRow, TableCell, TableBody } from "@mui/material";
 
 const MAX_EPOCH = new BN(2).pow(new BN(64)).sub(new BN(1));
 
@@ -101,51 +103,54 @@ function OverviewCard({
 }) {
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title mb-0 d-flex align-items-center">
-          Stake Account
-        </h3>
-        <button
-          className="btn btn-white btn-sm"
+    <ContentCard
+      title={
+        <Typography variant="h3">Stake Account</Typography>
+      }
+      action={
+        <Button size="small" variant="outlined"
           onClick={() => refresh(account.pubkey)}
         >
-          <span className="fe fe-refresh-cw mr-2"></span>
           Refresh
-        </button>
-      </div>
+        </Button>
+      }
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
 
-      <TableCardBody>
-        <tr>
-          <td>Address</td>
-          <td className="text-lg-right">
-            <Address pubkey={account.pubkey} alignRight raw />
-          </td>
-        </tr>
-        <tr>
-          <td>Balance (VLX)</td>
-          <td className="text-lg-right text-uppercase">
-            <SolBalance lamports={account.lamports || 0} />
-          </td>
-        </tr>
-        <tr>
-          <td>Rent Reserve (VLX)</td>
-          <td className="text-lg-right">
-            <SolBalance lamports={stakeAccount.meta.rentExemptReserve} />
-          </td>
-        </tr>
-        {hideDelegation && (
-          <tr>
-            <td>Status</td>
-            <td className="text-lg-right">
-              {isFullyInactivated(stakeAccount, activation)
-                ? "Not delegated"
-                : displayStatus(stakeAccountType, activation)}
-            </td>
-          </tr>
-        )}
-      </TableCardBody>
-    </div>
+            <TableRow>
+              <TableCell>Address</TableCell>
+              <TableCell align="right">
+                <Address pubkey={account.pubkey} alignRight raw />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Balance (VLX)</TableCell>
+              <TableCell align="right">
+                <SolBalance lamports={account.lamports || 0} />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Rent Reserve (VLX)</TableCell>
+              <TableCell align="right">
+                <SolBalance lamports={stakeAccount.meta.rentExemptReserve} />
+              </TableCell>
+            </TableRow>
+            {hideDelegation && (
+              <TableRow>
+                <TableCell>Status</TableCell>
+                <TableCell align="right">
+                  {isFullyInactivated(stakeAccount, activation)
+                    ? "Not delegated"
+                    : displayStatus(stakeAccountType, activation)}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -171,106 +176,110 @@ function DelegationCard({
   }
   const { stake } = stakeAccount;
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title mb-0 d-flex align-items-center">
-          Stake Delegation
-        </h3>
-      </div>
-      <TableCardBody>
-        <tr>
-          <td>Status</td>
-          <td className="text-lg-right">
-            {displayStatus(stakeAccountType, activation)}
-          </td>
-        </tr>
+    <ContentCard
+      className="mt-6"
+      title={<Typography variant="h3">Stake Delegation</Typography>}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>Status</TableCell>
+              <TableCell align="right">
+                {displayStatus(stakeAccountType, activation)}
+              </TableCell>
+            </TableRow>
 
-        {stake && (
-          <>
-            <tr>
-              <td>Delegated Stake (VLX)</td>
-              <td className="text-lg-right">
-                <SolBalance lamports={stake.delegation.stake} />
-              </td>
-            </tr>
-
-            {activation && (
+            {stake && (
               <>
-                <tr>
-                  <td>Active Stake (VLX)</td>
-                  <td className="text-lg-right">
-                    <SolBalance lamports={activation.active} />
-                  </td>
-                </tr>
+                <TableRow>
+                  <TableCell>Delegated Stake (VLX)</TableCell>
+                  <TableCell align="right">
+                    <SolBalance lamports={stake.delegation.stake} />
+                  </TableCell>
+                </TableRow>
 
-                <tr>
-                  <td>Inactive Stake (VLX)</td>
-                  <td className="text-lg-right">
-                    <SolBalance lamports={activation.inactive} />
-                  </td>
-                </tr>
+                {activation && (
+                  <>
+                    <TableRow>
+                      <TableCell>Active Stake (VLX)</TableCell>
+                      <TableCell align="right">
+                        <SolBalance lamports={activation.active} />
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell>Inactive Stake (VLX)</TableCell>
+                      <TableCell align="right">
+                        <SolBalance lamports={activation.inactive} />
+                      </TableCell>
+                    </TableRow>
+                  </>
+                )}
+
+                {voterPubkey && (
+                  <TableRow>
+                    <TableCell>Delegated Vote Address</TableCell>
+                    <TableCell align="right">
+                      <Address pubkey={voterPubkey} alignRight link />
+                    </TableCell>
+                  </TableRow>
+                )}
+
+                <TableRow>
+                  <TableCell>Activation Epoch</TableCell>
+                  <TableCell align="right">{activationEpoch}</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell>Deactivation Epoch</TableCell>
+                  <TableCell align="right">{deactivationEpoch}</TableCell>
+                </TableRow>
               </>
             )}
-
-            {voterPubkey && (
-              <tr>
-                <td>Delegated Vote Address</td>
-                <td className="text-lg-right">
-                  <Address pubkey={voterPubkey} alignRight link />
-                </td>
-              </tr>
-            )}
-
-            <tr>
-              <td>Activation Epoch</td>
-              <td className="text-lg-right">{activationEpoch}</td>
-            </tr>
-
-            <tr>
-              <td>Deactivation Epoch</td>
-              <td className="text-lg-right">{deactivationEpoch}</td>
-            </tr>
-          </>
-        )}
-      </TableCardBody>
-    </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
 function AuthoritiesCard({ meta }: { meta: StakeMeta }) {
   const hasLockup = meta.lockup.unixTimestamp > 0;
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title mb-0 d-flex align-items-center">
-          Authorities
-        </h3>
-      </div>
-      <TableCardBody>
-        <tr>
-          <td>Stake Authority Address</td>
-          <td className="text-lg-right">
-            <Address pubkey={meta.authorized.staker} alignRight link />
-          </td>
-        </tr>
+    <ContentCard
+      className="mt-6"
+      title={<Typography variant="h3">Authorities</Typography>}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>Stake Authority Address</TableCell>
+              <TableCell align="right">
+                <Address pubkey={meta.authorized.staker} alignRight link />
+              </TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Withdraw Authority Address</td>
-          <td className="text-lg-right">
-            <Address pubkey={meta.authorized.withdrawer} alignRight link />
-          </td>
-        </tr>
+            <TableRow>
+              <TableCell>Withdraw Authority Address</TableCell>
+              <TableCell align="right">
+                <Address pubkey={meta.authorized.withdrawer} alignRight link />
+              </TableCell>
+            </TableRow>
 
-        {hasLockup && (
-          <tr>
-            <td>Lockup Authority Address</td>
-            <td className="text-lg-right">
-              <Address pubkey={meta.lockup.custodian} alignRight link />
-            </td>
-          </tr>
-        )}
-      </TableCardBody>
-    </div>
+            {hasLockup && (
+              <TableRow>
+                <TableCell>Lockup Authority Address</TableCell>
+                <TableCell align="right">
+                  <Address pubkey={meta.lockup.custodian} alignRight link />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
