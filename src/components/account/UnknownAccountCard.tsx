@@ -59,7 +59,6 @@ export function UnknownAccountCard({ account }: { account: Account }) {
           </TableBody>
         </Table>
       </TableContainer>
-
     </ContentCard>
   );
 }

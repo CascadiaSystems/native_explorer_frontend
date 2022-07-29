@@ -125,7 +125,7 @@ export function AccountDetailsPage({ address, tab }: Props) {
   }, [address, status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="container mt-n3">
+    <div>
       <div className="header">
         <div className="header-body">
           <AccountHeader address={address} info={info} />

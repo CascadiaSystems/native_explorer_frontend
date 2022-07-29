@@ -1,12 +1,9 @@
-import React from "react";
+import ContentCard from "./ContentCard";
 
 export function LoadingCard({ message }: { message?: string }) {
   return (
-    <div className="card">
-      <div className="card-body text-center">
-        <span className="spinner-grow spinner-grow-sm mr-2"></span>
-        {message || "Loading"}
-      </div>
-    </div>
+    <ContentCard className="p-4 text-center">
+      {message || "Loading"}
+    </ContentCard>
   );
 }

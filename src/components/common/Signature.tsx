@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { TransactionSignature } from "@velas/web3";
 import { clusterPath } from "utils/url";
 import { Copyable } from "./Copyable";
+import { Typography } from "@mui/material";
 
 type Props = {
   signature: TransactionSignature;
@@ -32,7 +33,7 @@ export function Signature({
       }`}
     >
       <Copyable text={signature} replaceText={!alignRight}>
-        <span className="text-monospace">
+        <Typography color="secondary" className="hover:text-primary">
           {link ? (
             <Link
               className={truncate ? "text-truncate signature-truncate" : ""}
@@ -43,7 +44,7 @@ export function Signature({
           ) : (
             signatureLabel
           )}
-        </span>
+        </Typography>
       </Copyable>
     </div>
   );
