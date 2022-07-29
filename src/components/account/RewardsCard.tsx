@@ -8,6 +8,9 @@ import { Slot } from "components/common/Slot";
 import { lamportsToSolString } from "utils";
 import { useAccountInfo } from "providers/accounts";
 import BN from "bn.js";
+import ContentCard from "components/common/ContentCard";
+import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 const MAX_EPOCH = new BN(2).pow(new BN(64)).sub(new BN(1));
 
@@ -51,75 +54,57 @@ export function RewardsCard({ pubkey }: { pubkey: PublicKey }) {
     }
 
     return (
-      <tr key={reward.epoch}>
-        <td>{reward.epoch}</td>
-        <td>
+      <TableRow key={reward.epoch}>
+        <TableCell>{reward.epoch}</TableCell>
+        <TableCell>
           <Slot slot={reward.effectiveSlot} link />
-        </td>
-        <td>{lamportsToSolString(reward.amount)}</td>
-        <td>{lamportsToSolString(reward.postBalance)}</td>
-      </tr>
+        </TableCell>
+        <TableCell align="right">{lamportsToSolString(reward.amount)}</TableCell>
+        <TableCell align="right">{lamportsToSolString(reward.postBalance)}</TableCell>
+      </TableRow>
     );
   });
   const rewardsFound = rewardsList.some((r) => r);
   const { foundOldest, lowestFetchedEpoch, highestFetchedEpoch } = rewards.data;
   const fetching = rewards.status === FetchStatus.Fetching;
 
-  return (
-    <>
-      <div className="card">
-        <div className="card-header">
-          <div className="row align-items-center">
-            <div className="col">
-              <h3 className="card-header-title">Rewards</h3>
-            </div>
-          </div>
-        </div>
+  return rewardsFound ? (
+    <ContentCard
+      title={<Typography variant="h3">Rewards</Typography>}
+      footer={foundOldest ? (
+        <div className="w-full text-center">Fetched full history</div>
+      ) : (
+        <LoadingButton
+          disableRipple
+          variant="contained"
+          className="w-full"
+          loading={fetching}
+          onClick={() => loadMore()}
+        >
+          Load More
+        </LoadingButton>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Epoch</TableCell>
+              <TableCell>Effective Slot</TableCell>
+              <TableCell align="right">Reward Amount</TableCell>
+              <TableCell align="right">Post Balance</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { rewardsList }
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-        {rewardsFound ? (
-          <div className="table-responsive mb-0">
-            <table className="table table-sm table-nowrap card-table">
-              <thead>
-                <tr>
-                  <th className="w-1 text-muted">Epoch</th>
-                  <th className="text-muted">Effective Slot</th>
-                  <th className="text-muted">Reward Amount</th>
-                  <th className="text-muted">Post Balance</th>
-                </tr>
-              </thead>
-              <tbody className="list">{rewardsList}</tbody>
-            </table>
-          </div>
-        ) : (
-          <div className="card-body">
-            No rewards issued between epochs {lowestFetchedEpoch} and{" "}
-            {highestFetchedEpoch}
-          </div>
-        )}
-
-        <div className="card-footer">
-          {foundOldest ? (
-            <div className="text-muted text-center">
-              Fetched full reward history
-            </div>
-          ) : (
-            <button
-              className="btn btn-primary w-100"
-              onClick={() => loadMore()}
-              disabled={fetching}
-            >
-              {fetching ? (
-                <>
-                  <span className="spinner-grow spinner-grow-sm mr-2"></span>
-                  Loading
-                </>
-              ) : (
-                "Load More"
-              )}
-            </button>
-          )}
-        </div>
-      </div>
-    </>
+    </ContentCard>
+  ) : (
+    <div className="p-4">
+      {`No rewards issued between epochs ${lowestFetchedEpoch} and ${highestFetchedEpoch}`}
+    </div>
   );
 }
