@@ -15,64 +15,62 @@ export function BlockHistoryCard({ block }: { block: BlockResponse }) {
   }
 
   return (
-    <>
-      <ContentCard
-        title={<Typography variant="h4">Block Transactions</Typography>}
-        footer={block.transactions.length > numDisplayed && (
-          <Button
-            variant="contained"
-            className="w-full"
-            onClick={() =>
-              setNumDisplayed((displayed) => displayed + PAGE_SIZE)
-            }
-          >
-            Load More
-          </Button>
-        )}
-      >
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Result</TableCell>
-                <TableCell align="right">Transaction Signature</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {block.transactions.slice(0, numDisplayed).map((tx, i) => {
-                let statusText;
-                let statusClass;
-                let signature: React.ReactNode;
-                if (tx.meta?.err || tx.transaction.signatures.length === 0) {
-                  statusClass = "warning";
-                  statusText = "Failed";
-                } else {
-                  statusClass = "success";
-                  statusText = "Success";
-                }
+    <ContentCard
+      title={<Typography variant="h4">Block Transactions</Typography>}
+      footer={block.transactions.length > numDisplayed && (
+        <Button
+          variant="contained"
+          className="w-full"
+          onClick={() =>
+            setNumDisplayed((displayed) => displayed + PAGE_SIZE)
+          }
+        >
+          Load More
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Result</TableCell>
+              <TableCell align="right">Transaction Signature</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {block.transactions.slice(0, numDisplayed).map((tx, i) => {
+              let statusText;
+              let statusClass;
+              let signature: React.ReactNode;
+              if (tx.meta?.err || tx.transaction.signatures.length === 0) {
+                statusClass = "warning";
+                statusText = "Failed";
+              } else {
+                statusClass = "success";
+                statusText = "Success";
+              }
 
-                if (tx.transaction.signatures.length > 0) {
-                  signature = (
-                    <Signature signature={tx.transaction.signatures[0]} link />
-                  );
-                }
-
-                return (
-                  <TableRow key={i}>
-                    <TableCell>
-                      <span className={`badge badge-soft-${statusClass}`}>
-                        {statusText}
-                      </span>
-                    </TableCell>
-
-                    <TableCell align="right">{signature}</TableCell>
-                  </TableRow>
+              if (tx.transaction.signatures.length > 0) {
+                signature = (
+                  <Signature signature={tx.transaction.signatures[0]} link />
                 );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </ContentCard>
-    </>
+              }
+
+              return (
+                <TableRow key={i}>
+                  <TableCell>
+                    <span className={`badge badge-soft-${statusClass}`}>
+                      {statusText}
+                    </span>
+                  </TableCell>
+
+                  <TableCell align="right">{signature}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
