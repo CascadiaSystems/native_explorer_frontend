@@ -56,7 +56,7 @@ export function HistoryCardFooter({
   loadMore: Function;
 }) {
   return foundOldest ? (
-    <div className="text-muted text-center">Fetched full history</div>
+    <div className="w-full text-center">Fetched full history</div>
   ) : (
     <LoadingButton
       disableRipple
