@@ -7,6 +7,9 @@ import { addressLabel } from "utils/tx";
 import { useCluster } from "providers/cluster";
 import { useTokenRegistry } from "providers/mints/token-registry";
 
+import ContentCard from "../../components/common/ContentCard";
+import { TableContainer, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
+
 export function UnknownAccountCard({ account }: { account: Account }) {
   const { details, lamports } = account;
   const { cluster } = useCluster();
@@ -15,56 +18,48 @@ export function UnknownAccountCard({ account }: { account: Account }) {
 
   const label = addressLabel(account.pubkey.toBase58(), cluster, tokenRegistry);
   return (
-    <div className="card">
-      <div className="card-header align-items-center">
-        <h3 className="card-header-title">Overview</h3>
-      </div>
+    <ContentCard
+      title={(
+        <Typography variant="h3"> Overview </Typography>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell> Address </TableCell>
+              <TableCell align="right"><Address pubkey={account.pubkey} alignRight raw /></TableCell>
+            </TableRow>
+            {label && (
+              <TableRow>
+                <TableCell> Address Label </TableCell>
+                <TableCell align="right"> { label } </TableCell>
+              </TableRow>
+            )}
+            <TableRow>
+              <TableCell> Balance (VLX) </TableCell>
+              <TableCell align="right"><SolBalance lamports={lamports} /></TableCell>
+            </TableRow>
+            {details?.space !== undefined && (
+              <>
+                <TableRow>
+                  <TableCell> Owner </TableCell>
+                  <TableCell align="right"> { details.space } </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell> Data (Bytes) </TableCell>
+                  <TableCell align="right"><Address pubkey={details.owner} alignRight link /></TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell> Executable </TableCell>
+                  <TableCell align="right"> { details.executable ? "Yes" : "No" } </TableCell>
+                </TableRow>
+              </>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      <TableCardBody>
-        <tr>
-          <td>Address</td>
-          <td className="text-lg-right">
-            <Address pubkey={account.pubkey} alignRight raw />
-          </td>
-        </tr>
-        {label && (
-          <tr>
-            <td>Address Label</td>
-            <td className="text-lg-right">{label}</td>
-          </tr>
-        )}
-        <tr>
-          <td>Balance (VLX)</td>
-          <td className="text-lg-right">
-            <SolBalance lamports={lamports} />
-          </td>
-        </tr>
-
-        {details?.space !== undefined && (
-          <tr>
-            <td>Data (Bytes)</td>
-            <td className="text-lg-right">{details.space}</td>
-          </tr>
-        )}
-
-        {details && (
-          <tr>
-            <td>Owner</td>
-            <td className="text-lg-right">
-              <Address pubkey={details.owner} alignRight link />
-            </td>
-          </tr>
-        )}
-
-        {details && (
-          <tr>
-            <td>Executable</td>
-            <td className="text-lg-right">
-              {details.executable ? "Yes" : "No"}
-            </td>
-          </tr>
-        )}
-      </TableCardBody>
-    </div>
+    </ContentCard>
   );
 }

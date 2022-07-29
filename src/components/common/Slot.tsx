@@ -13,7 +13,7 @@ export function Slot({ slot, link }: Props) {
     <Copyable text={slot.toString()}>
       <span className="text-monospace">
         <Link to={clusterPath(`/block/${slot}`)}>
-          <Typography color="secondary">
+          <Typography color="secondary" className="hover:text-primary">
             { slot.toLocaleString("en-US") }
           </Typography>
         </Link>

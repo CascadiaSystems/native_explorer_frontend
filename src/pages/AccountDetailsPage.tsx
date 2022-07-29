@@ -34,6 +34,7 @@ import { TransactionHistoryCard } from "components/account/history/TransactionHi
 import { TokenTransfersCard } from "components/account/history/TokenTransfersCard";
 import { TokenInstructionsCard } from "components/account/history/TokenInstructionsCard";
 import { RewardsCard } from "components/account/RewardsCard";
+import { Typography } from "@mui/material";
 
 const IDENTICON_WIDTH = 64;
 
@@ -184,10 +185,9 @@ export function AccountHeader({
   }
 
   return (
-    <>
-      <h6 className="header-pretitle">Details</h6>
-      <h2 className="header-title">Account</h2>
-    </>
+    <Typography variant="h2" className="py-6">
+      Account
+    </Typography>
   );
 }
 
