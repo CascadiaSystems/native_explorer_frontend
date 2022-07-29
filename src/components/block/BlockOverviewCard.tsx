@@ -14,7 +14,7 @@ import { BlockProgramsCard } from "./BlockProgramsCard";
 import { BlockAccountsCard } from "./BlockAccountsCard";
 import ContentCard from "components/common/ContentCard";
 import { Typography, TableContainer, Table, TableBody, TableRow, TableCell } from "@mui/material";
-
+import { Tabs, Tab as MuiTab } from "@mui/material";
 export function BlockOverviewCard({
   slot,
   tab,
@@ -140,31 +140,59 @@ function MoreSection({
   block: BlockResponse;
   tab?: string;
 }) {
+  const [value, setValue] = React.useState(0);
+
+  interface TabPanelProps {
+    children?: React.ReactNode;
+    tab: string;
+    index: number;
+  }
+
+  const TabPanel = (props: TabPanelProps) => {
+    switch (props.tab) {
+      case "history":
+        return (
+          <div hidden={props.index !== value}>
+            <BlockHistoryCard block={block} />
+          </div>
+        );
+      case "rewards":
+        return (
+          <div hidden={props.index !== value}>
+            <BlockRewardsCard block={block} />
+          </div>
+        );
+      case "accounts":
+        return (
+          <div hidden={props.index !== value}>
+            <BlockAccountsCard block={block} />
+          </div>
+        );
+      case "programs":
+        return (
+          <div hidden={props.index !== value}>
+            <BlockProgramsCard block={block} />
+          </div>
+        );
+      default:
+        return null;
+    };
+  };
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   return (
     <>
-      <div className="container">
-        <div className="header">
-          <div className="header-body pt-0">
-            <ul className="nav nav-tabs nav-overflow header-tabs">
-              {TABS.map(({ title, slug, path }) => (
-                <li key={slug} className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    to={clusterPath(`/block/${slot}${path}`)}
-                    exact
-                  >
-                    {title}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-      {tab === undefined && <BlockHistoryCard block={block} />}
-      {tab === "rewards" && <BlockRewardsCard block={block} />}
-      {tab === "accounts" && <BlockAccountsCard block={block} />}
-      {tab === "programs" && <BlockProgramsCard block={block} />}
+      <Tabs value={value} className="my-6" onChange={handleTabChange}>
+        {TABS.map(({ title, slug, path }) => (
+          <MuiTab key={slug} disableRipple label={title} />
+        ))}
+      </Tabs>
+      {TABS.map(({ slug }, index) => 
+        <TabPanel key={index} tab={slug} index={index}/>
+      )}
     </>
   );
 }

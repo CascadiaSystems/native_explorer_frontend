@@ -18,7 +18,7 @@ import { useAccountInfo, useFetchAccountInfo } from "providers/accounts";
 import { FetchStatus } from "providers/cache";
 import { useVoteAccounts } from "providers/accounts/vote-accounts";
 
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 // @ts-ignore
 import * as CoinGecko from "coingecko-api";
 
@@ -323,24 +323,23 @@ export function StatsNotReady({ error }: { error: boolean }) {
 
   if (error || !active) {
     return (
-      <div className="card-body text-center">
-        There was a problem loading cluster stats.{" "}
-        <button
-          className="btn btn-white btn-sm"
+      <div className="flex flex-row items-center justify-center gap-2 p-4">
+        There was a problem loading cluster stats.
+        <Button
+          variant="outlined"
+          size="small"
           onClick={() => {
             retry();
           }}
         >
-          <span className="fe fe-refresh-cw mr-2"></span>
           Try Again
-        </button>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="card-body text-center">
-      <span className="spinner-grow spinner-grow-sm mr-2"></span>
+    <div className="p-4 text-center">
       Loading
     </div>
   );
