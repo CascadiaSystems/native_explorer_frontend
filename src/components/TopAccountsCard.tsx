@@ -1,6 +1,5 @@
 import React from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { Location } from "history";
+import { useHistory, useLocation } from "react-router-dom";
 import { AccountBalancePair } from "@velas/web3";
 import { useRichList, useFetchRichList, Status } from "providers/richList";
 import { LoadingCard } from "./common/LoadingCard";
@@ -32,11 +31,11 @@ export function TopAccountsCard() {
   }
 
   if (richList === Status.Connecting) {
-    return <LoadingCard />;
+    return <LoadingCard className="mt-6" />;
   }
 
   if (typeof richList === "string") {
-    return <ErrorCard text={richList} retry={fetchRichList} />;
+    return <ErrorCard text={richList} retry={fetchRichList} className="mt-6" />;
   }
 
   let supplyCount: number;

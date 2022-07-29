@@ -2,6 +2,8 @@ import React from "react";
 import { BlockResponse } from "@velas/web3";
 import { ErrorCard } from "components/common/ErrorCard";
 import { Signature } from "components/common/Signature";
+import ContentCard from "components/common/ContentCard";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button } from "@mui/material";
 
 const PAGE_SIZE = 25;
 
@@ -13,20 +15,29 @@ export function BlockHistoryCard({ block }: { block: BlockResponse }) {
   }
 
   return (
-    <div className="card">
-      <div className="card-header align-items-center">
-        <h3 className="card-header-title">Block Transactions</h3>
-      </div>
-
-      <div className="table-responsive mb-0">
-        <table className="table table-sm table-nowrap card-table">
-          <thead>
-            <tr>
-              <th className="text-muted">Result</th>
-              <th className="text-muted">Transaction Signature</th>
-            </tr>
-          </thead>
-          <tbody className="list">
+    <ContentCard
+      title={<Typography variant="h4">Block Transactions</Typography>}
+      footer={block.transactions.length > numDisplayed && (
+        <Button
+          variant="contained"
+          className="w-full"
+          onClick={() =>
+            setNumDisplayed((displayed) => displayed + PAGE_SIZE)
+          }
+        >
+          Load More
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Result</TableCell>
+              <TableCell align="right">Transaction Signature</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {block.transactions.slice(0, numDisplayed).map((tx, i) => {
               let statusText;
               let statusClass;
@@ -46,33 +57,20 @@ export function BlockHistoryCard({ block }: { block: BlockResponse }) {
               }
 
               return (
-                <tr key={i}>
-                  <td>
+                <TableRow key={i}>
+                  <TableCell>
                     <span className={`badge badge-soft-${statusClass}`}>
                       {statusText}
                     </span>
-                  </td>
+                  </TableCell>
 
-                  <td>{signature}</td>
-                </tr>
+                  <TableCell align="right">{signature}</TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
-      </div>
-
-      {block.transactions.length > numDisplayed && (
-        <div className="card-footer">
-          <button
-            className="btn btn-primary w-100"
-            onClick={() =>
-              setNumDisplayed((displayed) => displayed + PAGE_SIZE)
-            }
-          >
-            Load More
-          </button>
-        </div>
-      )}
-    </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }

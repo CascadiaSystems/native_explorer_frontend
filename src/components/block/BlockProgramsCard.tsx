@@ -2,6 +2,8 @@ import React from "react";
 import { BlockResponse, PublicKey } from "@velas/web3";
 import { Address } from "components/common/Address";
 import { TableCardBody } from "components/common/TableCardBody";
+import ContentCard from "components/common/ContentCard";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
 export function BlockProgramsCard({ block }: { block: BlockResponse }) {
   const totalTransactions = block.transactions.length;
@@ -55,63 +57,66 @@ export function BlockProgramsCard({ block }: { block: BlockResponse }) {
 
   return (
     <>
-      <div className="card">
-        <div className="card-header align-items-center">
-          <h3 className="card-header-title">Block Program Stats</h3>
-        </div>
-        <TableCardBody>
-          <tr>
-            <td className="w-100">Unique Programs Count</td>
-            <td className="text-lg-right text-monospace">
-              {programEntries.length}
-            </td>
-          </tr>
-          <tr>
-            <td className="w-100">Total Instructions</td>
-            <td className="text-lg-right text-monospace">
-              {totalInstructions}
-            </td>
-          </tr>
-        </TableCardBody>
-      </div>
-      <div className="card">
-        <div className="card-header align-items-center">
-          <h3 className="card-header-title">Block Programs</h3>
-        </div>
+      <ContentCard
+        title={<Typography variant="h4">Block Program Stats</Typography>}
+      >
+        <TableContainer>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>Unique Programs Count</TableCell>
+                <TableCell align="right">
+                  {programEntries.length}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Total Instructions</TableCell>
+                <TableCell align="right">
+                  {totalInstructions}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </ContentCard>
 
-        <div className="table-responsive mb-0">
-          <table className="table table-sm table-nowrap card-table">
-            <thead>
-              <tr>
-                <th className="text-muted">Program</th>
-                <th className="text-muted">Transaction Count</th>
-                <th className="text-muted">% of Total</th>
-                <th className="text-muted">Instruction Count</th>
-                <th className="text-muted">% of Total</th>
-                <th className="text-muted">Success Rate</th>
-              </tr>
-            </thead>
-            <tbody>
+      <ContentCard
+        className="mt-6"
+        title={<Typography variant="h4">Block Programs</Typography>}
+      >
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Program</TableCell>
+                <TableCell>Transaction Count</TableCell>
+                <TableCell>% of Total</TableCell>
+                <TableCell align="right">Instruction Count</TableCell>
+                <TableCell align="right">% of Total</TableCell>
+                <TableCell align="right">Success Rate</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {programEntries.map(([programId, txFreq]) => {
                 const ixFreq = ixFrequency.get(programId) as number;
                 const successes = txSuccesses.get(programId) || 0;
                 return (
-                  <tr key={programId}>
-                    <td>
+                  <TableRow key={programId}>
+                    <TableCell>
                       <Address pubkey={new PublicKey(programId)} link />
-                    </td>
-                    <td>{txFreq}</td>
-                    <td>{((100 * txFreq) / totalTransactions).toFixed(2)}%</td>
-                    <td>{ixFreq}</td>
-                    <td>{((100 * ixFreq) / totalInstructions).toFixed(2)}%</td>
-                    <td>{((100 * successes) / txFreq).toFixed(0)}%</td>
-                  </tr>
+                    </TableCell>
+                    <TableCell>{txFreq}</TableCell>
+                    <TableCell>{((100 * txFreq) / totalTransactions).toFixed(2)}%</TableCell>
+                    <TableCell align="right">{ixFreq}</TableCell>
+                    <TableCell align="right">{((100 * ixFreq) / totalInstructions).toFixed(2)}%</TableCell>
+                    <TableCell align="right">{((100 * successes) / txFreq).toFixed(0)}%</TableCell>
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </ContentCard>
     </>
   );
 }

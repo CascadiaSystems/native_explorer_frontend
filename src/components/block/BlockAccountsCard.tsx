@@ -1,6 +1,8 @@
 import React from "react";
 import { BlockResponse, PublicKey } from "@velas/web3";
 import { Address } from "components/common/Address";
+import ContentCard from "components/common/ContentCard";
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
 type AccountStats = {
   reads: number;
@@ -53,59 +55,55 @@ export function BlockAccountsCard({ block }: { block: BlockResponse }) {
   }, [block]);
 
   return (
-    <div className="card">
-      <div className="card-header align-items-center">
-        <h3 className="card-header-title">Block Account Usage</h3>
-      </div>
-
-      <div className="table-responsive mb-0">
-        <table className="table table-sm table-nowrap card-table">
-          <thead>
-            <tr>
-              <th className="text-muted">Account</th>
-              <th className="text-muted">Read-Write Count</th>
-              <th className="text-muted">Read-Only Count</th>
-              <th className="text-muted">Total Count</th>
-              <th className="text-muted">% of Transactions</th>
-            </tr>
-          </thead>
-          <tbody>
+    <ContentCard
+      title={<Typography variant="h4">Block Account Usage</Typography>}
+      footer={accountStats.length > numDisplayed && (
+        <Button
+          variant="contained"
+          className="w-full"
+          onClick={() =>
+            setNumDisplayed((displayed) => displayed + PAGE_SIZE)
+          }
+        >
+          Load More
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Account</TableCell>
+              <TableCell>Read-Write Count</TableCell>
+              <TableCell>Read-Only Count</TableCell>
+              <TableCell align="right">Total Count</TableCell>
+              <TableCell align="right">% of Transactions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {accountStats
               .slice(0, numDisplayed)
               .map(([address, { writes, reads }]) => {
                 return (
-                  <tr key={address}>
-                    <td>
+                  <TableRow key={address}>
+                    <TableCell>
                       <Address pubkey={new PublicKey(address)} link />
-                    </td>
-                    <td>{writes}</td>
-                    <td>{reads}</td>
-                    <td>{writes + reads}</td>
-                    <td>
+                    </TableCell>
+                    <TableCell>{writes}</TableCell>
+                    <TableCell>{reads}</TableCell>
+                    <TableCell align="right">{writes + reads}</TableCell>
+                    <TableCell align="right">
                       {((100 * (writes + reads)) / totalTransactions).toFixed(
                         2
                       )}
                       %
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-          </tbody>
-        </table>
-      </div>
-
-      {accountStats.length > numDisplayed && (
-        <div className="card-footer">
-          <button
-            className="btn btn-primary w-100"
-            onClick={() =>
-              setNumDisplayed((displayed) => displayed + PAGE_SIZE)
-            }
-          >
-            Load More
-          </button>
-        </div>
-      )}
-    </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
