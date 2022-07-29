@@ -33,14 +33,14 @@ export function BlockOverviewCard({
   }, [slot, status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!confirmedBlock || confirmedBlock.status === FetchStatus.Fetching) {
-    return <LoadingCard message="Loading block" className="mt-6"/>;
+    return <LoadingCard message="Loading block" />;
   } else if (
     confirmedBlock.data === undefined ||
     confirmedBlock.status === FetchStatus.FetchFailed
   ) {
-    return <ErrorCard retry={refresh} text="Failed to fetch block" className="mt-6" />;
+    return <ErrorCard retry={refresh} text="Failed to fetch block" />;
   } else if (confirmedBlock.data.block === undefined) {
-    return <ErrorCard retry={refresh} text={`Block ${slot} was not found`} className="mt-6" />;
+    return <ErrorCard retry={refresh} text={`Block ${slot} was not found`}  />;
   }
 
   const block = confirmedBlock.data.block;
