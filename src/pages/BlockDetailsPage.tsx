@@ -2,6 +2,7 @@ import React from "react";
 
 import { ErrorCard } from "components/common/ErrorCard";
 import { BlockOverviewCard } from "components/block/BlockOverviewCard";
+import { Typography } from "@mui/material";
 
 // IE11 doesn't support Number.MAX_SAFE_INTEGER
 const MAX_SAFE_INTEGER = 9007199254740991;
@@ -21,14 +22,9 @@ export function BlockDetailsPage({ slot, tab }: Props) {
   }
 
   return (
-    <div className="container mt-n3">
-      <div className="header">
-        <div className="header-body">
-          <h6 className="header-pretitle">Details</h6>
-          <h2 className="header-title">Block</h2>
-        </div>
-      </div>
+    <>
+      <Typography variant="h2" className="py-6">Block</Typography>
       {output}
-    </div>
+    </>
   );
 }

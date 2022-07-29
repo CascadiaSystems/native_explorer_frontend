@@ -7,36 +7,36 @@ export function ErrorCard({
   retryText,
   text,
   subtext,
+  className
 }: {
   retry?: () => void;
   retryText?: string;
   text: string;
   subtext?: string;
+  className?: string;
 }) {
   const buttonText = retryText || "Try Again";
   return (
-    <>
-      <ContentCard>
-        <div className="text-center">
-          <div className="flex flex-row gap-4 items-center justify-center p-4">
-            {text}
-            {retry && (
-              <Button variant="outlined" size="small"
-                disableRipple onClick={retry}>
-                {buttonText}
-              </Button>                
-            )}
-          </div>
-          {retry && subtext && (
-            <>
-              <hr  className="border-grey-light"/>
-              <div className="p-4">
-                {subtext}
-              </div>
-            </>
+    <ContentCard className={className}>
+      <div className="text-center">
+        <div className="flex flex-row gap-4 items-center justify-center p-4">
+          {text}
+          {retry && (
+            <Button variant="outlined" size="small"
+              disableRipple onClick={retry}>
+              {buttonText}
+            </Button>                
           )}
         </div>
-      </ContentCard>
-    </>
+        {retry && subtext && (
+          <>
+            <hr  className="border-grey-light"/>
+            <div className="p-4">
+              {subtext}
+            </div>
+          </>
+        )}
+      </div>
+    </ContentCard>
   );
 }

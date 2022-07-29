@@ -12,6 +12,8 @@ import { NavLink } from "react-router-dom";
 import { clusterPath } from "utils/url";
 import { BlockProgramsCard } from "./BlockProgramsCard";
 import { BlockAccountsCard } from "./BlockAccountsCard";
+import ContentCard from "components/common/ContentCard";
+import { Typography, TableContainer, Table, TableBody, TableRow, TableCell } from "@mui/material";
 
 export function BlockOverviewCard({
   slot,
@@ -31,14 +33,14 @@ export function BlockOverviewCard({
   }, [slot, status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!confirmedBlock || confirmedBlock.status === FetchStatus.Fetching) {
-    return <LoadingCard message="Loading block" />;
+    return <LoadingCard message="Loading block" className="mt-6"/>;
   } else if (
     confirmedBlock.data === undefined ||
     confirmedBlock.status === FetchStatus.FetchFailed
   ) {
-    return <ErrorCard retry={refresh} text="Failed to fetch block" />;
+    return <ErrorCard retry={refresh} text="Failed to fetch block" className="mt-6" />;
   } else if (confirmedBlock.data.block === undefined) {
-    return <ErrorCard retry={refresh} text={`Block ${slot} was not found`} />;
+    return <ErrorCard retry={refresh} text={`Block ${slot} was not found`} className="mt-6" />;
   }
 
   const block = confirmedBlock.data.block;
@@ -46,52 +48,53 @@ export function BlockOverviewCard({
 
   return (
     <>
-      <div className="card">
-        <div className="card-header">
-          <h3 className="card-header-title mb-0 d-flex align-items-center">
-            Overview
-          </h3>
-        </div>
-        <TableCardBody>
-          <tr>
-            <td className="w-100">Slot</td>
-            <td className="text-lg-right text-monospace">
-              <Slot slot={slot} />
-            </td>
-          </tr>
-          <tr>
-            <td className="w-100">Blockhash</td>
-            <td className="text-lg-right text-monospace">
-              <span>{block.blockhash}</span>
-            </td>
-          </tr>
-          <tr>
-            <td className="w-100">Parent Slot</td>
-            <td className="text-lg-right text-monospace">
-              <Slot slot={block.parentSlot} link />
-            </td>
-          </tr>
-          <tr>
-            <td className="w-100">Parent Blockhash</td>
-            <td className="text-lg-right text-monospace">
-              <span>{block.previousBlockhash}</span>
-            </td>
-          </tr>
-          <tr>
-            <td className="w-100">Processed Transactions</td>
-            <td className="text-lg-right text-monospace">
-              <span>{block.transactions.length}</span>
-            </td>
-          </tr>
-          <tr>
-            <td className="w-100">Successful Transactions</td>
-            <td className="text-lg-right text-monospace">
-              <span>{committedTxs.length}</span>
-            </td>
-          </tr>
-        </TableCardBody>
-      </div>
+      <ContentCard
+        title={<Typography variant="h3">Overview</Typography>}
+      >
+        <TableContainer>
+          <Table>
+            <TableBody>
 
+              <TableRow>
+                <TableCell>Slot</TableCell>
+                <TableCell align="right">
+                  <Slot slot={slot} />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Blockhash</TableCell>
+                <TableCell align="right">
+                  <span>{block.blockhash}</span>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Parent Slot</TableCell>
+                <TableCell align="right">
+                  <Slot slot={block.parentSlot} link />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Parent Blockhash</TableCell>
+                <TableCell align="right">
+                  <span>{block.previousBlockhash}</span>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Processed Transactions</TableCell>
+                <TableCell align="right">
+                  <span>{block.transactions.length}</span>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Successful Transactions</TableCell>
+                <TableCell align="right">
+                  <span>{committedTxs.length}</span>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </ContentCard>
       <MoreSection block={block} slot={slot} tab={tab} />
     </>
   );
