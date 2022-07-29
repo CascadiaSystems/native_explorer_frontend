@@ -68,7 +68,15 @@ const componentStyleOverrides = (theme) => {
         }
       }
     },
-
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: 'capitalize',
+          fontSize: '1rem',
+          fontWeight: 'normal'
+        }
+      }
+    },
     // MuiCard
     MuiCardHeader: {
       styleOverrides: {

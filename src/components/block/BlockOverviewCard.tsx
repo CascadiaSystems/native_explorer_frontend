@@ -185,7 +185,7 @@ function MoreSection({
 
   return (
     <>
-      <Tabs value={value} className="my-6" onChange={handleTabChange}>
+      <Tabs value={value} className="my-6 border-b border-grey-light" onChange={handleTabChange}>
         {TABS.map(({ title, slug, path }) => (
           <MuiTab key={slug} disableRipple label={title} />
         ))}
