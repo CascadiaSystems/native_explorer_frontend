@@ -12,8 +12,6 @@ import { TokenAccountSection } from "components/account/TokenAccountSection";
 import { ErrorCard } from "components/common/ErrorCard";
 import { LoadingCard } from "components/common/LoadingCard";
 import { useCluster, ClusterStatus } from "providers/cluster";
-import { NavLink, Redirect, useLocation } from "react-router-dom";
-import { clusterPath } from "utils/url";
 import { UnknownAccountCard } from "components/account/UnknownAccountCard";
 import { OwnedTokensCard } from "components/account/OwnedTokensCard";
 import { TokenHistoryCard } from "components/account/TokenHistoryCard";
@@ -34,7 +32,7 @@ import { TransactionHistoryCard } from "components/account/history/TransactionHi
 import { TokenTransfersCard } from "components/account/history/TokenTransfersCard";
 import { TokenInstructionsCard } from "components/account/history/TokenInstructionsCard";
 import { RewardsCard } from "components/account/RewardsCard";
-import { Typography } from "@mui/material";
+import { Tabs, Tab as MuiTab, Typography } from "@mui/material";
 
 const IDENTICON_WIDTH = 64;
 
@@ -42,58 +40,49 @@ const TABS_LOOKUP: { [id: string]: Tab[] } = {
   "spl-token:mint": [
     {
       slug: "transfers",
-      title: "Transfers",
-      path: "/transfers",
+      title: "Transfers"
     },
     {
       slug: "instructions",
       title: "Instructions",
-      path: "/instructions",
     },
     {
       slug: "largest",
       title: "Distribution",
-      path: "/largest",
     },
   ],
   stake: [
     {
       slug: "rewards",
       title: "Rewards",
-      path: "/rewards",
     },
   ],
   vote: [
     {
       slug: "vote-history",
       title: "Vote History",
-      path: "/vote-history",
     },
     {
       slug: "rewards",
       title: "Rewards",
-      path: "/rewards",
     },
   ],
   "sysvar:recentBlockhashes": [
     {
       slug: "blockhashes",
       title: "Blockhashes",
-      path: "/blockhashes",
     },
   ],
   "sysvar:slotHashes": [
     {
       slug: "slot-hashes",
       title: "Slot Hashes",
-      path: "/slot-hashes",
     },
   ],
   "sysvar:stakeHistory": [
     {
       slug: "stake-history",
       title: "Stake History",
-      path: "/stake-history",
     },
   ],
 };
@@ -134,7 +123,7 @@ export function AccountDetailsPage({ address, tab }: Props) {
       {!pubkey ? (
         <ErrorCard text={`Address "${address}" is not valid`} />
       ) : (
-        <DetailsSections pubkey={pubkey} tab={tab} info={info} />
+        <DetailsSections pubkey={pubkey} info={info} />
       )}
     </div>
   );
@@ -193,16 +182,13 @@ export function AccountHeader({
 
 function DetailsSections({
   pubkey,
-  tab,
   info,
 }: {
   pubkey: PublicKey;
-  tab?: string;
   info?: CacheEntry<Account>;
 }) {
   const fetchAccount = useFetchAccountInfo();
   const address = pubkey.toBase58();
-  const location = useLocation();
   const { flaggedAccounts } = useFlaggedAccounts();
 
   if (!info || info.status === FetchStatus.Fetching) {
@@ -218,13 +204,6 @@ function DetailsSections({
   const data = account?.details?.data;
   const tabs = getTabs(data);
 
-  let moreTab: MoreTabs = "history";
-  if (tab && tabs.filter(({ slug }) => slug === tab).length === 0) {
-    return <Redirect to={{ ...location, pathname: `/address/${address}` }} />;
-  } else if (tab) {
-    moreTab = tab as MoreTabs;
-  }
-
   return (
     <>
       {flaggedAccounts.has(address) && (
@@ -234,7 +213,7 @@ function DetailsSections({
         </div>
       )}
       {<InfoSection account={account} />}
-      {<MoreSection account={account} tab={moreTab} tabs={tabs} />}
+      {<MoreSection account={account} tabs={tabs} />}
     </>
   );
 }
@@ -281,7 +260,7 @@ function InfoSection({ account }: { account: Account }) {
 type Tab = {
   slug: MoreTabs;
   title: string;
-  path: string;
+  // path: string;
 };
 
 export type MoreTabs =
@@ -298,66 +277,109 @@ export type MoreTabs =
 
 function MoreSection({
   account,
-  tab,
   tabs,
 }: {
   account: Account;
-  tab: MoreTabs;
   tabs: Tab[];
 }) {
+  const [value, setValue] = React.useState(0);
+
   const pubkey = account.pubkey;
-  const address = account.pubkey.toBase58();
+  // const address = account.pubkey.toBase58();
   const data = account?.details?.data;
+
+
+  interface TabPanelProps {
+    children?: React.ReactNode;
+    tab: string;
+    index: number;
+  }
+
+  const TabPanel = (props: TabPanelProps) => {
+    switch (props.tab) {
+      case "tokens":
+        return (
+          <div hidden={props.index !== value}>
+            <OwnedTokensCard pubkey={pubkey} />
+            <TokenHistoryCard pubkey={pubkey} />
+          </div>
+        );
+      case "history":
+        return (
+          <div hidden={props.index !== value}>
+            <TransactionHistoryCard pubkey={pubkey} />
+          </div>
+        );
+      case "transfers":
+        return (
+          <div hidden={props.index !== value}>
+            <TokenTransfersCard pubkey={pubkey} />
+          </div>
+        );        
+      case "instructions":
+        return (
+          <div hidden={props.index !== value}>
+            <TokenInstructionsCard pubkey={pubkey} />
+          </div>
+        );
+      case "largest":
+        return (
+          <div hidden={props.index !== value}>
+            <TokenLargestAccountsCard pubkey={pubkey} />
+          </div>
+        );
+      case "rewards":
+        return (
+          <div hidden={props.index !== value}>
+            <RewardsCard pubkey={pubkey} />
+          </div>
+        );
+      case "vote-history":
+        return data?.program === "vote" ? (
+          <div hidden={props.index !== value}>
+            <VotesCard voteAccount={data.parsed} />
+          </div>
+        ) : null;
+      case "slot-hashes":
+        return data?.program === "sysvar" &&
+          data.parsed.type === "slotHashes" ? (
+            <div hidden={props.index !== value}>
+              <SlotHashesCard sysvarAccount={data.parsed} />
+            </div>
+          ) : null;
+      case "stake-history":
+        return data?.program === "sysvar" &&
+          data.parsed.type === "stakeHistory" ? (
+            <div hidden={props.index !== value}>
+              <StakeHistoryCard sysvarAccount={data.parsed} />
+            </div>
+          ) : null;
+      case "blockhashed":
+        return data?.program === "sysvar" &&
+          data.parsed.type === "recentBlockhashes" ? (
+            <div hidden={props.index !== value}>
+              <BlockhashesCard blockhashes={data.parsed.info} />
+            </div>
+          ) : null;
+      default:
+        return null;
+    }
+  }
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   return (
     <>
-      <div className="container">
-        <div className="header">
-          <div className="header-body pt-0">
-            <ul className="nav nav-tabs nav-overflow header-tabs">
-              {tabs.map(({ title, slug, path }) => (
-                <li key={slug} className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    to={clusterPath(`/address/${address}${path}`)}
-                    exact
-                  >
-                    {title}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-      {tab === "tokens" && (
-        <>
-          <OwnedTokensCard pubkey={pubkey} />
-          <TokenHistoryCard pubkey={pubkey} />
-        </>
-      )}
-      {tab === "history" && <TransactionHistoryCard pubkey={pubkey} />}
-      {tab === "transfers" && <TokenTransfersCard pubkey={pubkey} />}
-      {tab === "instructions" && <TokenInstructionsCard pubkey={pubkey} />}
-      {tab === "largest" && <TokenLargestAccountsCard pubkey={pubkey} />}
-      {tab === "rewards" && <RewardsCard pubkey={pubkey} />}
-      {tab === "vote-history" && data?.program === "vote" && (
-        <VotesCard voteAccount={data.parsed} />
-      )}
-      {tab === "slot-hashes" &&
-        data?.program === "sysvar" &&
-        data.parsed.type === "slotHashes" && (
-          <SlotHashesCard sysvarAccount={data.parsed} />
+      <Tabs value={value} className="my-6" onChange={handleTabChange}>
+        {tabs.map(({ title, slug }) => 
+          <MuiTab key={slug} disableRipple label={title} />
         )}
-      {tab === "stake-history" &&
-        data?.program === "sysvar" &&
-        data.parsed.type === "stakeHistory" && (
-          <StakeHistoryCard sysvarAccount={data.parsed} />
-        )}
-      {tab === "blockhashes" &&
-        data?.program === "sysvar" &&
-        data.parsed.type === "recentBlockhashes" && (
-          <BlockhashesCard blockhashes={data.parsed.info} />
-        )}
+      </Tabs>
+      {tabs.map(({ slug }, index) => 
+        <TabPanel key={index} tab={slug} index={index}/>
+      )}      
     </>
   );
 }
@@ -367,7 +389,7 @@ function getTabs(data?: ProgramData): Tab[] {
     {
       slug: "history",
       title: "History",
-      path: "",
+      // path: "",
     },
   ];
 
@@ -394,7 +416,7 @@ function getTabs(data?: ProgramData): Tab[] {
     tabs.push({
       slug: "tokens",
       title: "Tokens",
-      path: "/tokens",
+      // path: "/tokens",
     });
   }
 

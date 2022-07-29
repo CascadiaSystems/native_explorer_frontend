@@ -70,7 +70,7 @@ export function RewardsCard({ pubkey }: { pubkey: PublicKey }) {
 
   return rewardsFound ? (
     <ContentCard
-      title={<Typography variant="h3">Rewards</Typography>}
+      title={<Typography variant="h4">Rewards</Typography>}
       footer={foundOldest ? (
         <div className="w-full text-center">Fetched full history</div>
       ) : (
