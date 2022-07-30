@@ -9,6 +9,7 @@ import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { InitializeInfo } from "./types";
 import { displayTimestampUtc } from "utils/date";
+import { TableCell, TableRow } from "@mui/material";
 
 export function InitializeDetailsCard(props: {
   ix: ParsedInstruction;
@@ -17,8 +18,9 @@ export function InitializeDetailsCard(props: {
   info: InitializeInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -28,58 +30,59 @@ export function InitializeDetailsCard(props: {
       title="Stake Initialize"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={StakeProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Stake Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Stake Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.stakeAccount} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Stake Authority Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Stake Authority Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.authorized.staker} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Withdraw Authority Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Withdraw Authority Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.authorized.withdrawer} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
       {info.lockup.epoch > 0 && (
-        <tr>
-          <td>Lockup Expiry Epoch</td>
-          <td className="text-lg-right">{info.lockup.epoch}</td>
-        </tr>
+        <TableRow>
+          <TableCell>Lockup Expiry Epoch</TableCell>
+          <TableCell align="right">{info.lockup.epoch}</TableCell>
+        </TableRow>
       )}
 
       {info.lockup.unixTimestamp > 0 && (
-        <tr>
-          <td>Lockup Expiry Timestamp</td>
-          <td className="text-lg-right text-monospace">
+        <TableRow>
+          <TableCell>Lockup Expiry Timestamp</TableCell>
+          <TableCell className="text-lg-right text-monospace">
             {displayTimestampUtc(info.lockup.unixTimestamp * 1000)}
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       )}
 
       {!info.lockup.custodian.equals(SystemProgram.programId) && (
-        <tr>
-          <td>Lockup Custodian Address</td>
-          <td className="text-lg-right">
+        <TableRow>
+          <TableCell>Lockup Custodian Address</TableCell>
+          <TableCell align="right">
             <Address pubkey={info.lockup.custodian} alignRight link />
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       )}
     </InstructionCard>
   );

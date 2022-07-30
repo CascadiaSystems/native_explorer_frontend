@@ -7,6 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { AuthorizeInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function AuthorizeDetailsCard(props: {
   ix: ParsedInstruction;
@@ -15,8 +16,9 @@ export function AuthorizeDetailsCard(props: {
   info: AuthorizeInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -26,39 +28,40 @@ export function AuthorizeDetailsCard(props: {
       title="Stake Authorize"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={StakeProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Stake Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Stake Address</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={info.stakeAccount} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Old Authority Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Old Authority Address</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={info.authority} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>New Authority Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>New Authority Address</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={info.newAuthority} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Authority Type</td>
-        <td className="text-lg-right">{info.authorityType}</td>
-      </tr>
+      <TableRow>
+        <TableCell>Authority Type</TableCell>
+        <TableCell className="text-lg-right">{info.authorityType}</TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

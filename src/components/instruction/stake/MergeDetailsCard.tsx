@@ -7,6 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { MergeInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function MergeDetailsCard(props: {
   ix: ParsedInstruction;
@@ -15,8 +16,9 @@ export function MergeDetailsCard(props: {
   info: MergeInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -26,48 +28,49 @@ export function MergeDetailsCard(props: {
       title="Stake Merge"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={StakeProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Stake Source</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Stake Source</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.source} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Stake Destination</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Stake Destination</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.destination} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Authority Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Authority Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.stakeAuthority} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Clock Sysvar</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Clock Sysvar</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.clockSysvar} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Stake History Sysvar</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Stake History Sysvar</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.stakeHistorySysvar} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

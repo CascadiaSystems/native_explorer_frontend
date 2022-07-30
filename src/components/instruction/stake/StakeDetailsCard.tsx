@@ -42,34 +42,34 @@ export function StakeDetailsCard(props: DetailsProps) {
     switch (parsed.type) {
       case "initialize": {
         const info = create(parsed.info, InitializeInfo);
-        return <InitializeDetailsCard info={info} {...props} />;
+        return <InitializeDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "delegate": {
         const info = create(parsed.info, DelegateInfo);
-        return <DelegateDetailsCard info={info} {...props} />;
+        return <DelegateDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "authorize": {
         const info = create(parsed.info, AuthorizeInfo);
-        return <AuthorizeDetailsCard info={info} {...props} />;
+        return <AuthorizeDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "split": {
         const info = create(parsed.info, SplitInfo);
-        return <SplitDetailsCard info={info} {...props} />;
+        return <SplitDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "withdraw": {
         const info = create(parsed.info, WithdrawInfo);
-        return <WithdrawDetailsCard info={info} {...props} />;
+        return <WithdrawDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "deactivate": {
         const info = create(parsed.info, DeactivateInfo);
-        return <DeactivateDetailsCard info={info} {...props} />;
+        return <DeactivateDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "merge": {
         const info = create(parsed.info, MergeInfo);
-        return <MergeDetailsCard info={info} {...props} />;
+        return <MergeDetailsCard info={info} {...props} className="mt-6" />;
       }
       default:
-        return <UnknownDetailsCard {...props} />;
+        return <UnknownDetailsCard {...props} className="mt-6" />;
     }
   } catch (error) {
     reportError(error, {

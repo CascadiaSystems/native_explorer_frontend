@@ -8,6 +8,7 @@ import { SolBalance } from "utils";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { WithdrawInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function WithdrawDetailsCard(props: {
   ix: ParsedInstruction;
@@ -16,8 +17,9 @@ export function WithdrawDetailsCard(props: {
   info: WithdrawInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -27,41 +29,42 @@ export function WithdrawDetailsCard(props: {
       title="Withdraw Stake"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={StakeProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Stake Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Stake Address</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={info.stakeAccount} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Authority Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Authority Address</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={info.withdrawAuthority} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>To Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>To Address</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={info.destination} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Withdraw Amount (VLX)</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Withdraw Amount (VLX)</TableCell>
+        <TableCell className="text-lg-right">
           <SolBalance lamports={info.lamports} />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }
