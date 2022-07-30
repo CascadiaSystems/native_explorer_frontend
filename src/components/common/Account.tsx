@@ -2,6 +2,7 @@ import React from "react";
 import { Address } from "./Address";
 import { Account } from "providers/accounts";
 import { SolBalance } from "utils";
+import { TableRow, TableCell } from "@mui/material";
 
 type AccountHeaderProps = {
   title: string;
@@ -26,36 +27,36 @@ export function AccountHeader({ title, refresh }: AccountHeaderProps) {
 
 export function AccountAddressRow({ account }: AccountProps) {
   return (
-    <tr>
-      <td>Address</td>
-      <td className="text-lg-right">
+    <TableRow>
+      <TableCell>Address</TableCell>
+      <TableCell align="right">
         <Address pubkey={account.pubkey} alignRight raw />
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
 export function AccountBalanceRow({ account }: AccountProps) {
   const { lamports } = account;
   return (
-    <tr>
-      <td>Balance (VLX)</td>
-      <td className="text-lg-right text-uppercase">
+    <TableRow>
+      <TableCell>Balance (VLX)</TableCell>
+      <TableCell align="right">
         <SolBalance lamports={lamports} />
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
 export function AccountOwnerRow({ account }: AccountProps) {
   if (account.details) {
     return (
-      <tr>
-        <td>Owner</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Owner</TableCell>
+        <TableCell align="right">
           <Address pubkey={account.details.owner} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   }
 
