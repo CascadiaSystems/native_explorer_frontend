@@ -8,6 +8,7 @@ import { InstructionCard } from "../InstructionCard";
 import { Copyable } from "components/common/Copyable";
 import { Address } from "components/common/Address";
 import { AllocateWithSeedInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function AllocateWithSeedDetailsCard(props: {
   ix: ParsedInstruction;
@@ -16,8 +17,9 @@ export function AllocateWithSeedDetailsCard(props: {
   info: AllocateWithSeedInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -27,48 +29,49 @@ export function AllocateWithSeedDetailsCard(props: {
       title="Allocate Account w/ Seed"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={SystemProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Account Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Account Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.account} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Base Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Base Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.base} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Seed</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Seed</TableCell>
+        <TableCell align="right">
           <Copyable text={info.seed}>
             <code>{info.seed}</code>
           </Copyable>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Allocated Space (Bytes)</td>
-        <td className="text-lg-right">{info.space}</td>
-      </tr>
+      <TableRow>
+        <TableCell>Allocated Space (Bytes)</TableCell>
+        <TableCell align="right">{info.space}</TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Assigned Owner</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Assigned Owner</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.owner} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

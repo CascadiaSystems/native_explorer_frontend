@@ -8,6 +8,7 @@ import { SolBalance } from "utils";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { CreateAccountInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function CreateDetailsCard(props: {
   ix: ParsedInstruction;
@@ -16,8 +17,9 @@ export function CreateDetailsCard(props: {
   info: CreateAccountInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -27,46 +29,47 @@ export function CreateDetailsCard(props: {
       title="Create Account"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={SystemProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>From Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>From Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.source} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>New Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>New Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.newAccount} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Transfer Amount (VLX)</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Transfer Amount (VLX)</TableCell>
+        <TableCell align="right">
           <SolBalance lamports={info.lamports} />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Allocated Space (Bytes)</td>
-        <td className="text-lg-right">{info.space}</td>
-      </tr>
+      <TableRow>
+        <TableCell>Allocated Space (Bytes)</TableCell>
+        <TableCell align="right">{info.space}</TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Assigned Owner</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Assigned Owner</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.owner} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

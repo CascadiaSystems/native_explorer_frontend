@@ -8,6 +8,7 @@ import { SolBalance } from "utils";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { TransferInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function TransferDetailsCard(props: {
   ix: ParsedInstruction;
@@ -16,8 +17,9 @@ export function TransferDetailsCard(props: {
   info: TransferInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -27,34 +29,35 @@ export function TransferDetailsCard(props: {
       title="Transfer"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={SystemProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>From Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>From Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.source} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>To Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>To Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.destination} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Transfer Amount (VLX)</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Transfer Amount (VLX)</TableCell>
+        <TableCell align="right">
           <SolBalance lamports={info.lamports} />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

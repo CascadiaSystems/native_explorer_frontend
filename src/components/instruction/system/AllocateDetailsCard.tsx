@@ -7,6 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { AllocateInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function AllocateDetailsCard(props: {
   ix: ParsedInstruction;
@@ -15,8 +16,9 @@ export function AllocateDetailsCard(props: {
   info: AllocateInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -26,25 +28,26 @@ export function AllocateDetailsCard(props: {
       title="Allocate Account"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={SystemProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Account Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Account Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.account} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Allocated Space (Bytes)</td>
-        <td className="text-lg-right">{info.space}</td>
-      </tr>
+      <TableRow>
+        <TableCell>Allocated Space (Bytes)</TableCell>
+        <TableCell align="right">{info.space}</TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

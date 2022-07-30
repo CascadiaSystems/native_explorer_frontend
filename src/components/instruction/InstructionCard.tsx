@@ -24,6 +24,7 @@ type InstructionProps = {
   defaultRaw?: boolean;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 };
 
 export function InstructionCard({
@@ -35,8 +36,9 @@ export function InstructionCard({
   defaultRaw,
   innerCards,
   childIndex,
+  className
 }: InstructionProps) {
-  const [resultClass] = ixResult(result, index);
+  // const [resultClass] = ixResult(result, index);
   const [showRaw, setShowRaw] = React.useState(defaultRaw || false);
   const signature = useContext(SignatureContext);
   const rawDetails = useRawTransactionDetails(signature);
@@ -67,6 +69,7 @@ export function InstructionCard({
       //     {title}
       //   </h3> */}
     <ContentCard
+      className={className}
       title={(
         <div className="flex items-center gap-2">
           <Chip label={`#${index + 1}${childIndex !== undefined ? `.${childIndex + 1}` : ""}`} variant="filled"/>
@@ -78,7 +81,7 @@ export function InstructionCard({
           disabled={defaultRaw}
           onClick={rawClickHandler}
         >
-          {`<>Raw`}
+          {`<> Raw`}
         </Button>
       )}
     >
@@ -119,17 +122,17 @@ export function InstructionCard({
   );
 }
 
-function ixResult(result: SignatureResult, index: number) {
-  if (result.err) {
-    const err = result.err as any;
-    const ixError = err["InstructionError"];
-    if (ixError && Array.isArray(ixError)) {
-      const [errorIndex, error] = ixError;
-      if (Number.isInteger(errorIndex) && errorIndex === index) {
-        return ["warning", `Error: ${JSON.stringify(error)}`];
-      }
-    }
-    return ["dark"];
-  }
-  return ["success"];
-}
+// function ixResult(result: SignatureResult, index: number) {
+//   if (result.err) {
+//     const err = result.err as any;
+//     const ixError = err["InstructionError"];
+//     if (ixError && Array.isArray(ixError)) {
+//       const [errorIndex, error] = ixError;
+//       if (Number.isInteger(errorIndex) && errorIndex === index) {
+//         return ["warning", `Error: ${JSON.stringify(error)}`];
+//       }
+//     }
+//     return ["dark"];
+//   }
+//   return ["success"];
+// }

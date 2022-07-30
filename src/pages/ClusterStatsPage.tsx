@@ -9,7 +9,8 @@ import {
 import { lamportsToSol, slotsToHumanString } from "utils";
 import { ClusterStatus, useCluster } from "providers/cluster";
 import { TpsCard } from "components/TpsCard";
-import { displayTimestampWithoutDate, displayTimestampUtc } from "utils/date";
+// import { displayTimestampWithoutDate, displayTimestampUtc } from "utils/date";
+import { displayTimestampUtc } from "utils/date";
 import { Status, useFetchSupply, useSupply } from "providers/supply";
 import { PublicKey } from "@velas/web3";
 import { ErrorCard } from "components/common/ErrorCard";

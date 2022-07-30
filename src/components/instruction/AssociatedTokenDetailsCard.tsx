@@ -2,6 +2,7 @@ import React from "react";
 import { ParsedInstruction, PublicKey, SignatureResult } from "@velas/web3";
 import { InstructionCard } from "./InstructionCard";
 import { Address } from "components/common/Address";
+import { TableCell, TableRow } from "@mui/material";
 
 export function AssociatedTokenDetailsCard({
   ix,
@@ -9,12 +10,14 @@ export function AssociatedTokenDetailsCard({
   result,
   innerCards,
   childIndex,
+  className
 }: {
   ix: ParsedInstruction;
   index: number;
   result: SignatureResult;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string
 }) {
   const info = ix.parsed.info;
   return (
@@ -25,34 +28,35 @@ export function AssociatedTokenDetailsCard({
       title="Associated Token Program: Create"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={ix.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Account</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Account</TableCell>
+        <TableCell align="right">
           <Address pubkey={new PublicKey(info.account)} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Mint</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Mint</TableCell>
+        <TableCell align="right">
           <Address pubkey={new PublicKey(info.mint)} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Wallet</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Wallet</TableCell>
+        <TableCell align="right">
           <Address pubkey={new PublicKey(info.wallet)} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

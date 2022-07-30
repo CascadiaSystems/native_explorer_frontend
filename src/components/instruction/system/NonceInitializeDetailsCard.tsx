@@ -7,6 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { InitializeNonceInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function NonceInitializeDetailsCard(props: {
   ix: ParsedInstruction;
@@ -15,8 +16,9 @@ export function NonceInitializeDetailsCard(props: {
   info: InitializeNonceInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -26,27 +28,28 @@ export function NonceInitializeDetailsCard(props: {
       title="Initialize Nonce"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={SystemProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Nonce Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Nonce Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.nonceAccount} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Authority Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Authority Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.nonceAuthority} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

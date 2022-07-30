@@ -1,5 +1,4 @@
 import React from "react";
-import { TableCardBody } from "components/common/TableCardBody";
 import { useBlock, useFetchBlock, FetchStatus } from "providers/block";
 import { ErrorCard } from "components/common/ErrorCard";
 import { LoadingCard } from "components/common/LoadingCard";
@@ -8,8 +7,6 @@ import { ClusterStatus, useCluster } from "providers/cluster";
 import { BlockHistoryCard } from "./BlockHistoryCard";
 import { BlockRewardsCard } from "./BlockRewardsCard";
 import { BlockResponse } from "@velas/web3";
-import { NavLink } from "react-router-dom";
-import { clusterPath } from "utils/url";
 import { BlockProgramsCard } from "./BlockProgramsCard";
 import { BlockAccountsCard } from "./BlockAccountsCard";
 import ContentCard from "components/common/ContentCard";

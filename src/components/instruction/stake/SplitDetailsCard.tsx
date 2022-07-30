@@ -8,6 +8,7 @@ import { SolBalance } from "utils";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { SplitInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function SplitDetailsCard(props: {
   ix: ParsedInstruction;
@@ -16,8 +17,9 @@ export function SplitDetailsCard(props: {
   info: SplitInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -27,41 +29,42 @@ export function SplitDetailsCard(props: {
       title="Split Stake"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={StakeProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Stake Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Stake Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.stakeAccount} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Authority Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Authority Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.stakeAuthority} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>New Stake Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>New Stake Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.newSplitAccount} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Split Amount (VLX)</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Split Amount (VLX)</TableCell>
+        <TableCell align="right">
           <SolBalance lamports={info.lamports} />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

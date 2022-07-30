@@ -19,6 +19,7 @@ import {
   UpgradeInfo,
   WriteInfo,
 } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 type DetailsProps = {
   tx: ParsedTransaction;
@@ -27,6 +28,7 @@ type DetailsProps = {
   result: SignatureResult;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 };
 
 export function BpfUpgradeableLoaderDetailsCard(props: DetailsProps) {
@@ -85,13 +87,13 @@ function renderDetails<T>(
     }
 
     attributes.push(
-      <tr key={key}>
-        <td>
+      <TableRow key={key}>
+        <TableCell>
           {camelToTitleCase(key)}{" "}
           {key === "bytes" && <span className="text-muted">(Base 64)</span>}
-        </td>
-        <td className="text-lg-right">{value}</td>
-      </tr>
+        </TableCell>
+        <TableCell align="right">{value}</TableCell>
+      </TableRow>
     );
   }
 
@@ -100,12 +102,12 @@ function renderDetails<T>(
       {...props}
       title={`BPF Upgradeable Loader: ${camelToTitleCase(parsed.type)}`}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={props.ix.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
       {attributes}
     </InstructionCard>
   );

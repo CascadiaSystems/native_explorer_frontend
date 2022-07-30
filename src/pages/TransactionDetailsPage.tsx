@@ -16,7 +16,6 @@ import {
 import { SolBalance } from "utils";
 import { ErrorCard } from "components/common/ErrorCard";
 import { LoadingCard } from "components/common/LoadingCard";
-import { TableCardBody } from "components/common/TableCardBody";
 import { displayTimestamp } from "utils/date";
 import { InfoTooltip } from "components/common/InfoTooltip";
 import { Address } from "components/common/Address";
@@ -346,11 +345,11 @@ function AccountsCard({
       <ErrorCard text="Details are not available until the transaction reaches MAX confirmations" />
     );
   } else if (!details || details.status === FetchStatus.Fetching) {
-    return <LoadingCard />;
+    return <LoadingCard className="mt-6" />;
   } else if (details.status === FetchStatus.FetchFailed) {
-    return <ErrorCard retry={refreshDetails} text="Failed to fetch details" />;
+    return <ErrorCard retry={refreshDetails} text="Failed to fetch details" className="mt-6" />;
   } else if (!details.data?.transaction || !message) {
-    return <ErrorCard text="Details are not available" />;
+    return <ErrorCard text="Details are not available" className="mt-6" />;
   }
 
   const { meta } = details.data.transaction;
@@ -410,7 +409,7 @@ function AccountsCard({
                 <TableCell align="right">Details</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody> { accountRows } </TableBody>
+            <TableBody>{accountRows}</TableBody>
           </Table>
         </TableContainer>
       </ContentCard>
