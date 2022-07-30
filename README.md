@@ -1,8 +1,5 @@
-<p align="center">
-    <img alt="Solana" src="https://i.imgur.com/uBVzyX3.png" width="250" />
-</p>
-
-# Velas Explorer
+# Sophon Native
+ Explorer
 
 ## Development
 
