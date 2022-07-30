@@ -1,5 +1,4 @@
-# Sophon Native
- Explorer
+# Sophon Native Explorer
 
 ## Development
 
