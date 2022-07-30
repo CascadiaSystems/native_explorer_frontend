@@ -81,7 +81,7 @@ export function InstructionCard({
           disabled={defaultRaw}
           onClick={rawClickHandler}
         >
-          {`<>Raw`}
+          {`<> Raw`}
         </Button>
       )}
     >
