@@ -7,6 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { AssignInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function AssignDetailsCard(props: {
   ix: ParsedInstruction;
@@ -15,8 +16,9 @@ export function AssignDetailsCard(props: {
   info: AssignInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -26,27 +28,28 @@ export function AssignDetailsCard(props: {
       title="Assign Account"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={SystemProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Account Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Account Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.account} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Assigned Owner</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Assigned Owner</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.owner} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

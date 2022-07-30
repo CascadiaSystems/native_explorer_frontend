@@ -51,7 +51,7 @@ export function SystemDetailsCard(props: DetailsProps) {
     switch (parsed.type) {
       case "createAccount": {
         const info = create(parsed.info, CreateAccountInfo);
-        return <CreateDetailsCard info={info} {...props} />;
+        return <CreateDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "createAccountWithSeed": {
         const info = create(parsed.info, CreateAccountWithSeedInfo);
@@ -59,46 +59,46 @@ export function SystemDetailsCard(props: DetailsProps) {
       }
       case "allocate": {
         const info = create(parsed.info, AllocateInfo);
-        return <AllocateDetailsCard info={info} {...props} />;
+        return <AllocateDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "allocateWithSeed": {
         const info = create(parsed.info, AllocateWithSeedInfo);
-        return <AllocateWithSeedDetailsCard info={info} {...props} />;
+        return <AllocateWithSeedDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "assign": {
         const info = create(parsed.info, AssignInfo);
-        return <AssignDetailsCard info={info} {...props} />;
+        return <AssignDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "assignWithSeed": {
         const info = create(parsed.info, AssignWithSeedInfo);
-        return <AssignWithSeedDetailsCard info={info} {...props} />;
+        return <AssignWithSeedDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "transfer": {
         const info = create(parsed.info, TransferInfo);
-        return <TransferDetailsCard info={info} {...props} />;
+        return <TransferDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "advanceNonce": {
         const info = create(parsed.info, AdvanceNonceInfo);
-        return <NonceAdvanceDetailsCard info={info} {...props} />;
+        return <NonceAdvanceDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "withdrawNonce": {
         const info = create(parsed.info, WithdrawNonceInfo);
-        return <NonceWithdrawDetailsCard info={info} {...props} />;
+        return <NonceWithdrawDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "authorizeNonce": {
         const info = create(parsed.info, AuthorizeNonceInfo);
-        return <NonceAuthorizeDetailsCard info={info} {...props} />;
+        return <NonceAuthorizeDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "initializeNonce": {
         const info = create(parsed.info, InitializeNonceInfo);
-        return <NonceInitializeDetailsCard info={info} {...props} />;
+        return <NonceInitializeDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "transferWithSeed": {
         const info = create(parsed.info, TransferWithSeedInfo);
-        return <TransferWithSeedDetailsCard info={info} {...props} />;
+        return <TransferWithSeedDetailsCard info={info} {...props} className="mt-6" />;
       }
       default:
-        return <UnknownDetailsCard {...props} />;
+        return <UnknownDetailsCard {...props} className="mt-6" />;
     }
   } catch (error) {
     reportError(error, {

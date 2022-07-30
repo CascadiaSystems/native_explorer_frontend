@@ -9,6 +9,7 @@ import { InstructionCard } from "../InstructionCard";
 import { Copyable } from "components/common/Copyable";
 import { Address } from "components/common/Address";
 import { TransferWithSeedInfo } from "./types";
+import { TableCell, TableRow } from "@mui/material";
 
 export function TransferWithSeedDetailsCard(props: {
   ix: ParsedInstruction;
@@ -17,8 +18,9 @@ export function TransferWithSeedDetailsCard(props: {
   info: TransferWithSeedInfo;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 }) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
     <InstructionCard
@@ -28,57 +30,58 @@ export function TransferWithSeedDetailsCard(props: {
       title="Transfer w/ Seed"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={SystemProgram.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>From Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>From Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.source} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Destination Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Destination Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.destination} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Base Address</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Base Address</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.sourceBase} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Transfer Amount (VLX)</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Transfer Amount (VLX)</TableCell>
+        <TableCell align="right">
           <SolBalance lamports={info.lamports} />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Seed</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Seed</TableCell>
+        <TableCell align="right">
           <Copyable text={info.sourceSeed}>
             <code>{info.sourceSeed}</code>
           </Copyable>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Source Owner</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Source Owner</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.sourceOwner} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }
