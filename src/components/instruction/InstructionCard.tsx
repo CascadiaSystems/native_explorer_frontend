@@ -24,6 +24,7 @@ type InstructionProps = {
   defaultRaw?: boolean;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 };
 
 export function InstructionCard({
@@ -35,6 +36,7 @@ export function InstructionCard({
   defaultRaw,
   innerCards,
   childIndex,
+  className
 }: InstructionProps) {
   // const [resultClass] = ixResult(result, index);
   const [showRaw, setShowRaw] = React.useState(defaultRaw || false);
@@ -67,6 +69,7 @@ export function InstructionCard({
       //     {title}
       //   </h3> */}
     <ContentCard
+      className={className}
       title={(
         <div className="flex items-center gap-2">
           <Chip label={`#${index + 1}${childIndex !== undefined ? `.${childIndex + 1}` : ""}`} variant="filled"/>

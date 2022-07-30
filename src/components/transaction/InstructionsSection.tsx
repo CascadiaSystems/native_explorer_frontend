@@ -125,7 +125,7 @@ export function InstructionsSection({ signature }: SignatureProps) {
 
   return (
     <>
-      <Typography variant="h2" className="py-6">Instruction(s)</Typography>
+      <Typography variant="h2" className="pt-6">Instruction(s)</Typography>
       {instructionDetails}
     </>
   );

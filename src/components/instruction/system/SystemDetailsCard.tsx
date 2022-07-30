@@ -55,7 +55,7 @@ export function SystemDetailsCard(props: DetailsProps) {
       }
       case "createAccountWithSeed": {
         const info = create(parsed.info, CreateAccountWithSeedInfo);
-        return <CreateWithSeedDetailsCard info={info} {...props} />;
+        return <CreateWithSeedDetailsCard info={info} {...props} className="mt-6" />;
       }
       case "allocate": {
         const info = create(parsed.info, AllocateInfo);
