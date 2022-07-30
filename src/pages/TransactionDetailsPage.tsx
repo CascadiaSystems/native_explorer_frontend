@@ -16,7 +16,6 @@ import {
 import { SolBalance } from "utils";
 import { ErrorCard } from "components/common/ErrorCard";
 import { LoadingCard } from "components/common/LoadingCard";
-import { TableCardBody } from "components/common/TableCardBody";
 import { displayTimestamp } from "utils/date";
 import { InfoTooltip } from "components/common/InfoTooltip";
 import { Address } from "components/common/Address";

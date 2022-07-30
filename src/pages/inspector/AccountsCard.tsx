@@ -3,6 +3,7 @@ import { Message, PublicKey } from "@velas/web3";
 import { TableCardBody } from "components/common/TableCardBody";
 import { AddressWithContext } from "./AddressWithContext";
 import { ErrorCard } from "components/common/ErrorCard";
+import { Chip, TableCell, TableRow } from "@mui/material";
 
 export function AccountsCard({ message }: { message: Message }) {
   const [expanded, setExpanded] = React.useState(true);
@@ -99,23 +100,23 @@ function AccountRow({
   readOnly: boolean;
 }) {
   return (
-    <tr>
-      <td>
+    <TableRow>
+      <TableCell>
         <div className="d-flex align-items-start flex-column">
           Account #{accountIndex + 1}
           <span className="mt-1">
             {signer && (
-              <span className="badge badge-soft-info mr-1">Signer</span>
-            )}
+              <Chip label="Signer" variant="filled" /> 
+              )}
             {!readOnly && (
-              <span className="badge badge-soft-danger">Writable</span>
+              <Chip label="Writable" variant="filled" /> 
             )}
           </span>
         </div>
-      </td>
-      <td className="text-lg-right">
+      </TableCell>
+      <TableCell className="text-lg-right">
         <AddressWithContext pubkey={publicKey} />
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }

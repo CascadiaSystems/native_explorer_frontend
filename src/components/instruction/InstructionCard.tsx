@@ -36,7 +36,7 @@ export function InstructionCard({
   innerCards,
   childIndex,
 }: InstructionProps) {
-  const [resultClass] = ixResult(result, index);
+  // const [resultClass] = ixResult(result, index);
   const [showRaw, setShowRaw] = React.useState(defaultRaw || false);
   const signature = useContext(SignatureContext);
   const rawDetails = useRawTransactionDetails(signature);
@@ -119,17 +119,17 @@ export function InstructionCard({
   );
 }
 
-function ixResult(result: SignatureResult, index: number) {
-  if (result.err) {
-    const err = result.err as any;
-    const ixError = err["InstructionError"];
-    if (ixError && Array.isArray(ixError)) {
-      const [errorIndex, error] = ixError;
-      if (Number.isInteger(errorIndex) && errorIndex === index) {
-        return ["warning", `Error: ${JSON.stringify(error)}`];
-      }
-    }
-    return ["dark"];
-  }
-  return ["success"];
-}
+// function ixResult(result: SignatureResult, index: number) {
+//   if (result.err) {
+//     const err = result.err as any;
+//     const ixError = err["InstructionError"];
+//     if (ixError && Array.isArray(ixError)) {
+//       const [errorIndex, error] = ixError;
+//       if (Number.isInteger(errorIndex) && errorIndex === index) {
+//         return ["warning", `Error: ${JSON.stringify(error)}`];
+//       }
+//     }
+//     return ["dark"];
+//   }
+//   return ["success"];
+// }
