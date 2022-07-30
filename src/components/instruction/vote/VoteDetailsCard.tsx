@@ -18,6 +18,7 @@ import { InstructionDetailsProps } from "components/transaction/InstructionsSect
 import { camelToTitleCase } from "utils";
 import { useCluster } from "providers/cluster";
 import { reportError } from "utils/sentry";
+import { TableCell, TableRow } from "@mui/material";
 
 export function VoteDetailsCard(props: InstructionDetailsProps) {
   const { url } = useCluster();
@@ -71,41 +72,42 @@ function renderDetails<T>(
 
     if (key === "vote") {
       attributes.push(
-        <tr key="vote-hash">
-          <td>Vote Hash</td>
-          <td className="text-lg-right">
-            <pre className="d-inline-block text-left mb-0">{value.hash}</pre>
-          </td>
-        </tr>
+        <TableRow key="vote-hash">
+          <TableCell>Vote Hash</TableCell>
+          <TableCell align="right">
+            {value.hash}
+            {/* <pre className="d-inline-block text-left mb-0">{value.hash}</pre> */}
+          </TableCell>
+        </TableRow>
       );
 
       if (value.timestamp) {
         attributes.push(
-          <tr key="timestamp">
-            <td>Timestamp</td>
-            <td className="text-lg-right text-monospace">
+          <TableRow key="timestamp">
+            <TableCell>Timestamp</TableCell>
+            <TableCell align="right">
               {displayTimestamp(value.timestamp * 1000)}
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         );
       }
 
       attributes.push(
-        <tr key="vote-slots">
-          <td>Slots</td>
-          <td className="text-lg-right text-monospace">
-            <pre className="d-inline-block text-left mb-0">
-              {value.slots.join("\n")}
-            </pre>
-          </td>
-        </tr>
+        <TableRow key="vote-slots">
+          <TableCell>Slots</TableCell>
+          <TableCell align="right">
+            {value.slots.join("\n")}
+            {/* <pre className="d-inline-block text-left mb-0">
+            </pre> */}
+          </TableCell>
+        </TableRow>
       );
     } else {
       attributes.push(
-        <tr key={key}>
-          <td>{camelToTitleCase(key)} </td>
-          <td className="text-lg-right">{value}</td>
-        </tr>
+        <TableRow key={key}>
+          <TableCell>{camelToTitleCase(key)} </TableCell>
+          <TableCell align="right">{value}</TableCell>
+        </TableRow>
       );
     }
   }
@@ -115,12 +117,12 @@ function renderDetails<T>(
       {...props}
       title={`Vote: ${camelToTitleCase(parsed.type)}`}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell className="text-lg-right">
           <Address pubkey={props.ix.programId} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
       {attributes}
     </InstructionCard>
   );

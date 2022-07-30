@@ -1,5 +1,6 @@
 import React from "react";
 import { ParsedInstruction } from "@velas/web3";
+import { TableRow, TableCell } from "@mui/material";
 
 export function RawParsedDetails({
   ix,
@@ -11,17 +12,20 @@ export function RawParsedDetails({
   return (
     <>
       {children}
-
-      <tr>
-        <td>
-          Instruction Data <span className="text-muted">(JSON)</span>
-        </td>
-        <td className="text-lg-right">
-          <pre className="d-inline-block text-left json-wrap">
-            {JSON.stringify(ix.parsed, null, 2)}
-          </pre>
-        </td>
-      </tr>
+      <TableRow>
+        <TableCell>
+          Instruction Data (JSON)
+        </TableCell>
+        <TableCell>
+          <div className="flex justify-end">
+            <div className="p-4 bg-grey-dark">
+              <pre className="d-inline-block text-left json-wrap">
+                {JSON.stringify(ix.parsed, null, 2)}
+              </pre>
+            </div>
+          </div>
+        </TableCell>
+      </TableRow>
     </>
   );
 }

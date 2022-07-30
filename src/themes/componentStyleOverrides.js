@@ -190,9 +190,14 @@ const componentStyleOverrides = (theme) => {
         filled: {
           backgroundColor: `${theme.colors?.grey.dark} !important`,
           borderRadius: 0,
-          fontSize: '1rem',
-          padding: '3px 8px'
-        }
+          padding: '3px 0'
+        },
+        labelMedium: {
+          fontSize: '1rem'
+        },
+        labelSmall: {
+          fontSize: '0.875rem'
+        },
       }
     }
   }
