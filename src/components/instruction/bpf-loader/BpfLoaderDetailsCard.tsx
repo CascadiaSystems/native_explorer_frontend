@@ -13,6 +13,7 @@ import { reportError } from "utils/sentry";
 import { UnknownDetailsCard } from "../UnknownDetailsCard";
 import { Address } from "components/common/Address";
 import { wrap } from "utils";
+import { TableCell, TableRow } from "@mui/material";
 
 type DetailsProps = {
   tx: ParsedTransaction;
@@ -21,6 +22,7 @@ type DetailsProps = {
   result: SignatureResult;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 };
 
 export function BpfLoaderDetailsCard(props: DetailsProps) {
@@ -54,10 +56,11 @@ type Props<T> = {
   info: T;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 };
 
 export function BpfLoaderWriteDetailsCard(props: Props<WriteInfo>) {
-  const { ix, index, result, info, innerCards, childIndex } = props;
+  const { ix, index, result, info, innerCards, childIndex, className } = props;
   const bytes = wrap(info.bytes, 50);
   return (
     <InstructionCard
@@ -67,34 +70,35 @@ export function BpfLoaderWriteDetailsCard(props: Props<WriteInfo>) {
       title="BPF Loader 2: Write"
       innerCards={innerCards}
       childIndex={childIndex}
+      className={className}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={BPF_LOADER_PROGRAM_ID} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Account</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Account</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.account} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>
+      <TableRow>
+        <TableCell>
           Bytes <span className="text-muted">(Base 64)</span>
-        </td>
-        <td className="text-lg-right">
+        </TableCell>
+        <TableCell align="right">
           <pre className="d-inline-block text-left mb-0">{bytes}</pre>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Offset</td>
-        <td className="text-lg-right">{info.offset}</td>
-      </tr>
+      <TableRow>
+        <TableCell>Offset</TableCell>
+        <TableCell align="right">{info.offset}</TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }
@@ -111,19 +115,19 @@ export function BpfLoaderFinalizeDetailsCard(props: Props<FinalizeInfo>) {
       innerCards={innerCards}
       childIndex={childIndex}
     >
-      <tr>
-        <td>Program</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Program</TableCell>
+        <TableCell align="right">
           <Address pubkey={BPF_LOADER_PROGRAM_ID} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
 
-      <tr>
-        <td>Account</td>
-        <td className="text-lg-right">
+      <TableRow>
+        <TableCell>Account</TableCell>
+        <TableCell align="right">
           <Address pubkey={info.account} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     </InstructionCard>
   );
 }

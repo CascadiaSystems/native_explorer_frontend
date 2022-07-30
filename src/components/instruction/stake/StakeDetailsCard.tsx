@@ -75,6 +75,6 @@ export function StakeDetailsCard(props: DetailsProps) {
     reportError(error, {
       signature: props.tx.signatures[0],
     });
-    return <UnknownDetailsCard {...props} />;
+    return <UnknownDetailsCard {...props} className="mt-6"/>;
   }
 }

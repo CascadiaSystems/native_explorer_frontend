@@ -25,6 +25,7 @@ import {
 import { normalizeTokenAmount } from "utils";
 import { reportError } from "utils/sentry";
 import { useTokenRegistry } from "providers/mints/token-registry";
+import { TableCell, TableRow } from "@mui/material";
 
 type DetailsProps = {
   tx: ParsedTransaction;
@@ -33,6 +34,7 @@ type DetailsProps = {
   index: number;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 };
 
 export function TokenDetailsCard(props: DetailsProps) {
@@ -59,6 +61,7 @@ type InfoProps = {
   title: string;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 };
 
 function TokenInstruction(props: InfoProps) {
@@ -89,7 +92,7 @@ function TokenInstruction(props: InfoProps) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tokenInfo = useTokenAccountInfo(tokenAddress);
-  const mintAddress = infoMintAddress || tokenInfo?.mint.toBase58();
+  const mintAddress: any = infoMintAddress || tokenInfo?.mint.toBase58();
   const mintInfo = useMintAccountInfo(mintAddress);
   const { tokenRegistry } = useTokenRegistry();
   const fetchAccountInfo = useFetchAccountInfo();
@@ -122,12 +125,12 @@ function TokenInstruction(props: InfoProps) {
     }
 
     attributes.push(
-      <tr key={mintAddress}>
-        <td>Token</td>
-        <td className="text-lg-right">
+      <TableRow key={mintAddress}>
+        <TableCell>Token</TableCell>
+        <TableCell align="right">
           <Address pubkey={new PublicKey(mintAddress)} alignRight link />
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   }
 
@@ -142,12 +145,12 @@ function TokenInstruction(props: InfoProps) {
         let label = `${key.charAt(0).toUpperCase() + key.slice(1)} - #${i + 1}`;
 
         attributes.push(
-          <tr key={key + i}>
-            <td>{label}</td>
-            <td className="text-lg-right">
+          <TableRow key={key + i}>
+            <TableCell>{label}</TableCell>
+            <TableCell align="right">
               <Address pubkey={publicKey} alignRight link />
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         );
       }
       continue;
@@ -185,10 +188,10 @@ function TokenInstruction(props: InfoProps) {
     let label = key.charAt(0).toUpperCase() + key.slice(1) + labelSuffix;
 
     attributes.push(
-      <tr key={key}>
-        <td>{label}</td>
-        <td className="text-lg-right">{tag}</td>
-      </tr>
+      <TableRow key={key}>
+        <TableCell>{label}</TableCell>
+        <TableCell align="right">{tag}</TableCell>
+      </TableRow>
     );
   }
 
@@ -200,6 +203,7 @@ function TokenInstruction(props: InfoProps) {
       title={props.title}
       innerCards={props.innerCards}
       childIndex={props.childIndex}
+      className={props.className}
     >
       {attributes}
     </InstructionCard>

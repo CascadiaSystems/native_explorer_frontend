@@ -50,6 +50,7 @@ export type InstructionDetailsProps = {
   result: SignatureResult;
   innerCards?: JSX.Element[];
   childIndex?: number;
+  className?: string;
 };
 
 export function InstructionsSection({ signature }: SignatureProps) {
@@ -163,23 +164,23 @@ function renderInstructionCard({
 
     switch (ix.program) {
       case "spl-token":
-        return <TokenDetailsCard {...props} />;
+        return <TokenDetailsCard {...props} className="mt-6" />;
       case "bpf-loader":
-        return <BpfLoaderDetailsCard {...props} />;
+        return <BpfLoaderDetailsCard {...props} className="mt-6" />;
       case "bpf-upgradeable-loader":
-        return <BpfUpgradeableLoaderDetailsCard {...props} />;
+        return <BpfUpgradeableLoaderDetailsCard {...props} className="mt-6" />;
       case "system":
         return <SystemDetailsCard {...props} />;
       case "stake":
         return <StakeDetailsCard {...props} />;
       case "spl-memo":
-        return <MemoDetailsCard {...props} />;
+        return <MemoDetailsCard {...props} className="mt-6" />;
       case "spl-associated-token-account":
-        return <AssociatedTokenDetailsCard {...props} />;
+        return <AssociatedTokenDetailsCard {...props} className="mt-6" />;
       case "vote":
-        return <VoteDetailsCard {...props} />;
+        return <VoteDetailsCard {...props} className="mt-6" />;
       default:
-        return <UnknownDetailsCard {...props} />;
+        return <UnknownDetailsCard {...props} className="mt-6" />;
     }
   }
 
