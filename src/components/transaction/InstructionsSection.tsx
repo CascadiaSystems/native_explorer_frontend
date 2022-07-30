@@ -41,6 +41,7 @@ import { isWormholeInstruction } from "components/instruction/wormhole/types";
 import { AssociatedTokenDetailsCard } from "components/instruction/AssociatedTokenDetailsCard";
 import { isMangoInstruction } from "components/instruction/mango/types";
 import { MangoDetailsCard } from "components/instruction/MangoDetails";
+import { Typography } from "@mui/material";
 
 export type InstructionDetailsProps = {
   tx: ParsedTransaction;
@@ -124,13 +125,7 @@ export function InstructionsSection({ signature }: SignatureProps) {
 
   return (
     <>
-      <div className="container">
-        <div className="header">
-          <div className="header-body">
-            <h3 className="mb-0">Instruction(s)</h3>
-          </div>
-        </div>
-      </div>
+      <Typography variant="h2" className="py-6">Instruction(s)</Typography>
       {instructionDetails}
     </>
   );

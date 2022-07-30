@@ -1,7 +1,6 @@
 import React from "react";
 import { BlockResponse, PublicKey } from "@velas/web3";
 import { Address } from "components/common/Address";
-import { TableCardBody } from "components/common/TableCardBody";
 import ContentCard from "components/common/ContentCard";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 
@@ -84,38 +83,44 @@ export function BlockProgramsCard({ block }: { block: BlockResponse }) {
         className="mt-6"
         title={<Typography variant="h4">Block Programs</Typography>}
       >
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Program</TableCell>
-                <TableCell>Transaction Count</TableCell>
-                <TableCell>% of Total</TableCell>
-                <TableCell align="right">Instruction Count</TableCell>
-                <TableCell align="right">% of Total</TableCell>
-                <TableCell align="right">Success Rate</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {programEntries.map(([programId, txFreq]) => {
-                const ixFreq = ixFrequency.get(programId) as number;
-                const successes = txSuccesses.get(programId) || 0;
-                return (
-                  <TableRow key={programId}>
-                    <TableCell>
-                      <Address pubkey={new PublicKey(programId)} link />
-                    </TableCell>
-                    <TableCell>{txFreq}</TableCell>
-                    <TableCell>{((100 * txFreq) / totalTransactions).toFixed(2)}%</TableCell>
-                    <TableCell align="right">{ixFreq}</TableCell>
-                    <TableCell align="right">{((100 * ixFreq) / totalInstructions).toFixed(2)}%</TableCell>
-                    <TableCell align="right">{((100 * successes) / txFreq).toFixed(0)}%</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {programEntries.length ? (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Program</TableCell>
+                  <TableCell>Transaction Count</TableCell>
+                  <TableCell>% of Total</TableCell>
+                  <TableCell align="right">Instruction Count</TableCell>
+                  <TableCell align="right">% of Total</TableCell>
+                  <TableCell align="right">Success Rate</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {programEntries.map(([programId, txFreq]) => {
+                  const ixFreq = ixFrequency.get(programId) as number;
+                  const successes = txSuccesses.get(programId) || 0;
+                  return (
+                    <TableRow key={programId}>
+                      <TableCell>
+                        <Address pubkey={new PublicKey(programId)} link />
+                      </TableCell>
+                      <TableCell>{txFreq}</TableCell>
+                      <TableCell>{((100 * txFreq) / totalTransactions).toFixed(2)}%</TableCell>
+                      <TableCell align="right">{ixFreq}</TableCell>
+                      <TableCell align="right">{((100 * ixFreq) / totalInstructions).toFixed(2)}%</TableCell>
+                      <TableCell align="right">{((100 * successes) / txFreq).toFixed(0)}%</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <div className="p-4 text-center">
+            This block has no programs.
+          </div>
+        )}
       </ContentCard>
     </>
   );

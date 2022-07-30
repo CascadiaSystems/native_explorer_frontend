@@ -12,6 +12,8 @@ import {
   useRawTransactionDetails,
 } from "providers/transactions/raw";
 import { Address } from "components/common/Address";
+import ContentCard from "components/common/ContentCard";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 
 type InstructionProps = {
   title: string;
@@ -56,38 +58,41 @@ export function InstructionCard({
   };
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title mb-0 d-flex align-items-center">
-          <span className={`badge badge-soft-${resultClass} mr-2`}>
-            #{index + 1}
-            {childIndex !== undefined ? `.${childIndex + 1}` : ""}
-          </span>
-          {title}
-        </h3>
-
-        <button
+      // {/* <div className="card-header">
+      //   <h3 className="card-header-title mb-0 d-flex align-items-center">
+      //     <span className={`badge badge-soft-${resultClass} mr-2`}>
+      //       #{index + 1}
+      //       {childIndex !== undefined ? `.${childIndex + 1}` : ""}
+      //     </span>
+      //     {title}
+      //   </h3> */}
+    <ContentCard
+      title={(
+        <div className="flex items-center gap-2">
+          <Chip label={`#${index + 1}${childIndex !== undefined ? `.${childIndex + 1}` : ""}`} variant="filled"/>
+          <Typography variant="h3">{title}</Typography>
+        </div>
+      )}
+      action={(
+        <Button variant="outlined" size="small"
           disabled={defaultRaw}
-          className={`btn btn-sm d-flex ${
-            showRaw ? "btn-black active" : "btn-white"
-          }`}
           onClick={rawClickHandler}
         >
-          <span className="fe fe-code mr-1"></span>
-          Raw
-        </button>
-      </div>
-      <div className="table-responsive mb-0">
-        <table className="table table-sm table-nowrap card-table">
-          <tbody className="list">
+          {`<>Raw`}
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
             {showRaw ? (
               <>
-                <tr>
-                  <td>Program</td>
-                  <td className="text-lg-right">
+                <TableRow>
+                  <TableCell>Program</TableCell>
+                  <TableCell align="right">
                     <Address pubkey={ix.programId} alignRight link />
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
                 {"parsed" in ix ? (
                   <RawParsedDetails ix={ix}>
                     {raw ? <RawDetails ix={raw} /> : null}
@@ -100,17 +105,17 @@ export function InstructionCard({
               children
             )}
             {innerCards && innerCards.length > 0 && (
-              <tr>
-                <td colSpan={2}>
+              <TableRow>
+                <TableCell colSpan={2}>
                   Inner Instructions
                   <div className="inner-cards">{innerCards}</div>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 

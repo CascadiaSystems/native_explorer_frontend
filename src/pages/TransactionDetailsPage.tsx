@@ -30,6 +30,10 @@ import { TokenBalancesCard } from "components/transaction/TokenBalancesCard";
 import { InstructionsSection } from "components/transaction/InstructionsSection";
 import { ProgramLogSection } from "components/transaction/ProgramLogSection";
 import { clusterPath } from "utils/url";
+import ContentCard from "components/common/ContentCard";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 const AUTO_REFRESH_INTERVAL = 2000;
 const ZERO_CONFIRMATION_BAILOUT = 5;
@@ -93,13 +97,8 @@ export function TransactionDetailsPage({ signature: raw }: SignatureProps) {
   }, [status, autoRefresh, setZeroConfirmationRetries]);
 
   return (
-    <div className="container mt-n3">
-      <div className="header">
-        <div className="header-body">
-          <h6 className="header-pretitle">Details</h6>
-          <h2 className="header-title">Transaction</h2>
-        </div>
-      </div>
+    <>
+      <Typography variant="h2" className="py-6">Transaction</Typography>
       {signature === undefined ? (
         <ErrorCard text={`Signature "${raw}" is not valid`} />
       ) : (
@@ -111,7 +110,7 @@ export function TransactionDetailsPage({ signature: raw }: SignatureProps) {
           <ProgramLogSection signature={signature} />
         </SignatureContext.Provider>
       )}
-    </div>
+    </>
   );
 }
 
@@ -205,105 +204,111 @@ function StatusCard({
   })();
 
   return (
-    <div className="card">
-      <div className="card-header align-items-center">
-        <h3 className="card-header-title">Overview</h3>
-        <Link
-          to={clusterPath(`/tx/${signature}/inspect`)}
-          className="btn btn-white btn-sm mr-2"
-        >
-          <span className="fe fe-settings mr-2"></span>
-          Inspect
-        </Link>
-        {autoRefresh === AutoRefresh.Active ? (
-          <span className="spinner-grow spinner-grow-sm"></span>
-        ) : (
-          <button
-            className="btn btn-white btn-sm"
-            onClick={() => fetchStatus(signature)}
+    <ContentCard
+      title={<Typography variant="h3">Overview</Typography>}
+      action={(
+        <div className="flex flex-row items-center gap-2">
+          <Button variant="outlined" component={Link}
+            size="small"
+            to={clusterPath(`/tx/${signature}/inspect`)}
+            startIcon={<FontAwesomeIcon icon={faGear} />}
           >
-            <span className="fe fe-refresh-cw mr-2"></span>
-            Refresh
-          </button>
-        )}
-      </div>
+            Inspect
+          </Button>
+          {autoRefresh === AutoRefresh.Active ? (
+            <span className="spinner-grow spinner-grow-sm"></span>
+          ) : (
+            <Button
+              variant="outlined" size="small"
+              onClick={() => fetchStatus(signature)}
+              startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+            >
+              Refresh
+            </Button>
+          )}
+        </div>
+      )}
+    >
+      <TableContainer>
+        <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Signature</TableCell>
+            <TableCell align="right">
+              <Signature signature={signature} alignRight />
+            </TableCell>
+          </TableRow>
 
-      <TableCardBody>
-        <tr>
-          <td>Signature</td>
-          <td className="text-lg-right">
-            <Signature signature={signature} alignRight />
-          </td>
-        </tr>
+          <TableRow>
+            <TableCell>Result</TableCell>
+            <TableCell align="right">{renderResult()}</TableCell>
+          </TableRow>
 
-        <tr>
-          <td>Result</td>
-          <td className="text-lg-right">{renderResult()}</td>
-        </tr>
-
-        <tr>
-          <td>Timestamp</td>
-          <td className="text-lg-right">
-            {info.timestamp !== "unavailable" ? (
-              <span className="text-monospace">
-                {displayTimestamp(info.timestamp * 1000)}
-              </span>
-            ) : (
-              <InfoTooltip
-                bottom
-                right
-                text="Timestamps are only available for confirmed blocks"
-              >
-                Unavailable
-              </InfoTooltip>
-            )}
-          </td>
-        </tr>
-
-        <tr>
-          <td>Confirmation Status</td>
-          <td className="text-lg-right text-uppercase">
-            {info.confirmationStatus || "Unknown"}
-          </td>
-        </tr>
-
-        <tr>
-          <td>Confirmations</td>
-          <td className="text-lg-right text-uppercase">{info.confirmations}</td>
-        </tr>
-
-        <tr>
-          <td>Block</td>
-          <td className="text-lg-right">
-            <Slot slot={info.slot} link />
-          </td>
-        </tr>
-
-        {blockhash && (
-          <tr>
-            <td>
-              {isNonce ? (
-                "Nonce"
+          <TableRow>
+            <TableCell>Timestamp</TableCell>
+            <TableCell align="right">
+              {info.timestamp !== "unavailable" ? (
+                <span className="text-monospace">
+                  {displayTimestamp(info.timestamp * 1000)}
+                </span>
               ) : (
-                <InfoTooltip text="Transactions use a previously confirmed blockhash as a nonce to prevent double spends">
-                  Recent Blockhash
+                <InfoTooltip
+                  bottom
+                  right
+                  text="Timestamps are only available for confirmed blocks"
+                >
+                  Unavailable
                 </InfoTooltip>
               )}
-            </td>
-            <td className="text-lg-right">{blockhash}</td>
-          </tr>
-        )}
+            </TableCell>
+          </TableRow>
 
-        {fee && (
-          <tr>
-            <td>Fee (VLX)</td>
-            <td className="text-lg-right">
-              <SolBalance lamports={fee} />
-            </td>
-          </tr>
-        )}
-      </TableCardBody>
-    </div>
+          <TableRow>
+            <TableCell>Confirmation Status</TableCell>
+            <TableCell align="right">
+              {info.confirmationStatus || "Unknown"}
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell>Confirmations</TableCell>
+            <TableCell align="right">{info.confirmations}</TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell>Block</TableCell>
+            <TableCell align="right">
+              <Slot slot={info.slot} link />
+            </TableCell>
+          </TableRow>
+
+          {blockhash && (
+            <TableRow>
+              <TableCell>
+                {isNonce ? (
+                  "Nonce"
+                ) : (
+                  <InfoTooltip text="Transactions use a previously confirmed blockhash as a nonce to prevent double spends">
+                    Recent Blockhash
+                  </InfoTooltip>
+                )}
+              </TableCell>
+              <TableCell align="right">{blockhash}</TableCell>
+            </TableRow>
+          )}
+
+          {fee && (
+            <TableRow>
+              <TableCell>Fee (VLX)</TableCell>
+              <TableCell align="right">
+                <SolBalance lamports={fee} />
+              </TableCell>
+            </TableRow>
+          )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -361,52 +366,54 @@ function AccountsCard({
     const delta = new BigNumber(post).minus(new BigNumber(pre));
 
     return (
-      <tr key={key}>
-        <td>
+      <TableRow key={key}>
+        <TableCell>
           <Address pubkey={pubkey} link />
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <BalanceDelta delta={delta} isSol />
-        </td>
-        <td>
+        </TableCell>
+        <TableCell align="right">
           <SolBalance lamports={post} />
-        </td>
-        <td>
+        </TableCell>
+        <TableCell align="right">
           {index === 0 && (
-            <span className="badge badge-soft-info mr-1">Fee Payer</span>
-          )}
+            <Chip label="Fee Payer" variant="filled" className="ml-1"/>
+            )}
           {!account.writable && (
-            <span className="badge badge-soft-info mr-1">Readonly</span>
-          )}
+            <Chip label="Readonly" variant="filled" className="ml-1"/>
+            )}
           {account.signer && (
-            <span className="badge badge-soft-info mr-1">Signer</span>
-          )}
+            <Chip label="Signer" variant="filled" className="ml-1"/>
+            )}
           {message.instructions.find((ix) => ix.programId.equals(pubkey)) && (
-            <span className="badge badge-soft-info mr-1">Program</span>
+            <Chip label="Program" variant="filled" className="ml-1"/>
           )}
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   });
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title">Account Inputs</h3>
-      </div>
-      <div className="table-responsive mb-0">
-        <table className="table table-sm table-nowrap card-table">
-          <thead>
-            <tr>
-              <th className="text-muted">Address</th>
-              <th className="text-muted">Change (VLX)</th>
-              <th className="text-muted">Post Balance (VLX)</th>
-              <th className="text-muted">Details</th>
-            </tr>
-          </thead>
-          <tbody className="list">{accountRows}</tbody>
-        </table>
-      </div>
-    </div>
+    <>
+      <ContentCard
+        title={<Typography variant="h3">Account Inputs</Typography>}
+        className="mt-6"
+      >
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Address</TableCell>
+                <TableCell>Change (VLX)</TableCell>
+                <TableCell align="right">Post Balance (VLX)</TableCell>
+                <TableCell align="right">Details</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody> { accountRows } </TableBody>
+          </Table>
+        </TableContainer>
+      </ContentCard>
+    </>
   );
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import { ConfirmedSignatureInfo, TransactionError } from "@velas/web3";
-import { Button } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 export type TransactionRow = {

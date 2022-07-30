@@ -1,5 +1,3 @@
-import { borderRadius } from "@mui/system";
-
 const componentStyleOverrides = (theme) => {
   return {
     MuiPaper: {
@@ -186,6 +184,22 @@ const componentStyleOverrides = (theme) => {
         }
       }
     },
+    // MuiChip
+    MuiChip: {
+      styleOverrides: {
+        filled: {
+          backgroundColor: `${theme.colors?.grey.dark} !important`,
+          borderRadius: 0,
+          padding: '3px 0'
+        },
+        labelMedium: {
+          fontSize: '1rem'
+        },
+        labelSmall: {
+          fontSize: '0.875rem'
+        },
+      }
+    }
   }
 };
 

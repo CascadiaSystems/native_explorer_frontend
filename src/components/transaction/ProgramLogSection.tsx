@@ -2,6 +2,8 @@ import React from "react";
 import { SignatureProps } from "pages/TransactionDetailsPage";
 import { useTransactionDetails } from "providers/transactions";
 import { TransactionError } from "@velas/web3";
+import { Typography } from "@mui/material";
+import ContentCard from "components/common/ContentCard";
 
 const transactionErrorMessage: Map<string, string> = new Map([
   ["AccountInUse", "Account in use"],
@@ -205,15 +207,9 @@ export function ProgramLogSection({ signature }: SignatureProps) {
 
   return (
     <>
-      <div className="container">
-        <div className="header">
-          <div className="header-body">
-            <h3 className="card-header-title">Program Log</h3>
-          </div>
-        </div>
-      </div>
-      <div className="card">
-        <ul className="log-messages">
+      <Typography variant="h2" className="py-6"> Program Log </Typography>
+      <ContentCard className="p-4">
+        <ul className="p-4 bg-grey-dark" style={{minHeight: '12.5rem', maxHeight: '20rem'}}>
           {logMessages &&
             logMessages.map((message, key) => (
               <li key={key}>{message.replace(/^Program log: /, "")}</li>
@@ -222,7 +218,7 @@ export function ProgramLogSection({ signature }: SignatureProps) {
             <li className="mt-3">Transaction failed: {transactionError}</li>
           )}
         </ul>
-      </div>
+      </ContentCard>
     </>
   );
 }
