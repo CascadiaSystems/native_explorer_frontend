@@ -30,6 +30,10 @@ import { TokenBalancesCard } from "components/transaction/TokenBalancesCard";
 import { InstructionsSection } from "components/transaction/InstructionsSection";
 import { ProgramLogSection } from "components/transaction/ProgramLogSection";
 import { clusterPath } from "utils/url";
+import ContentCard from "components/common/ContentCard";
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 const AUTO_REFRESH_INTERVAL = 2000;
 const ZERO_CONFIRMATION_BAILOUT = 5;
@@ -93,13 +97,8 @@ export function TransactionDetailsPage({ signature: raw }: SignatureProps) {
   }, [status, autoRefresh, setZeroConfirmationRetries]);
 
   return (
-    <div className="container mt-n3">
-      <div className="header">
-        <div className="header-body">
-          <h6 className="header-pretitle">Details</h6>
-          <h2 className="header-title">Transaction</h2>
-        </div>
-      </div>
+    <>
+      <Typography variant="h2" className="py-6">Transaction</Typography>
       {signature === undefined ? (
         <ErrorCard text={`Signature "${raw}" is not valid`} />
       ) : (
@@ -111,7 +110,7 @@ export function TransactionDetailsPage({ signature: raw }: SignatureProps) {
           <ProgramLogSection signature={signature} />
         </SignatureContext.Provider>
       )}
-    </div>
+    </>
   );
 }
 
@@ -205,105 +204,113 @@ function StatusCard({
   })();
 
   return (
-    <div className="card">
-      <div className="card-header align-items-center">
-        <h3 className="card-header-title">Overview</h3>
-        <Link
-          to={clusterPath(`/tx/${signature}/inspect`)}
-          className="btn btn-white btn-sm mr-2"
-        >
-          <span className="fe fe-settings mr-2"></span>
-          Inspect
-        </Link>
-        {autoRefresh === AutoRefresh.Active ? (
-          <span className="spinner-grow spinner-grow-sm"></span>
-        ) : (
-          <button
-            className="btn btn-white btn-sm"
-            onClick={() => fetchStatus(signature)}
-          >
-            <span className="fe fe-refresh-cw mr-2"></span>
-            Refresh
-          </button>
-        )}
-      </div>
-
-      <TableCardBody>
-        <tr>
-          <td>Signature</td>
-          <td className="text-lg-right">
-            <Signature signature={signature} alignRight />
-          </td>
-        </tr>
-
-        <tr>
-          <td>Result</td>
-          <td className="text-lg-right">{renderResult()}</td>
-        </tr>
-
-        <tr>
-          <td>Timestamp</td>
-          <td className="text-lg-right">
-            {info.timestamp !== "unavailable" ? (
-              <span className="text-monospace">
-                {displayTimestamp(info.timestamp * 1000)}
-              </span>
+    <>
+      <ContentCard
+        title={<Typography variant="h3">Overview</Typography>}
+        action={(
+          <div className="flex flex-row items-center gap-2">
+            <Button variant="outlined" component={Link}
+              size="small"
+              to={clusterPath(`/tx/${signature}/inspect`)}
+              startIcon={<FontAwesomeIcon icon={faGear} />}
+            >
+              Inspect
+            </Button>
+            {autoRefresh === AutoRefresh.Active ? (
+              <span className="spinner-grow spinner-grow-sm"></span>
             ) : (
-              <InfoTooltip
-                bottom
-                right
-                text="Timestamps are only available for confirmed blocks"
+              <Button
+                variant="outlined" size="small"
+                onClick={() => fetchStatus(signature)}
+                startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
               >
-                Unavailable
-              </InfoTooltip>
+                Refresh
+              </Button>
             )}
-          </td>
-        </tr>
-
-        <tr>
-          <td>Confirmation Status</td>
-          <td className="text-lg-right text-uppercase">
-            {info.confirmationStatus || "Unknown"}
-          </td>
-        </tr>
-
-        <tr>
-          <td>Confirmations</td>
-          <td className="text-lg-right text-uppercase">{info.confirmations}</td>
-        </tr>
-
-        <tr>
-          <td>Block</td>
-          <td className="text-lg-right">
-            <Slot slot={info.slot} link />
-          </td>
-        </tr>
-
-        {blockhash && (
-          <tr>
-            <td>
-              {isNonce ? (
-                "Nonce"
-              ) : (
-                <InfoTooltip text="Transactions use a previously confirmed blockhash as a nonce to prevent double spends">
-                  Recent Blockhash
-                </InfoTooltip>
-              )}
-            </td>
-            <td className="text-lg-right">{blockhash}</td>
-          </tr>
+          </div>
         )}
+      >
+        <TableContainer>
+          <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>Signature</TableCell>
+              <TableCell align="right">
+                <Signature signature={signature} alignRight />
+              </TableCell>
+            </TableRow>
 
-        {fee && (
-          <tr>
-            <td>Fee (VLX)</td>
-            <td className="text-lg-right">
-              <SolBalance lamports={fee} />
-            </td>
-          </tr>
-        )}
-      </TableCardBody>
-    </div>
+            <TableRow>
+              <TableCell>Result</TableCell>
+              <TableCell align="right">{renderResult()}</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell>Timestamp</TableCell>
+              <TableCell align="right">
+                {info.timestamp !== "unavailable" ? (
+                  <span className="text-monospace">
+                    {displayTimestamp(info.timestamp * 1000)}
+                  </span>
+                ) : (
+                  <InfoTooltip
+                    bottom
+                    right
+                    text="Timestamps are only available for confirmed blocks"
+                  >
+                    Unavailable
+                  </InfoTooltip>
+                )}
+              </TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell>Confirmation Status</TableCell>
+              <TableCell align="right">
+                {info.confirmationStatus || "Unknown"}
+              </TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell>Confirmations</TableCell>
+              <TableCell align="right">{info.confirmations}</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell>Block</TableCell>
+              <TableCell align="right">
+                <Slot slot={info.slot} link />
+              </TableCell>
+            </TableRow>
+
+            {blockhash && (
+              <TableRow>
+                <TableCell>
+                  {isNonce ? (
+                    "Nonce"
+                  ) : (
+                    <InfoTooltip text="Transactions use a previously confirmed blockhash as a nonce to prevent double spends">
+                      Recent Blockhash
+                    </InfoTooltip>
+                  )}
+                </TableCell>
+                <TableCell align="right">{blockhash}</TableCell>
+              </TableRow>
+            )}
+
+            {fee && (
+              <TableRow>
+                <TableCell>Fee (VLX)</TableCell>
+                <TableCell align="right">
+                  <SolBalance lamports={fee} />
+                </TableCell>
+              </TableRow>
+            )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </ContentCard>
+    </>
   );
 }
 
