@@ -31,7 +31,7 @@ import { InstructionsSection } from "components/transaction/InstructionsSection"
 import { ProgramLogSection } from "components/transaction/ProgramLogSection";
 import { clusterPath } from "utils/url";
 import ContentCard from "components/common/ContentCard";
-import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
@@ -204,113 +204,111 @@ function StatusCard({
   })();
 
   return (
-    <>
-      <ContentCard
-        title={<Typography variant="h3">Overview</Typography>}
-        action={(
-          <div className="flex flex-row items-center gap-2">
-            <Button variant="outlined" component={Link}
-              size="small"
-              to={clusterPath(`/tx/${signature}/inspect`)}
-              startIcon={<FontAwesomeIcon icon={faGear} />}
+    <ContentCard
+      title={<Typography variant="h3">Overview</Typography>}
+      action={(
+        <div className="flex flex-row items-center gap-2">
+          <Button variant="outlined" component={Link}
+            size="small"
+            to={clusterPath(`/tx/${signature}/inspect`)}
+            startIcon={<FontAwesomeIcon icon={faGear} />}
+          >
+            Inspect
+          </Button>
+          {autoRefresh === AutoRefresh.Active ? (
+            <span className="spinner-grow spinner-grow-sm"></span>
+          ) : (
+            <Button
+              variant="outlined" size="small"
+              onClick={() => fetchStatus(signature)}
+              startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
             >
-              Inspect
+              Refresh
             </Button>
-            {autoRefresh === AutoRefresh.Active ? (
-              <span className="spinner-grow spinner-grow-sm"></span>
-            ) : (
-              <Button
-                variant="outlined" size="small"
-                onClick={() => fetchStatus(signature)}
-                startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
-              >
-                Refresh
-              </Button>
-            )}
-          </div>
-        )}
-      >
-        <TableContainer>
-          <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell>Signature</TableCell>
-              <TableCell align="right">
-                <Signature signature={signature} alignRight />
-              </TableCell>
-            </TableRow>
+          )}
+        </div>
+      )}
+    >
+      <TableContainer>
+        <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Signature</TableCell>
+            <TableCell align="right">
+              <Signature signature={signature} alignRight />
+            </TableCell>
+          </TableRow>
 
-            <TableRow>
-              <TableCell>Result</TableCell>
-              <TableCell align="right">{renderResult()}</TableCell>
-            </TableRow>
+          <TableRow>
+            <TableCell>Result</TableCell>
+            <TableCell align="right">{renderResult()}</TableCell>
+          </TableRow>
 
+          <TableRow>
+            <TableCell>Timestamp</TableCell>
+            <TableCell align="right">
+              {info.timestamp !== "unavailable" ? (
+                <span className="text-monospace">
+                  {displayTimestamp(info.timestamp * 1000)}
+                </span>
+              ) : (
+                <InfoTooltip
+                  bottom
+                  right
+                  text="Timestamps are only available for confirmed blocks"
+                >
+                  Unavailable
+                </InfoTooltip>
+              )}
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell>Confirmation Status</TableCell>
+            <TableCell align="right">
+              {info.confirmationStatus || "Unknown"}
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell>Confirmations</TableCell>
+            <TableCell align="right">{info.confirmations}</TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableCell>Block</TableCell>
+            <TableCell align="right">
+              <Slot slot={info.slot} link />
+            </TableCell>
+          </TableRow>
+
+          {blockhash && (
             <TableRow>
-              <TableCell>Timestamp</TableCell>
-              <TableCell align="right">
-                {info.timestamp !== "unavailable" ? (
-                  <span className="text-monospace">
-                    {displayTimestamp(info.timestamp * 1000)}
-                  </span>
+              <TableCell>
+                {isNonce ? (
+                  "Nonce"
                 ) : (
-                  <InfoTooltip
-                    bottom
-                    right
-                    text="Timestamps are only available for confirmed blocks"
-                  >
-                    Unavailable
+                  <InfoTooltip text="Transactions use a previously confirmed blockhash as a nonce to prevent double spends">
+                    Recent Blockhash
                   </InfoTooltip>
                 )}
               </TableCell>
+              <TableCell align="right">{blockhash}</TableCell>
             </TableRow>
+          )}
 
+          {fee && (
             <TableRow>
-              <TableCell>Confirmation Status</TableCell>
+              <TableCell>Fee (VLX)</TableCell>
               <TableCell align="right">
-                {info.confirmationStatus || "Unknown"}
+                <SolBalance lamports={fee} />
               </TableCell>
             </TableRow>
-
-            <TableRow>
-              <TableCell>Confirmations</TableCell>
-              <TableCell align="right">{info.confirmations}</TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell>Block</TableCell>
-              <TableCell align="right">
-                <Slot slot={info.slot} link />
-              </TableCell>
-            </TableRow>
-
-            {blockhash && (
-              <TableRow>
-                <TableCell>
-                  {isNonce ? (
-                    "Nonce"
-                  ) : (
-                    <InfoTooltip text="Transactions use a previously confirmed blockhash as a nonce to prevent double spends">
-                      Recent Blockhash
-                    </InfoTooltip>
-                  )}
-                </TableCell>
-                <TableCell align="right">{blockhash}</TableCell>
-              </TableRow>
-            )}
-
-            {fee && (
-              <TableRow>
-                <TableCell>Fee (VLX)</TableCell>
-                <TableCell align="right">
-                  <SolBalance lamports={fee} />
-                </TableCell>
-              </TableRow>
-            )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </ContentCard>
-    </>
+          )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -368,52 +366,54 @@ function AccountsCard({
     const delta = new BigNumber(post).minus(new BigNumber(pre));
 
     return (
-      <tr key={key}>
-        <td>
+      <TableRow key={key}>
+        <TableCell>
           <Address pubkey={pubkey} link />
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <BalanceDelta delta={delta} isSol />
-        </td>
-        <td>
+        </TableCell>
+        <TableCell align="right">
           <SolBalance lamports={post} />
-        </td>
-        <td>
+        </TableCell>
+        <TableCell align="right">
           {index === 0 && (
-            <span className="badge badge-soft-info mr-1">Fee Payer</span>
-          )}
+            <Chip label="Fee Payer" variant="filled" className="ml-1"/>
+            )}
           {!account.writable && (
-            <span className="badge badge-soft-info mr-1">Readonly</span>
-          )}
+            <Chip label="Readonly" variant="filled" className="ml-1"/>
+            )}
           {account.signer && (
-            <span className="badge badge-soft-info mr-1">Signer</span>
-          )}
+            <Chip label="Signer" variant="filled" className="ml-1"/>
+            )}
           {message.instructions.find((ix) => ix.programId.equals(pubkey)) && (
-            <span className="badge badge-soft-info mr-1">Program</span>
+            <Chip label="Program" variant="filled" className="ml-1"/>
           )}
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   });
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title">Account Inputs</h3>
-      </div>
-      <div className="table-responsive mb-0">
-        <table className="table table-sm table-nowrap card-table">
-          <thead>
-            <tr>
-              <th className="text-muted">Address</th>
-              <th className="text-muted">Change (VLX)</th>
-              <th className="text-muted">Post Balance (VLX)</th>
-              <th className="text-muted">Details</th>
-            </tr>
-          </thead>
-          <tbody className="list">{accountRows}</tbody>
-        </table>
-      </div>
-    </div>
+    <>
+      <ContentCard
+        title={<Typography variant="h3">Account Inputs</Typography>}
+        className="mt-6"
+      >
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Address</TableCell>
+                <TableCell>Change (VLX)</TableCell>
+                <TableCell align="right">Post Balance (VLX)</TableCell>
+                <TableCell align="right">Details</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody> { accountRows } </TableBody>
+          </Table>
+        </TableContainer>
+      </ContentCard>
+    </>
   );
 }
