@@ -44,7 +44,7 @@ export function AddressWithContext({
   validator?: AccountValidator;
 }) {
   return (
-    <div className="d-flex align-items-end flex-column">
+    <div className="flex items-end flex-col gap-2">
       <Address pubkey={pubkey} link />
       <AccountInfo pubkey={pubkey} validator={validator} />
     </div>
@@ -72,7 +72,7 @@ function AccountInfo({
 
   if (!info?.data)
     return (
-      <span className="text-muted">
+      <span>
         <span className="spinner-grow spinner-grow-sm mr-2"></span>
         Loading
       </span>
@@ -82,7 +82,7 @@ function AccountInfo({
   if (errorMessage) return <span className="text-warning">{errorMessage}</span>;
 
   if (info.data.details?.executable) {
-    return <span className="text-muted">Executable Program</span>;
+    return <span>Executable Program</span>;
   }
 
   const owner = info.data.details?.owner;
@@ -90,11 +90,9 @@ function AccountInfo({
   const ownerLabel = ownerAddress && addressLabel(ownerAddress, cluster);
 
   return (
-    <span className="text-muted">
+    <span>
       {ownerAddress
-        ? `Owned by ${
-            ownerLabel || ownerAddress
-          }. Balance is ${lamportsToSolString(info.data.lamports)} VLX`
+        ? `Owned by ${ownerLabel || ownerAddress}. Balance is ${lamportsToSolString(info.data.lamports)} VLX`
         : "Account doesn't exist"}
     </span>
   );

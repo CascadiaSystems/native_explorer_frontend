@@ -22,6 +22,8 @@ import { SimulatorCard } from "./SimulatorCard";
 import { MIN_MESSAGE_LENGTH, RawInput } from "./RawInputCard";
 import { InstructionsSection } from "./InstructionsSection";
 import base58 from "bs58";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import ContentCard from "components/common/ContentCard";
 
 export type TransactionData = {
   rawMessage: Uint8Array;
@@ -196,12 +198,10 @@ export function TransactionInspectorPage({
   }, [query, transaction, signature, history, location]);
 
   return (
-    <div className="container mt-4">
-      <div className="header">
-        <div className="header-body">
-          <h2 className="header-title">Transaction Inspector</h2>
-        </div>
-      </div>
+    <>
+      <Typography variant="h2" className="py-6">
+        Transaction Inspector
+      </Typography>
       {signature ? (
         <PermalinkView signature={signature} reset={reset} />
       ) : transaction ? (
@@ -209,7 +209,7 @@ export function TransactionInspectorPage({
       ) : (
         <RawInput value={paramString} setTransactionData={setTransaction} />
       )}
-    </div>
+    </>
   );
 }
 
@@ -271,15 +271,16 @@ function LoadedView({
   return (
     <>
       <OverviewCard message={message} raw={rawMessage} onClear={onClear} />
-      <SimulatorCard message={message} />
+      <SimulatorCard message={message} className="mt-6"/>
       {signatures && (
         <TransactionSignatures
           message={message}
           signatures={signatures}
           rawMessage={rawMessage}
+          className="mt-6"
         />
       )}
-      <AccountsCard message={message} />
+      <AccountsCard message={message} className="mt-6"/>
       <InstructionsSection message={message} />
     </>
   );
@@ -309,62 +310,73 @@ function OverviewCard({
 
   return (
     <>
-      <div className="card">
-        <div className="card-header">
-          <h3 className="card-header-title">Transaction Overview</h3>
-          <button className="btn btn-sm d-flex btn-white" onClick={onClear}>
+      <ContentCard
+        title={<Typography variant="h3">Transaction Overview</Typography>}
+        action={(
+          <Button variant="outlined" size="small" onClick={onClear}>
             Clear
-          </button>
-        </div>
-        <TableCardBody>
-          <tr>
-            <td>Serialized Size</td>
-            <td className="text-lg-right">
-              <div className="d-flex align-items-end flex-column">
-                {size} bytes
-                <span
-                  className={
-                    size <= PACKET_DATA_SIZE ? "text-muted" : "text-warning"
-                  }
-                >
-                  Max transaction size is {PACKET_DATA_SIZE} bytes
-                </span>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Fees</td>
-            <td className="text-lg-right">
-              <div className="d-flex align-items-end flex-column">
-                <SolBalance lamports={fee} />
-                <span className="text-muted">
-                  {`Each signature costs ${DEFAULT_FEES.lamportsPerSignature} lamports`}
-                </span>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div className="d-flex align-items-start flex-column">
-                Fee payer
-                <span className="mt-1">
-                  <span className="badge badge-soft-info mr-2">Signer</span>
-                  <span className="badge badge-soft-danger mr-2">Writable</span>
-                </span>
-              </div>
-            </td>
-            <td className="text-right">
-              {message.accountKeys.length === 0 ? (
-                "No Fee Payer"
-              ) : (
-                <AddressWithContext
-                  pubkey={message.accountKeys[0]}
-                  validator={feePayerValidator}
-                />
-              )}
-            </td>
-          </tr>
-        </TableCardBody>
+          </Button>
+        )}
+      >
+        <TableContainer>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>Serialized Size</TableCell>
+                <TableCell align="right">
+                  <div className="flex items-end flex-col gap-2">
+                    {size} bytes
+                    <span
+                      className={
+                        size <= PACKET_DATA_SIZE ? "text-muted" : "text-warning"
+                      }
+                    >
+                      Max transaction size is {PACKET_DATA_SIZE} bytes
+                    </span>
+                  </div>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Fees</TableCell>
+                <TableCell align="right">
+                  <div className="flex items-end flex-col gap-2">
+                    <SolBalance lamports={fee} />
+                    <span className="text-muted">
+                      {`Each signature costs ${DEFAULT_FEES.lamportsPerSignature} lamports`}
+                    </span>
+                  </div>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <div className="flex items-start flex-col gap-2">
+                    Fee payer
+                    <div className="flex items-center gap-2">
+                      <Chip label="Signer" size="small"/>
+                      <Chip label="Writable" size="small"/>
+                      {/* <span className="badge badge-soft-info mr-2">Signer</span>
+                      <span className="badge badge-soft-danger mr-2">Writable</span> */}
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="text-right">
+                  {message.accountKeys.length === 0 ? (
+                    "No Fee Payer"
+                  ) : (
+                    <AddressWithContext
+                      pubkey={message.accountKeys[0]}
+                      validator={feePayerValidator}
+                    />
+                  )}
+                </TableCell>
+              </TableRow>
+
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+      </ContentCard>
+      <div className="card">
       </div>
     </>
   );

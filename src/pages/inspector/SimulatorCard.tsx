@@ -2,8 +2,9 @@ import React from "react";
 import bs58 from "bs58";
 import { Connection, Message, Transaction } from "@velas/web3";
 import { useCluster } from "providers/cluster";
-import { TableCardBody } from "components/common/TableCardBody";
 import { programLabel } from "utils/tx";
+import ContentCard from "components/common/ContentCard";
+import { Chip, Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 
 type LogMessage = {
   text: string;
@@ -18,7 +19,7 @@ type InstructionLogs = {
 
 const DEFAULT_SIGNATURE = bs58.encode(Buffer.alloc(64).fill(0));
 
-export function SimulatorCard({ message }: { message: Message }) {
+export function SimulatorCard({ message, className }: { message: Message, className?: string }) {
   const { cluster } = useCluster();
   const {
     simulate,
@@ -28,33 +29,35 @@ export function SimulatorCard({ message }: { message: Message }) {
   } = useSimulator(message);
   if (simulating) {
     return (
-      <div className="card">
-        <div className="card-header">
-          <h3 className="card-header-title">Transaction Simulation</h3>
-        </div>
-        <div className="card-body text-center">
+      <ContentCard
+        title={<Typography variant="h3">Transaction Simulation</Typography>}
+        className={className}
+      >
+        <div className="p-4 text-center">
           <span className="spinner-grow spinner-grow-sm mr-2"></span>
           Simulating
         </div>
-      </div>
+      </ContentCard>
     );
   } else if (!logs) {
     return (
-      <div className="card">
-        <div className="card-header">
-          <h3 className="card-header-title">Transaction Simulation</h3>
-          <button className="btn btn-sm d-flex btn-white" onClick={simulate}>
+      <ContentCard
+        title={<Typography variant="h3">Transaction Simulation</Typography>}
+        action={(
+          <Button variant="outlined" size="small" onClick={simulate}>
             Simulate
-          </button>
-        </div>
+          </Button>
+        )}
+        className={className}
+      >
         {simulationError ? (
-          <div className="card-body">
+          <div>
             Failed to run simulation:
             <span className="text-warning ml-2">{simulationError}</span>
           </div>
         ) : (
-          <div className="card-body text-muted">
-            <ul>
+          <div className="text-secondary p-8 pl-12">
+            <ul className="list-disc">
               <li>
                 Simulation is free and will run this transaction against the
                 latest confirmed ledger state.
@@ -66,59 +69,65 @@ export function SimulatorCard({ message }: { message: Message }) {
             </ul>
           </div>
         )}
-      </div>
+      </ContentCard>
     );
   }
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title">Transaction Simulation</h3>
-        <button className="btn btn-sm d-flex btn-white" onClick={simulate}>
+    <ContentCard
+      title={<Typography variant="h3">Transaction Simulation</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          onClick={simulate}
+        >
           Retry
-        </button>
-      </div>
-      <TableCardBody>
-        {message.instructions.map((ix, index) => {
-          const programId = message.accountKeys[ix.programIdIndex];
-          const programName =
-            programLabel(programId.toBase58(), cluster) || "Unknown";
-          const programLogs: InstructionLogs | undefined = logs[index];
+        </Button>
+      )}
+      className={className}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            {message.instructions.map((ix, index) => {
+              const programId = message.accountKeys[ix.programIdIndex];
+              const programName =
+                programLabel(programId.toBase58(), cluster) || "Unknown";
+              const programLogs: InstructionLogs | undefined = logs[index];
 
-          let badgeColor = "white";
-          if (programLogs) {
-            badgeColor = programLogs.failed ? "warning" : "success";
-          }
+              let badgeColor = "white";
+              if (programLogs) {
+                badgeColor = programLogs.failed ? "warning" : "success";
+              }
 
-          return (
-            <tr key={index}>
-              <td>
-                <div className="d-flex align-items-center">
-                  <span className={`badge badge-soft-${badgeColor} mr-2`}>
-                    #{index + 1}
-                  </span>
-                  {programName} Instruction
-                </div>
-                {programLogs && (
-                  <div className="d-flex align-items-start flex-column font-mono p-2 font-size-sm">
-                    {programLogs.logs.map((log, key) => {
-                      return (
-                        <span key={key}>
-                          <span className="text-muted">{log.prefix}</span>
-                          <span className={`text-${log.style}`}>
-                            {log.text}
-                          </span>
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-              </td>
-            </tr>
-          );
-        })}
-      </TableCardBody>
-    </div>
+              return (
+                <TableRow key={index}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Chip variant="filled" size="small" label={`#${index + 1}`} />
+                      {programName} Instruction
+                    </div>
+                    {programLogs && (
+                      <div className="flex items-start flex-col font-mono p-2">
+                        {programLogs.logs.map((log, key) => {
+                          return (
+                            <span key={key}>
+                              <span className="text-muted">{log.prefix}</span>
+                              <span className={`text-${log.style}`}>
+                                {log.text}
+                              </span>
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 

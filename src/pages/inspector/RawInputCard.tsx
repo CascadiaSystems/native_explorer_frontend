@@ -4,6 +4,10 @@ import type { TransactionData } from "./InspectorPage";
 import { useQuery } from "utils/url";
 import { useHistory, useLocation } from "react-router";
 import base58 from "bs58";
+import ContentCard from "components/common/ContentCard";
+import { TextareaAutosize, Typography } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
 function deserializeTransaction(bytes: Uint8Array): {
   message: Message;
@@ -130,51 +134,45 @@ export function RawInput({
 
   const placeholder = "Paste raw base64 encoded transaction message";
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title">Encoded Transaction Message</h3>
-      </div>
-      <div className="card-body">
-        <textarea
-          rows={rows}
+    <ContentCard
+      title={<Typography variant="h3">Encoded Transaction Message</Typography>}
+      footer={(
+        <div>
+          <Typography className="pb-4">Instructions</Typography>
+          <ul className="pl-4">
+            <li className="mb-4">
+              <strong>CLI: </strong>Use <code className="bg-grey-dark p-1 text-secondary">--dump-transaction-message</code>{" "}
+              flag
+            </li>
+            <li className="mb-4">
+              <strong>Rust: </strong>Add <code className="bg-grey-dark p-1 text-secondary">base64</code> crate dependency and{" "}
+              <code className="bg-grey-dark p-1 text-secondary">
+                println!("{}", base64::encode(&transaction.message_data()));
+              </code>
+            </li>
+            <li>
+              <strong>JavaScript: </strong>Add{" "}
+              <code className="bg-grey-dark p-1 text-secondary">console.log(tx.serializeMessage().toString("base64"));</code>
+            </li>
+          </ul>
+        </div>
+      )}
+    >
+      <div className="p-4 bg-grey-light">
+        <TextareaAutosize
+          minRows={rows}
           onInput={onInput}
           ref={rawTransactionInput}
-          className="form-control form-control-flush form-control-auto font-mono"
           placeholder={placeholder}
-        ></textarea>
-        <div className="row align-items-center">
-          <div className="col d-flex align-items-center">
-            {error && (
-              <>
-                <span className="text-warning small mr-2">
-                  <i className="fe fe-alert-circle"></i>
-                </span>
+          className="font-mono w-full bg-grey-light resize-none focus:outline-none"
+        />
+        {error && (
+          <Typography variant="body2" color="secondary" className="pt-2">
+            <FontAwesomeIcon icon={faCircleXmark} /> {error}
+          </Typography>
+        )}
+      </div>
 
-                <span className="text-warning">{error}</span>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="card-footer">
-        <h3>Instructions</h3>
-        <ul>
-          <li className="mb-2">
-            <strong>CLI: </strong>Use <code>--dump-transaction-message</code>{" "}
-            flag
-          </li>
-          <li className="mb-2">
-            <strong>Rust: </strong>Add <code>base64</code> crate dependency and{" "}
-            <code>
-              println!("{}", base64::encode(&transaction.message_data()));
-            </code>
-          </li>
-          <li>
-            <strong>JavaScript: </strong>Add{" "}
-            <code>console.log(tx.serializeMessage().toString("base64"));</code>
-          </li>
-        </ul>
-      </div>
-    </div>
+    </ContentCard>
   );
 }
