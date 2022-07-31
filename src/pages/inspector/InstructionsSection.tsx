@@ -11,7 +11,7 @@ export function InstructionsSection({ message }: { message: Message }) {
   return (
     <>
       {message.instructions.map((ix, index) => {
-        return <InstructionCard key={index} {...{ message, ix, index }} />;
+        return <InstructionCard key={index} {...{ message, ix, index }} className="mt-6"/>;
       })}
     </>
   );
@@ -21,10 +21,12 @@ function InstructionCard({
   message,
   ix,
   index,
+  className,
 }: {
   message: Message;
   ix: CompiledInstruction;
   index: number;
+  className?: string
 }) {
   const [expanded, setExpanded] = React.useState(false);
   const { cluster } = useCluster();
@@ -45,12 +47,12 @@ function InstructionCard({
   }
 
   return (
-
     <div className="card" id={`instruction-index-${index + 1}`} key={index}>
       <ContentCard
+        className={className}
         title={(
           <div className="flex items-center gap-2">
-            <Chip variant="filled" label={`#{index + 1}`} />
+            <Chip variant="filled" label={`#${index + 1}`} />
             <Typography variant="h3"> {`${programName} Instruction`} </Typography>
           </div>
         )}
@@ -79,16 +81,16 @@ function InstructionCard({
                   return (
                     <TableRow key={index}>
                       <TableCell>
-                        <div className="flex items-start flex-col">
-                          Account #{index + 1}
-                          <span className="mt-1">
+                        <div className="flex flex-col gap-2">
+                            Account #{index + 1}
+                          <div className="flex items-center gap-2">
                             {accountIndex < message.header.numRequiredSignatures && (
                               <Chip label="Signer" variant="filled" size="small" />
-                              )}
+                            )}
                             {message.isAccountWritable(accountIndex) && (
                               <Chip label="Writable" variant="filled" size="small" />
                             )}
-                          </span>
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell align="right">
@@ -101,7 +103,7 @@ function InstructionCard({
                 })}
                 <TableRow>
                   <TableCell>
-                    Instruction Data <span className="text-muted">(Hex)</span>
+                    Instruction Data <span className="text-secondary">(Hex)</span>
                   </TableCell>
                   <TableCell align="right">
                     <pre className="inline-block p-3 bg-grey-dark text-left">

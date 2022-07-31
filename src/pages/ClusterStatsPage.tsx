@@ -19,7 +19,7 @@ import { useAccountInfo, useFetchAccountInfo } from "providers/accounts";
 import { FetchStatus } from "providers/cache";
 import { useVoteAccounts } from "providers/accounts/vote-accounts";
 
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography, CircularProgress } from '@mui/material';
 // @ts-ignore
 import * as CoinGecko from "coingecko-api";
 
@@ -340,7 +340,8 @@ export function StatsNotReady({ error }: { error: boolean }) {
   }
 
   return (
-    <div className="p-4 text-center">
+    <div className="flex justify-center items-center gap-2 p-4">
+      <CircularProgress size={20} color="primary" />
       Loading
     </div>
   );

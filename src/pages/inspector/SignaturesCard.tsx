@@ -4,15 +4,19 @@ import * as nacl from "tweetnacl";
 import { Message, PublicKey } from "@velas/web3";
 import { Signature } from "components/common/Signature";
 import { Address } from "components/common/Address";
+import ContentCard from "components/common/ContentCard";
+import { TableContainer, Table, TableHead, Typography, TableRow, TableCell, TableBody } from "@mui/material";
 
 export function TransactionSignatures({
   signatures,
   message,
   rawMessage,
+  className,
 }: {
   signatures: (string | null)[];
   message: Message;
   rawMessage: Uint8Array;
+  className?: string;
 }) {
   const signatureRows = React.useMemo(() => {
     return signatures.map((signature, index) => {
@@ -41,25 +45,27 @@ export function TransactionSignatures({
   }, [signatures, message, rawMessage]);
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title">Signatures</h3>
-      </div>
-      <div className="table-responsive mb-0">
-        <table className="table table-sm table-nowrap card-table">
-          <thead>
-            <tr>
-              <th className="text-muted">#</th>
-              <th className="text-muted">Signature</th>
-              <th className="text-muted">Signer</th>
-              <th className="text-muted">Validity</th>
-              <th className="text-muted">Details</th>
-            </tr>
-          </thead>
-          <tbody className="list">{signatureRows}</tbody>
-        </table>
-      </div>
-    </div>
+    <ContentCard
+      title={<Typography variant="h3">Signatures</Typography>}
+      className={className}
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Signature</TableCell>
+              <TableCell>Signer</TableCell>
+              <TableCell align="right">Validity</TableCell>
+              <TableCell align="right">Details</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {signatureRows}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -87,21 +93,22 @@ function SignatureRow({
   index: number;
 }) {
   return (
-    <tr>
-      <td>
-        <span className="badge badge-soft-info mr-1">{index + 1}</span>
-      </td>
-      <td>
+    <TableRow>
+      <TableCell>
+        {/* <span className="badge badge-soft-info mr-1">{index + 1}</span> */}
+        {index + 1}
+      </TableCell>
+      <TableCell>
         {signature ? (
           <Signature signature={signature} truncateChars={40} />
         ) : (
           "Missing Signature"
         )}
-      </td>
-      <td>
+      </TableCell>
+      <TableCell>
         <Address pubkey={signer} link />
-      </td>
-      <td>
+      </TableCell>
+      <TableCell align="right">
         {verified === undefined ? (
           "N/A"
         ) : verified ? (
@@ -109,12 +116,12 @@ function SignatureRow({
         ) : (
           <span className="badge badge-soft-warning mr-1">Invalid</span>
         )}
-      </td>
-      <td>
+      </TableCell>
+      <TableCell align="right">
         {index === 0 && (
           <span className="badge badge-soft-info mr-1">Fee Payer</span>
         )}
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }

@@ -3,9 +3,10 @@ import { Message, PublicKey } from "@velas/web3";
 import { TableCardBody } from "components/common/TableCardBody";
 import { AddressWithContext } from "./AddressWithContext";
 import { ErrorCard } from "components/common/ErrorCard";
-import { Chip, TableCell, TableRow } from "@mui/material";
+import { Chip, TableCell, TableRow, Typography, Button, TableContainer, TableBody, Table } from "@mui/material";
+import ContentCard from "components/common/ContentCard";
 
-export function AccountsCard({ message }: { message: Message }) {
+export function AccountsCard({ message, className }: { message: Message, className?: string }) {
   const [expanded, setExpanded] = React.useState(true);
 
   const { validMessage, error } = React.useMemo(() => {
@@ -69,22 +70,27 @@ export function AccountsCard({ message }: { message: Message }) {
   }
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3 className="card-header-title">
-          {`Account List (${message.accountKeys.length})`}
-        </h3>
-        <button
-          className={`btn btn-sm d-flex ${
-            expanded ? "btn-black active" : "btn-white"
-          }`}
+    <ContentCard
+      title={<Typography variant="h3">{`Account List (${message.accountKeys.length})`}</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
           onClick={() => setExpanded((e) => !e)}
         >
           {expanded ? "Collapse" : "Expand"}
-        </button>
-      </div>
-      {expanded && <TableCardBody>{accountRows}</TableCardBody>}
-    </div>
+        </Button>
+      )}
+      className={className}
+    >
+      {expanded && (
+        <TableContainer>
+          <Table>
+            <TableBody>
+              {accountRows}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </ContentCard>
   );
 }
 
@@ -102,16 +108,16 @@ function AccountRow({
   return (
     <TableRow>
       <TableCell>
-        <div className="d-flex align-items-start flex-column">
+        <div className="flex flex-col gap-2">
           Account #{accountIndex + 1}
-          <span className="mt-1">
+          <div className="flex items-center gap-2">
             {signer && (
-              <Chip label="Signer" variant="filled" /> 
+              <Chip label="Signer" variant="filled" size="small" /> 
               )}
             {!readOnly && (
-              <Chip label="Writable" variant="filled" /> 
+              <Chip label="Writable" variant="filled" size="small" /> 
             )}
-          </span>
+          </div>
         </div>
       </TableCell>
       <TableCell className="text-lg-right">
