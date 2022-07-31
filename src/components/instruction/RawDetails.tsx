@@ -31,8 +31,8 @@ export function RawDetails({ ix }: { ix: TransactionInstruction }) {
           Instruction Data <span className="text-muted">(Hex)</span>
         </TableCell>
         <TableCell align="right">
-          {/* <pre className="d-inline-block text-left mb-0 data-wrap">{data}</pre> */}
-          {data}
+          <pre className="p-2 bg-grey-dark inline-block text-left max-w-md whitespace-pre-wrap break-words overflow-auto">{data}</pre>
+          {/* {data} */}
         </TableCell>
       </TableRow>
     </>

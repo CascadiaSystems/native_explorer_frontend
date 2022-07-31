@@ -139,11 +139,11 @@ const renderAccountRow = (
       <td>
         {account.owner && <Address pubkey={account.owner} link truncate />}
       </td>
-      <td className="text-right text-monospace">
+      <td className="text-right font-mono">
         {account.uiAmountString &&
           new BigNumber(account.uiAmountString).toFormat(balanceFixedPoint)}
       </td>
-      <td className="text-right text-monospace">{percent}</td>
+      <td className="text-right font-mono">{percent}</td>
     </tr>
   );
 };

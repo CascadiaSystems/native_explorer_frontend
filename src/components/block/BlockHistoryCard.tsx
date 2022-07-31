@@ -52,7 +52,7 @@ export function BlockHistoryCard({ block }: { block: BlockResponse }) {
 
               if (tx.transaction.signatures.length > 0) {
                 signature = (
-                  <Signature signature={tx.transaction.signatures[0]} link />
+                  <Signature signature={tx.transaction.signatures[0]} link alignRight/>
                 );
               }
 

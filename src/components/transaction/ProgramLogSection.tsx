@@ -209,7 +209,7 @@ export function ProgramLogSection({ signature }: SignatureProps) {
     <>
       <Typography variant="h2" className="py-6"> Program Log </Typography>
       <ContentCard className="p-4">
-        <ul className="p-4 bg-grey-dark overflow-auto" style={{minHeight: '12.5rem', maxHeight: '20rem'}}>
+        <ul className="p-4 bg-grey-dark overflow-auto font-mono" style={{minHeight: '12.5rem', maxHeight: '20rem'}}>
           {logMessages &&
             logMessages.map((message, key) => (
               <li key={key}>{message.replace(/^Program log: /, "")}</li>

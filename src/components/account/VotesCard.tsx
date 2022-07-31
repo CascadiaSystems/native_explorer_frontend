@@ -32,7 +32,7 @@ export function VotesCard({ voteAccount }: { voteAccount: VoteAccount }) {
 const renderAccountRow = (vote: Vote, index: number) => {
   return (
     <TableRow key={index}>
-      <TableCell className="w-1 text-monospace">
+      <TableCell className="w-1 font-mono">
         <Slot slot={vote.slot} link />
       </TableCell>
       <TableCell align="right">{vote.confirmationCount}</TableCell>

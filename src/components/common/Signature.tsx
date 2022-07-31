@@ -32,8 +32,8 @@ export function Signature({
         alignRight ? "justify-content-end" : ""
       }`}
     >
-      <Copyable text={signature} replaceText={!alignRight}>
-        <Typography color="secondary" className="hover:text-primary">
+      <Copyable text={signature} replaceText={!alignRight} align={alignRight?"end":"start"}>
+        <Typography color="secondary" className={`${link?"hover:text-primary":""} font-mono`}>
           {link ? (
             <Link
               className={truncate ? "text-truncate signature-truncate" : ""}

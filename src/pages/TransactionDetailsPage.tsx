@@ -30,9 +30,10 @@ import { InstructionsSection } from "components/transaction/InstructionsSection"
 import { ProgramLogSection } from "components/transaction/ProgramLogSection";
 import { clusterPath } from "utils/url";
 import ContentCard from "components/common/ContentCard";
-import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Tooltip } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 
 const AUTO_REFRESH_INTERVAL = 2000;
 const ZERO_CONFIRMATION_BAILOUT = 5;
@@ -247,7 +248,7 @@ function StatusCard({
             <TableCell>Timestamp</TableCell>
             <TableCell align="right">
               {info.timestamp !== "unavailable" ? (
-                <span className="text-monospace">
+                <span className="font-mono">
                   {displayTimestamp(info.timestamp * 1000)}
                 </span>
               ) : (
@@ -277,7 +278,7 @@ function StatusCard({
           <TableRow>
             <TableCell>Block</TableCell>
             <TableCell align="right">
-              <Slot slot={info.slot} link />
+              <Slot slot={info.slot} link align="end"/>
             </TableCell>
           </TableRow>
 
@@ -287,9 +288,16 @@ function StatusCard({
                 {isNonce ? (
                   "Nonce"
                 ) : (
-                  <InfoTooltip text="Transactions use a previously confirmed blockhash as a nonce to prevent double spends">
-                    Recent Blockhash
-                  </InfoTooltip>
+                  <Tooltip 
+                    title={(
+                      <Typography variant="body2">Transactions use a previously confirmed blockhash as a nonce to prevent double spends</Typography>
+                    )}
+                    arrow placement="top"
+                  >
+                    <Typography>Recent Blockhash <FontAwesomeIcon icon={faCircleQuestion} /></Typography>
+                  </Tooltip>
+                  // <InfoTooltip text="Transactions use a previously confirmed blockhash as a nonce to prevent double spends">
+                  // </InfoTooltip>
                 )}
               </TableCell>
               <TableCell align="right">{blockhash}</TableCell>
@@ -377,16 +385,16 @@ function AccountsCard({
         </TableCell>
         <TableCell align="right">
           {index === 0 && (
-            <Chip label="Fee Payer" variant="filled" className="ml-1"/>
+            <Chip label="Fee Payer" variant="filled" className="ml-2" size="small"/>
             )}
           {!account.writable && (
-            <Chip label="Readonly" variant="filled" className="ml-1"/>
+            <Chip label="Readonly" variant="filled" className="ml-2" size="small"/>
             )}
           {account.signer && (
-            <Chip label="Signer" variant="filled" className="ml-1"/>
+            <Chip label="Signer" variant="filled" className="ml-2" size="small"/>
             )}
           {message.instructions.find((ix) => ix.programId.equals(pubkey)) && (
-            <Chip label="Program" variant="filled" className="ml-1"/>
+            <Chip label="Program" variant="filled" className="ml-2" size="small"/>
           )}
         </TableCell>
       </TableRow>
@@ -394,25 +402,23 @@ function AccountsCard({
   });
 
   return (
-    <>
-      <ContentCard
-        title={<Typography variant="h3">Account Inputs</Typography>}
-        className="mt-6"
-      >
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Address</TableCell>
-                <TableCell>Change (VLX)</TableCell>
-                <TableCell align="right">Post Balance (VLX)</TableCell>
-                <TableCell align="right">Details</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>{accountRows}</TableBody>
-          </Table>
-        </TableContainer>
-      </ContentCard>
-    </>
+    <ContentCard
+      title={<Typography variant="h3">Account Inputs</Typography>}
+      className="mt-6"
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Address</TableCell>
+              <TableCell>Change (VLX)</TableCell>
+              <TableCell align="right">Post Balance (VLX)</TableCell>
+              <TableCell align="right">Details</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>{accountRows}</TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }

@@ -16,14 +16,10 @@ export function RawParsedDetails({
         <TableCell>
           Instruction Data (JSON)
         </TableCell>
-        <TableCell>
-          <div className="flex justify-end">
-            <div className="p-4 bg-grey-dark">
-              <pre className="d-inline-block text-left json-wrap">
-                {JSON.stringify(ix.parsed, null, 2)}
-              </pre>
-            </div>
-          </div>
+        <TableCell align="right">
+          <pre className="inline-block p-3 bg-grey-dark text-left">
+            {JSON.stringify(ix.parsed, null, 2)}
+          </pre>
         </TableCell>
       </TableRow>
     </>

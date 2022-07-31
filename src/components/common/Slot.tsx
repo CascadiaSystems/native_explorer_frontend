@@ -7,19 +7,18 @@ import { Copyable } from "./Copyable";
 type Props = {
   slot: number;
   link?: boolean;
+  align?: "start"|"end";
 };
-export function Slot({ slot, link }: Props) {
+export function Slot({ slot, link, align }: Props) {
   return link ? (
-    <Copyable text={slot.toString()}>
-      <span className="text-monospace">
-        <Link to={clusterPath(`/block/${slot}`)}>
-          <Typography color="secondary" className="hover:text-primary">
-            { slot.toLocaleString("en-US") }
-          </Typography>
-        </Link>
-      </span>
+    <Copyable text={slot.toString()} align={align}>
+      <Link to={clusterPath(`/block/${slot}`)}>
+        <Typography color="secondary" className={`${link?"hover:text-primary":""} font-mono`}>
+          { slot.toLocaleString("en-US") }
+        </Typography>
+      </Link>
     </Copyable>
   ) : (
-    <span className="text-monospace">{slot.toLocaleString("en-US")}</span>
+    <span className="font-mono">{slot.toLocaleString("en-US")}</span>
   );
 }

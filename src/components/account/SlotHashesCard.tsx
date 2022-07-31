@@ -1,5 +1,6 @@
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import ContentCard from "components/common/ContentCard";
 import { Slot } from "components/common/Slot";
-import React from "react";
 import {
   SysvarAccount,
   SlotHashesInfo,
@@ -13,48 +14,41 @@ export function SlotHashesCard({
 }) {
   const slotHashes = sysvarAccount.info as SlotHashesInfo;
   return (
-    <div className="card">
-      <div className="card-header">
-        <div className="row align-items-center">
-          <div className="col">
-            <h3 className="card-header-title">Slot Hashes</h3>
-          </div>
+    <ContentCard
+      title={<Typography variant="h4">Slot Hashes</Typography>}
+      footer={slotHashes.length > 0 ? null : (
+        <div className="p-4 text-center">
+          No hashes found
         </div>
-      </div>
-
-      <div className="table-responsive mb-0">
-        <table className="table table-sm table-nowrap card-table">
-          <thead>
-            <tr>
-              <th className="w-1 text-muted">Slot</th>
-              <th className="text-muted">Blockhash</th>
-            </tr>
-          </thead>
-          <tbody className="list">
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Slot</TableCell>
+              <TableCell align="right">Blockhash</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {slotHashes.length > 0 &&
               slotHashes.map((entry: SlotHashEntry, index) => {
                 return renderAccountRow(entry, index);
               })}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="card-footer">
-        <div className="text-muted text-center">
-          {slotHashes.length > 0 ? "" : "No hashes found"}
-        </div>
-      </div>
-    </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
 const renderAccountRow = (entry: SlotHashEntry, index: number) => {
   return (
-    <tr key={index}>
-      <td className="w-1 text-monospace">
+    <TableRow key={index}>
+      <TableCell>
         <Slot slot={entry.slot} link />
-      </td>
-      <td className="text-monospace">{entry.hash}</td>
-    </tr>
+      </TableCell>
+      <TableCell align="right">{entry.hash}</TableCell>
+    </TableRow>
   );
 };

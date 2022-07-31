@@ -70,7 +70,7 @@ export function InitializeDetailsCard(props: {
       {info.lockup.unixTimestamp > 0 && (
         <TableRow>
           <TableCell>Lockup Expiry Timestamp</TableCell>
-          <TableCell className="text-lg-right text-monospace">
+          <TableCell className="text-lg-right font-mono">
             {displayTimestampUtc(info.lockup.unixTimestamp * 1000)}
           </TableCell>
         </TableRow>

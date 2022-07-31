@@ -10,11 +10,13 @@ type CopyState = "copy" | "copied" | "errored";
 export function Copyable({
   text,
   children,
+  align,
   replaceText,
 }: {
   text: string;
   children: ReactNode;
   replaceText?: boolean;
+  align?: "start" | "end"
 }) {
   const [state, setState] = useState<CopyState>("copy");
 
@@ -60,7 +62,7 @@ export function Copyable({
   // }
   
   return (
-    <div className="flex items-center gap-2 justify-end">
+    <div className={`flex items-center gap-2 justify-${align?align:"start"}`}>
       <CopyIcon />
       { children }
     </div>

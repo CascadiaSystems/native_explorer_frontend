@@ -75,8 +75,7 @@ function renderDetails<T>(
         <TableRow key="vote-hash">
           <TableCell>Vote Hash</TableCell>
           <TableCell align="right">
-            {value.hash}
-            {/* <pre className="d-inline-block text-left mb-0">{value.hash}</pre> */}
+            <pre className="inline-block text-left p-2 bg-grey-dark">{value.hash}</pre>
           </TableCell>
         </TableRow>
       );
@@ -96,9 +95,9 @@ function renderDetails<T>(
         <TableRow key="vote-slots">
           <TableCell>Slots</TableCell>
           <TableCell align="right">
-            {value.slots.join("\n")}
-            {/* <pre className="d-inline-block text-left mb-0">
-            </pre> */}
+            <pre className="inline-block p-2 bg-grey-dark text-left">
+              {value.slots.join("\n")}
+            </pre>
           </TableCell>
         </TableRow>
       );

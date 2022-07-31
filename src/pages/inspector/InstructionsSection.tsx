@@ -103,14 +103,10 @@ function InstructionCard({
                   <TableCell>
                     Instruction Data <span className="text-muted">(Hex)</span>
                   </TableCell>
-                  <TableCell>
-                    <div className="flex justify-end">
-                      <div className="p-4 bg-grey-dark">
-                        <pre className="d-inline-block text-left mb-0 data-wrap">
-                          {data}
-                        </pre>
-                      </div>
-                    </div>
+                  <TableCell align="right">
+                    <pre className="inline-block p-3 bg-grey-dark text-left">
+                      {data}
+                    </pre>
                   </TableCell>
                 </TableRow>
               </TableBody>
