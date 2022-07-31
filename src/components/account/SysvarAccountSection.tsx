@@ -20,6 +20,10 @@ import {
 } from "components/common/Account";
 import { displayTimestamp } from "utils/date";
 import { Slot } from "components/common/Slot";
+import ContentCard from "components/common/ContentCard";
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 export function SysvarAccountSection({
   account,
@@ -103,17 +107,26 @@ function SysvarAccountRecentBlockhashesCard({
 }) {
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Recent Blockhashes"
-        refresh={() => refresh(account.pubkey)}
-      />
-
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
-      </TableCardBody>
-    </div>
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Recent Blockhashes</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          onClick={() => refresh(account.pubkey)}
+          startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+        >
+          Refresh
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <AccountAddressRow account={account} />
+            <AccountBalanceRow account={account} />
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -125,17 +138,26 @@ function SysvarAccountSlotHashes({
 }) {
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Slot Hashes"
-        refresh={() => refresh(account.pubkey)}
-      />
-
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
-      </TableCardBody>
-    </div>
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Slot Hashes</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+          onClick={() => refresh(account.pubkey)}
+        >
+          Refresh
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <AccountAddressRow account={account} />
+            <AccountBalanceRow account={account} />            
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -154,31 +176,39 @@ function SysvarAccountSlotHistory({
     (v, k) => sysvarAccount.info.nextSlot - k
   );
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Slot History"
-        refresh={() => refresh(account.pubkey)}
-      />
-
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
-
-        <tr>
-          <td className="align-top">
-            Slot History{" "}
-            <span className="text-muted">(previous 100 slots)</span>
-          </td>
-          <td className="text-lg-right text-monospace">
-            {history.map((val) => (
-              <p key={val} className="mb-0">
-                <Slot slot={val} link />
-              </p>
-            ))}
-          </td>
-        </tr>
-      </TableCardBody>
-    </div>
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Slot History</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+          onClick={() => refresh(account.pubkey)}
+        >
+          Refresh
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <AccountAddressRow account={account} />
+            <AccountBalanceRow account={account} />
+            <TableRow>
+              <TableCell>
+                Slot History{" "}
+                <span className="text-muted">(previous 100 slots)</span>
+              </TableCell>
+              <TableCell align="right">
+                {history.map((val) => (
+                  <p key={val} className="mb-0">
+                    <Slot slot={val} link />
+                  </p>
+                ))}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -190,17 +220,26 @@ function SysvarAccountStakeHistory({
 }) {
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Stake History"
-        refresh={() => refresh(account.pubkey)}
-      />
-
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
-      </TableCardBody>
-    </div>
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Stake History</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+          onClick={() => refresh(account.pubkey)}
+        >
+          Refresh
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <AccountAddressRow account={account} />
+            <AccountBalanceRow account={account} />
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -213,24 +252,27 @@ function SysvarAccountFeesCard({
 }) {
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Fees"
-        refresh={() => refresh(account.pubkey)}
-      />
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Fees</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+          onClick={() => refresh(account.pubkey)}
+        >
+          Refresh
+        </Button>
+      )}
+    >
+      <AccountAddressRow account={account} />
+      <AccountBalanceRow account={account} />
 
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
-
-        <tr>
-          <td>Lamports Per Signature</td>
-          <td className="text-lg-right">
-            {sysvarAccount.info.feeCalculator.lamportsPerSignature}
-          </td>
-        </tr>
-      </TableCardBody>
-    </div>
+      <TableRow>
+        <TableCell>Lamports Per Signature</TableCell>
+        <TableCell align="right">
+          {sysvarAccount.info.feeCalculator.lamportsPerSignature}
+        </TableCell>
+      </TableRow>
+    </ContentCard>
   );
 }
 
@@ -243,50 +285,59 @@ function SysvarAccountEpochScheduleCard({
 }) {
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Epoch Schedule"
-        refresh={() => refresh(account.pubkey)}
-      />
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Epoch Schedule</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+          onClick={() => refresh(account.pubkey)}
+        >
+          Refresh
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <AccountAddressRow account={account} />
+            <AccountBalanceRow account={account} />
 
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
+            <TableRow>
+              <TableCell>Slots Per Epoch</TableCell>
+              <TableCell align="right">{sysvarAccount.info.slotsPerEpoch}</TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Slots Per Epoch</td>
-          <td className="text-lg-right">{sysvarAccount.info.slotsPerEpoch}</td>
-        </tr>
+            <TableRow>
+              <TableCell>Leader Schedule Slot Offset</TableCell>
+              <TableCell align="right">
+                {sysvarAccount.info.leaderScheduleSlotOffset}
+              </TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Leader Schedule Slot Offset</td>
-          <td className="text-lg-right">
-            {sysvarAccount.info.leaderScheduleSlotOffset}
-          </td>
-        </tr>
+            <TableRow>
+              <TableCell>Epoch Warmup Enabled</TableCell>
+              <TableCell align="right">
+                <code>{sysvarAccount.info.warmup ? "true" : "false"}</code>
+              </TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Epoch Warmup Enabled</td>
-          <td className="text-lg-right">
-            <code>{sysvarAccount.info.warmup ? "true" : "false"}</code>
-          </td>
-        </tr>
+            <TableRow>
+              <TableCell>First Normal Epoch</TableCell>
+              <TableCell align="right">
+                {sysvarAccount.info.firstNormalEpoch}
+              </TableCell>
+            </TableRow>
 
-        <tr>
-          <td>First Normal Epoch</td>
-          <td className="text-lg-right">
-            {sysvarAccount.info.firstNormalEpoch}
-          </td>
-        </tr>
-
-        <tr>
-          <td>First Normal Slot</td>
-          <td className="text-lg-right">
-            <Slot slot={sysvarAccount.info.firstNormalSlot} />
-          </td>
-        </tr>
-      </TableCardBody>
-    </div>
+            <TableRow>
+              <TableCell>First Normal Slot</TableCell>
+              <TableCell align="right">
+                <Slot slot={sysvarAccount.info.firstNormalSlot} />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -299,43 +350,52 @@ function SysvarAccountClockCard({
 }) {
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Clock"
-        refresh={() => refresh(account.pubkey)}
-      />
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Clock</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+          onClick={() => refresh(account.pubkey)}
+        >
+          Refresh
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <AccountAddressRow account={account} />
+            <AccountBalanceRow account={account} />
 
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
+            <TableRow>
+              <TableCell>Timestamp</TableCell>
+              <TableCell align="right">
+                {displayTimestamp(sysvarAccount.info.unixTimestamp * 1000)}
+              </TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Timestamp</td>
-          <td className="text-lg-right text-monospace">
-            {displayTimestamp(sysvarAccount.info.unixTimestamp * 1000)}
-          </td>
-        </tr>
+            <TableRow>
+              <TableCell>Epoch</TableCell>
+              <TableCell align="right">{sysvarAccount.info.epoch}</TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Epoch</td>
-          <td className="text-lg-right">{sysvarAccount.info.epoch}</td>
-        </tr>
+            <TableRow>
+              <TableCell>Leader Schedule Epoch</TableCell>
+              <TableCell align="right">
+                {sysvarAccount.info.leaderScheduleEpoch}
+              </TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Leader Schedule Epoch</td>
-          <td className="text-lg-right">
-            {sysvarAccount.info.leaderScheduleEpoch}
-          </td>
-        </tr>
-
-        <tr>
-          <td>Slot</td>
-          <td className="text-lg-right">
-            <Slot slot={sysvarAccount.info.slot} link />
-          </td>
-        </tr>
-      </TableCardBody>
-    </div>
+            <TableRow>
+              <TableCell>Slot</TableCell>
+              <TableCell align="right">
+                <Slot slot={sysvarAccount.info.slot} link />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }
 
@@ -348,38 +408,39 @@ function SysvarAccountRentCard({
 }) {
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Rent"
-        refresh={() => refresh(account.pubkey)}
-      />
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Rent</Typography>}
+      action={(<Button variant="outlined" size="small"
+        startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+        onClick={() => refresh(account.pubkey)}
+      >
+        Refresh
+      </Button>)}
+    >
+      <AccountAddressRow account={account} />
+      <AccountBalanceRow account={account} />
 
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
+      <TableRow>
+        <TableCell>Burn Percent</TableCell>
+        <TableCell align="right">
+          {sysvarAccount.info.burnPercent + "%"}
+        </TableCell>
+      </TableRow>
 
-        <tr>
-          <td>Burn Percent</td>
-          <td className="text-lg-right">
-            {sysvarAccount.info.burnPercent + "%"}
-          </td>
-        </tr>
+      <TableRow>
+        <TableCell>Exemption Threshold</TableCell>
+        <TableCell align="right">
+          {sysvarAccount.info.exemptionThreshold} years
+        </TableCell>
+      </TableRow>
 
-        <tr>
-          <td>Exemption Threshold</td>
-          <td className="text-lg-right">
-            {sysvarAccount.info.exemptionThreshold} years
-          </td>
-        </tr>
-
-        <tr>
-          <td>Lamports Per Byte Year</td>
-          <td className="text-lg-right">
-            {sysvarAccount.info.lamportsPerByteYear}
-          </td>
-        </tr>
-      </TableCardBody>
-    </div>
+      <TableRow>
+        <TableCell>Lamports Per Byte Year</TableCell>
+        <TableCell align="right">
+          {sysvarAccount.info.lamportsPerByteYear}
+        </TableCell>
+      </TableRow>
+    </ContentCard>
   );
 }
 
@@ -397,23 +458,23 @@ function SysvarAccountRewardsCard({
   }).format(sysvarAccount.info.validatorPointValue);
 
   return (
-    <div className="card">
-      <AccountHeader
-        title="Sysvar: Rewards"
-        refresh={() => refresh(account.pubkey)}
-      />
-
-      <TableCardBody>
+    <ContentCard
+      title={<Typography variant="h3">Sysvar: Rewards</Typography>}
+      action={(<Button variant="outlined" size="small"
+        startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+      >
+        Refresh
+      </Button>)}
+    >
         <AccountAddressRow account={account} />
         <AccountBalanceRow account={account} />
 
-        <tr>
-          <td>Validator Point Value</td>
-          <td className="text-lg-right text-monospace">
+        <TableRow>
+          <TableCell>Validator Point Value</TableCell>
+          <TableCell align="right">
             {validatorPointValueFormatted} lamports
-          </td>
-        </tr>
-      </TableCardBody>
-    </div>
+          </TableCell>
+        </TableRow>
+    </ContentCard>
   );
 }

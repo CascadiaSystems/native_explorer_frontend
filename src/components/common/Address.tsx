@@ -46,7 +46,7 @@ export function Address({
   }
 
   const content = (
-    <Copyable text={address}>
+    <Copyable text={address} align="end">
       <Typography color="secondary" className="hover:text-primary">
         {link ? (
           <Link
