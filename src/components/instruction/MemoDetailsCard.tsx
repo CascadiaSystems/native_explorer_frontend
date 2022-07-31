@@ -41,7 +41,7 @@ export function MemoDetailsCard({
       <TableRow>
         <TableCell>Data (UTF-8)</TableCell>
         <TableCell className="text-lg-right">
-          <pre className="d-inline-block text-left mb-0">{data}</pre>
+          <pre className="inline-block p-2 bg-grey-dark text-left">{data}</pre>
         </TableCell>
       </TableRow>
     </InstructionCard>

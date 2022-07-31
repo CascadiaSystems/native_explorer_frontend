@@ -55,14 +55,14 @@ export function StakeHistoryCard({
 const renderAccountRow = (entry: StakeHistoryEntry, index: number) => {
   return (
     <tr key={index}>
-      <td className="w-1 text-monospace">{entry.epoch}</td>
-      <td className="text-monospace">
+      <td className="w-1 font-mono">{entry.epoch}</td>
+      <td className="font-mono">
         <SolBalance lamports={entry.stakeHistory.effective} />
       </td>
-      <td className="text-monospace">
+      <td className="font-mono">
         <SolBalance lamports={entry.stakeHistory.activating} />
       </td>
-      <td className="text-monospace">
+      <td className="font-mono">
         <SolBalance lamports={entry.stakeHistory.deactivating} />
       </td>
     </tr>

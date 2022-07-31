@@ -25,6 +25,7 @@ export function Address({
   truncate,
   truncateUnknown,
   truncateChars,
+  alignRight
 }: Props) {
   const address = pubkey.toBase58();
   const { tokenRegistry } = useTokenRegistry();
@@ -46,8 +47,8 @@ export function Address({
   }
 
   const content = (
-    <Copyable text={address} align="end">
-      <Typography color="secondary" className="hover:text-primary">
+    <Copyable text={address} align={alignRight?"end":"start"}>
+      <Typography color="secondary" className={`font-mono ${link?"hover:text-primary":""}`}>
         {link ? (
           <Link
             className={truncate ? "text-truncate address-truncate" : ""}

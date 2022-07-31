@@ -180,7 +180,7 @@ function TpsBarChart({ performanceInfo }: TpsBarChartProps) {
           <TableBody>
             <TableRow>
               <TableCell>Transaction count</TableCell>
-              <TableCell align="right"> { transactionCount } </TableCell>
+              <TableCell align="right"><span className="font-mono">{transactionCount}</span></TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Transactions per second (TPS)</TableCell>

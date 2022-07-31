@@ -139,7 +139,7 @@ export function RawInput({
           rows={rows}
           onInput={onInput}
           ref={rawTransactionInput}
-          className="form-control form-control-flush form-control-auto text-monospace"
+          className="form-control form-control-flush form-control-auto font-mono"
           placeholder={placeholder}
         ></textarea>
         <div className="row align-items-center">

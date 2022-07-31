@@ -200,7 +200,7 @@ function SysvarAccountSlotHistory({
               <TableCell align="right">
                 {history.map((val) => (
                   <p key={val} className="mb-0">
-                    <Slot slot={val} link />
+                    <Slot slot={val} link align="end"/>
                   </p>
                 ))}
               </TableCell>
@@ -331,7 +331,7 @@ function SysvarAccountEpochScheduleCard({
             <TableRow>
               <TableCell>First Normal Slot</TableCell>
               <TableCell align="right">
-                <Slot slot={sysvarAccount.info.firstNormalSlot} />
+                <Slot slot={sysvarAccount.info.firstNormalSlot} align="end"/>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -389,7 +389,7 @@ function SysvarAccountClockCard({
             <TableRow>
               <TableCell>Slot</TableCell>
               <TableCell align="right">
-                <Slot slot={sysvarAccount.info.slot} link />
+                <Slot slot={sysvarAccount.info.slot} link align="end"/>
               </TableCell>
             </TableRow>
           </TableBody>

@@ -61,19 +61,19 @@ export function BlockOverviewCard({
               <TableRow>
                 <TableCell>Blockhash</TableCell>
                 <TableCell align="right">
-                  <span>{block.blockhash}</span>
+                  <span className="font-mono">{block.blockhash}</span>
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Parent Slot</TableCell>
                 <TableCell align="right">
-                  <Slot slot={block.parentSlot} link />
+                  <Slot slot={block.parentSlot} link align="end"/>
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Parent Blockhash</TableCell>
                 <TableCell align="right">
-                  <span>{block.previousBlockhash}</span>
+                  <span className="font-mono">{block.previousBlockhash}</span>
                 </TableCell>
               </TableRow>
               <TableRow>

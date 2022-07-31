@@ -82,7 +82,7 @@ function renderDetails<T>(
       value = <Address pubkey={value} alignRight link />;
     } else if (key === "bytes") {
       value = (
-        <pre className="d-inline-block text-left mb-0 data-wrap">{value}</pre>
+        <pre className="inline-block text-left bg-grey-dark p-2">{value}</pre>
       );
     }
 

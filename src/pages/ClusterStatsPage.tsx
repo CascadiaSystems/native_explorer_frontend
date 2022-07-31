@@ -262,7 +262,7 @@ function StatsCardBody() {
         <TableBody>
           <TableRow>
             <TableCell>Slot</TableCell>
-            <TableCell align="right"><Slot slot={absoluteSlot} link /></TableCell>
+            <TableCell align="right"><Slot slot={absoluteSlot} link align="end" /></TableCell>
           </TableRow>
           {
             blockHeight !== undefined && (

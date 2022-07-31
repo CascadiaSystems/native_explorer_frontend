@@ -1,5 +1,14 @@
 const componentStyleOverrides = (theme) => {
   return {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          '&.font-mono': {
+            fontFamily: 'monospace'
+          }
+        }
+      }
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
@@ -198,6 +207,20 @@ const componentStyleOverrides = (theme) => {
         labelSmall: {
           fontSize: '0.875rem'
         },
+      }
+    },
+    // MuiTooltip
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: theme.colors?.grey.light,
+          borderRadius: 0,
+          padding: '16px',
+          maxWidth: '250px'
+        },
+        arrow: {
+          color: theme.colors?.grey.light,
+        }
       }
     }
   }

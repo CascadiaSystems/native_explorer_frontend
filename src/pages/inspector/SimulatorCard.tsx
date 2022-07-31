@@ -100,7 +100,7 @@ export function SimulatorCard({ message }: { message: Message }) {
                   {programName} Instruction
                 </div>
                 {programLogs && (
-                  <div className="d-flex align-items-start flex-column text-monospace p-2 font-size-sm">
+                  <div className="d-flex align-items-start flex-column font-mono p-2 font-size-sm">
                     {programLogs.logs.map((log, key) => {
                       return (
                         <span key={key}>
