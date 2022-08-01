@@ -75,6 +75,21 @@ export function TopAccountsCard() {
     }
   }
 
+  const renderAccountRow = (
+    account: AccountBalancePair,
+    index: number,
+    supply: number
+  ) => {  
+    return (
+      <TableRow key={index}>
+        <TableCell> { index + 1 } </TableCell>
+        <TableCell> <Address pubkey={account.address} link /> </TableCell>
+        <TableCell align={matches?"right":"left"}> <SolBalance lamports={account.lamports} maximumFractionDigits={0} /> </TableCell>
+        <TableCell align={matches?"right":"left"}> {`${((100 * account.lamports) / supply).toFixed(3)}%`} </TableCell>
+      </TableRow>
+    );
+  };
+
   return (
     <>
       <ContentCard
@@ -119,7 +134,7 @@ export function TopAccountsCard() {
               <TableBody>
                 {
                   accounts.map((account, index) =>
-                    RenderAccountRow(account, index, supplyCount)
+                    renderAccountRow(account, index, supplyCount)
                   )
                 }
               </TableBody>
@@ -131,23 +146,7 @@ export function TopAccountsCard() {
   );
 }
 
-const RenderAccountRow = (
-  account: AccountBalancePair,
-  index: number,
-  supply: number
-) => {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('md'));
 
-  return (
-    <TableRow key={index}>
-      <TableCell> { index + 1 } </TableCell>
-      <TableCell> <Address pubkey={account.address} link /> </TableCell>
-      <TableCell align={matches?"right":"left"}> <SolBalance lamports={account.lamports} maximumFractionDigits={0} /> </TableCell>
-      <TableCell align={matches?"right":"left"}> {`${((100 * account.lamports) / supply).toFixed(3)}%`} </TableCell>
-    </TableRow>
-  );
-};
 
 const useQueryFilter = (): Filter => {
   const query = useQuery();

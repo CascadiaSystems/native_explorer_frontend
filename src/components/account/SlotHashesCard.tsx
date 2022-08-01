@@ -14,7 +14,20 @@ export function SlotHashesCard({
 }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
-  const slotHashes = sysvarAccount.info as SlotHashesInfo;
+  const slotHashes = sysvarAccount.info as SlotHashesInfo;  
+
+  const renderAccountRow = (entry: SlotHashEntry, index: number) => {
+    
+    return (
+      <TableRow key={index}>
+        <TableCell>
+          <Slot slot={entry.slot} link />
+        </TableCell>
+        <TableCell  align={matches?"right":"left"}>{entry.hash}</TableCell>
+      </TableRow>
+    );
+  };
+  
   return (
     <ContentCard
       title={<Typography variant="h4">Slot Hashes</Typography>}
@@ -35,7 +48,7 @@ export function SlotHashesCard({
           <TableBody>
             {slotHashes.length > 0 &&
               slotHashes.map((entry: SlotHashEntry, index) => {
-                return RenderAccountRow(entry, index);
+                return renderAccountRow(entry, index);
               })}
           </TableBody>
         </Table>
@@ -43,17 +56,3 @@ export function SlotHashesCard({
     </ContentCard>
   );
 }
-
-const RenderAccountRow = (entry: SlotHashEntry, index: number) => {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('md'));
-  
-  return (
-    <TableRow key={index}>
-      <TableCell>
-        <Slot slot={entry.slot} link />
-      </TableCell>
-      <TableCell  align={matches?"right":"left"}>{entry.hash}</TableCell>
-    </TableRow>
-  );
-};

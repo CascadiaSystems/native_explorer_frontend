@@ -32,27 +32,74 @@ type DetailsProps = {
 };
 
 export function BpfUpgradeableLoaderDetailsCard(props: DetailsProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
+
+  function renderDetails<T>(
+    props: DetailsProps,
+    parsed: ParsedInfo,
+    struct: Struct<T>
+  ) {
+    const info = create(parsed.info, struct);
+  
+    const attributes: JSX.Element[] = [];
+    for (let [key, value] of Object.entries(info)) {
+      if (value instanceof PublicKey) {
+        value = <Address pubkey={value} alignRight={matches} link />;
+      } else if (key === "bytes") {
+        value = (
+          <pre className="inline-block text-left bg-grey-dark p-2">{value}</pre>
+        );
+      }
+  
+      attributes.push(
+        <TableRow key={key}>
+          <TableCell>
+            {camelToTitleCase(key)}{" "}
+            {key === "bytes" && <span className="text-muted">(Base 64)</span>}
+          </TableCell>
+          <TableCell  align={matches?"right":"left"}>{value}</TableCell>
+        </TableRow>
+      );
+    }
+  
+    return (
+      <InstructionCard
+        {...props}
+        title={`BPF Upgradeable Loader: ${camelToTitleCase(parsed.type)}`}
+      >
+        <TableRow>
+          <TableCell>Program</TableCell>
+          <TableCell  align={matches?"right":"left"}>
+            <Address pubkey={props.ix.programId} alignRight={matches} link />
+          </TableCell>
+        </TableRow>
+        {attributes}
+      </InstructionCard>
+    );
+  }
+  
   try {
     const parsed = create(props.ix.parsed, ParsedInfo);
     switch (parsed.type) {
       case "write": {
-        return RenderDetails<WriteInfo>(props, parsed, WriteInfo);
+        return renderDetails<WriteInfo>(props, parsed, WriteInfo);
       }
       case "upgrade": {
-        return RenderDetails<UpgradeInfo>(props, parsed, UpgradeInfo);
+        return renderDetails<UpgradeInfo>(props, parsed, UpgradeInfo);
       }
       case "setAuthority": {
-        return RenderDetails<SetAuthorityInfo>(props, parsed, SetAuthorityInfo);
+        return renderDetails<SetAuthorityInfo>(props, parsed, SetAuthorityInfo);
       }
       case "deployWithMaxDataLen": {
-        return RenderDetails<DeployWithMaxDataLenInfo>(
+        return renderDetails<DeployWithMaxDataLenInfo>(
           props,
           parsed,
           DeployWithMaxDataLenInfo
         );
       }
       case "initializeBuffer": {
-        return RenderDetails<InitializeBufferInfo>(
+        return renderDetails<InitializeBufferInfo>(
           props,
           parsed,
           InitializeBufferInfo
@@ -69,48 +116,3 @@ export function BpfUpgradeableLoaderDetailsCard(props: DetailsProps) {
   }
 }
 
-function RenderDetails<T>(
-  props: DetailsProps,
-  parsed: ParsedInfo,
-  struct: Struct<T>
-) {
-  const info = create(parsed.info, struct);
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up('md'));
-
-  const attributes: JSX.Element[] = [];
-  for (let [key, value] of Object.entries(info)) {
-    if (value instanceof PublicKey) {
-      value = <Address pubkey={value} alignRight={matches} link />;
-    } else if (key === "bytes") {
-      value = (
-        <pre className="inline-block text-left bg-grey-dark p-2">{value}</pre>
-      );
-    }
-
-    attributes.push(
-      <TableRow key={key}>
-        <TableCell>
-          {camelToTitleCase(key)}{" "}
-          {key === "bytes" && <span className="text-muted">(Base 64)</span>}
-        </TableCell>
-        <TableCell  align={matches?"right":"left"}>{value}</TableCell>
-      </TableRow>
-    );
-  }
-
-  return (
-    <InstructionCard
-      {...props}
-      title={`BPF Upgradeable Loader: ${camelToTitleCase(parsed.type)}`}
-    >
-      <TableRow>
-        <TableCell>Program</TableCell>
-        <TableCell  align={matches?"right":"left"}>
-          <Address pubkey={props.ix.programId} alignRight={matches} link />
-        </TableCell>
-      </TableRow>
-      {attributes}
-    </InstructionCard>
-  );
-}
