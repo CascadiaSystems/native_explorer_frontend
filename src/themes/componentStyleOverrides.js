@@ -42,6 +42,12 @@ const componentStyleOverrides = (theme) => {
           borderColor: theme.colors?.grey.light,
           '&.MuiLoadingButton-loading.Mui-disabled': {
             color: theme.colors?.text.secondary
+          },
+          '&.active': {
+            borderColor: theme.colors?.text.primary
+          },
+          '&.align-left': {
+            justifyContent: 'start'
           }
         },
         startIcon: {
