@@ -35,7 +35,8 @@ const componentStyleOverrides = (theme) => {
         },
         contained: {
           '&.Mui-disabled': {
-            backgroundColor: theme.colors?.grey.light
+            backgroundColor: theme.colors?.grey.light,
+            color: theme.colors?.text.secondary
           }
         },
         outlined: {
@@ -44,7 +45,8 @@ const componentStyleOverrides = (theme) => {
             color: theme.colors?.text.secondary
           },
           '&.active': {
-            borderColor: theme.colors?.text.primary
+            borderColor: theme.colors?.text.primary,
+            backgroundColor: theme.colors?.grey.dark,
           },
           '&.align-left': {
             justifyContent: 'start'

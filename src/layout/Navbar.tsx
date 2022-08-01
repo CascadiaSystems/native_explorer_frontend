@@ -92,7 +92,7 @@ const Navbar = () => {
         <NavLink to='/'>
           <Typography variant='h2'>Sophon</Typography>
         </NavLink>
-        <div className="gap-9 flex">
+        <div className="gap-9 flex items-center">
           {
             navItems.map((item, index) => (
               <NavLink

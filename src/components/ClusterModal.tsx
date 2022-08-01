@@ -20,7 +20,7 @@ import { Button, Drawer, Switch, Typography } from "@mui/material";
 
 export function ClusterModal() {
   const [show, setShow] = useClusterModal();
-  const onClose = () => setShow(true);
+  const onClose = () => setShow(false);
   const showDeveloperSettings = localStorageIsAvailable();
   const enableCustomUrl =
     showDeveloperSettings && localStorage.getItem("enableCustomUrl") !== null;
@@ -34,7 +34,7 @@ export function ClusterModal() {
 
   return (
     <>
-      <Drawer anchor="right" open={!show} onClose={onClose}>
+      <Drawer anchor="right" open={show} onClose={onClose}>
         <div
           className={`modal fade fixed-right${show ? " show" : ""} w-96`}
         >
@@ -181,7 +181,7 @@ function ClusterToggle() {
 
         return (
           <>
-            <Button component={Link} variant="outlined" to={clusterLocation} className={`align-left ${active?'active':''}`}>
+            <Button disableRipple component={Link} variant="outlined" to={clusterLocation} className={`align-left ${active?'active':''}`}>
               {`${clusterName(net)}: `}
               <span className="text-secondary ml-2">
                 {clusterUrl(net, customUrl).replace("explorer-", "")}
