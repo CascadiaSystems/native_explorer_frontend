@@ -16,9 +16,6 @@ module.exports = {
         blue: {
           main: '#1778F2'
         }
-      },
-      spacing: {
-        '5%': '5%'
       }
     },
   },
