@@ -151,7 +151,8 @@ const componentStyleOverrides = (theme) => {
       styleOverrides: {
         root: {
           fontSize: '1rem',
-          border: 0
+          border: 0,
+          whiteSpace: 'nowrap'
         }
       }
     },
