@@ -7,7 +7,7 @@ import { Typography } from '@mui/material';
 
 
 import { clusterPath } from "utils/url";
-// import { ClusterStatusButton } from "components/ClusterStatusButton";
+import { ClusterStatusButton } from "components/ClusterStatusButton";
 // import Logo from "img/logos-solana/dark-explorer-logo.svg";
 
 const navItems = [
@@ -27,7 +27,7 @@ const navItems = [
 
 const Navbar = () => {
   // TODO: use `collapsing` to animate collapsible navbar
-  const [collapse, setCollapse] = useState(false);
+  // const [collapse, setCollapse] = useState(false);
   
   return (
     // <nav className="navbar navbar-expand-md navbar-light">
@@ -92,7 +92,7 @@ const Navbar = () => {
         <NavLink to='/'>
           <Typography variant='h2'>Sophon</Typography>
         </NavLink>
-        <div className="gap-9 flex">
+        <div className="gap-9 flex items-center">
           {
             navItems.map((item, index) => (
               <NavLink
@@ -107,7 +107,7 @@ const Navbar = () => {
               </NavLink>
             ))
           }
-          {/* <ClusterStatusButton /> */}
+          <ClusterStatusButton />
         </div>
         {/* <div className="block md:hidden">
           <IconButton disableRipple onClick={toggleDrawer(true)}>

@@ -5,6 +5,9 @@ import {
   Cluster,
   useClusterModal,
 } from "providers/cluster";
+import { LoadingButton } from "@mui/lab";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
 export function ClusterStatusBanner() {
   const [, setShow] = useClusterModal();
@@ -32,39 +35,16 @@ function Button() {
   const { status, cluster, name, customUrl } = useCluster();
   const statusName = cluster !== Cluster.Custom ? `${name}` : `${customUrl}`;
 
-  const btnClasses = (variant: string) => {
-    return `btn d-block btn-${variant}`;
-  };
-
-  const spinnerClasses = "spinner-grow spinner-grow-sm mr-2";
-
-  switch (status) {
-    case ClusterStatus.Connected:
-      return (
-        <span className={btnClasses("primary")}>
-          <span className="fe fe-check-circle mr-2"></span>
-          {statusName}
-        </span>
-      );
-
-    case ClusterStatus.Connecting:
-      return (
-        <span className={btnClasses("primary")}>
-          <span
-            className={spinnerClasses}
-            role="status"
-            aria-hidden="true"
-          ></span>
-          {statusName}
-        </span>
-      );
-
-    case ClusterStatus.Failure:
-      return (
-        <span className={btnClasses("danger")}>
-          <span className="fe fe-alert-circle mr-2"></span>
-          {statusName}
-        </span>
-      );
-  }
+  return (
+    <LoadingButton
+      disableRipple
+      variant="contained"
+      size="small"
+      loading={status===ClusterStatus.Connecting}
+      loadingPosition="start"
+      startIcon={<FontAwesomeIcon icon={status===ClusterStatus.Failure?faCircleXmark:faCircleCheck} />}
+    >
+      {statusName}
+    </LoadingButton>
+  );
 }

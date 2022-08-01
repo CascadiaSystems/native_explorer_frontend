@@ -35,13 +35,21 @@ const componentStyleOverrides = (theme) => {
         },
         contained: {
           '&.Mui-disabled': {
-            backgroundColor: theme.colors?.grey.light
+            backgroundColor: theme.colors?.grey.light,
+            color: theme.colors?.text.secondary
           }
         },
         outlined: {
           borderColor: theme.colors?.grey.light,
           '&.MuiLoadingButton-loading.Mui-disabled': {
             color: theme.colors?.text.secondary
+          },
+          '&.active': {
+            borderColor: theme.colors?.text.primary,
+            backgroundColor: theme.colors?.grey.dark,
+          },
+          '&.align-left': {
+            justifyContent: 'start'
           }
         },
         startIcon: {
