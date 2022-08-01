@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Typography } from '@mui/material';
+import { SearchBar } from "components/SearchBar";
 // import { IconButton, List, ListItem,  SwipeableDrawer, Typography } from '@mui/material';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -88,27 +88,30 @@ const Navbar = () => {
     //   </div>
     // </nav>
     <div className="bg-grey-main border-grey-light border-b">
-      <div className="flex items-center gap-20 py-6" style={{ margin: '0 5%' }}>
-        <NavLink to='/'>
-          <Typography variant='h2'>Sophon</Typography>
-        </NavLink>
-        <div className="gap-9 flex items-center">
-          {
-            navItems.map((item, index) => (
-              <NavLink
-                key={index}
-                className="hover:text-primary text-secondary"
-                // className={({ isActive }) =>
-                //   isActive ? "text-primary" : "text-secondary"
-                // }
-                to={clusterPath(item.link)}
-              >
-                {item.label}
-              </NavLink>
-            ))
-          }
-          <ClusterStatusButton />
-        </div>
+      <div className="py-6 flex items-center justify-between gap-10" style={{ margin: '0 5%' }}>
+        <div className="flex items-center gap-20">
+          <NavLink to='/'>
+            <Typography variant='h2'>Sophon</Typography>
+          </NavLink>
+          <div className="gap-9 flex items-center">
+            {
+              navItems.map((item, index) => (
+                <NavLink
+                  key={index}
+                  className="hover:text-primary text-secondary"
+                  // className={({ isActive }) =>
+                  //   isActive ? "text-primary" : "text-secondary"
+                  // }
+                  to={clusterPath(item.link)}
+                >
+                  {item.label}
+                </NavLink>
+              ))
+            }
+            <ClusterStatusButton />
+          </div>
+        </div>        
+        <SearchBar />
         {/* <div className="block md:hidden">
           <IconButton disableRipple onClick={toggleDrawer(true)}>
             <FontAwesomeIcon icon={faBars} />

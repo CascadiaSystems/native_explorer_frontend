@@ -14,6 +14,8 @@ import {
 import { Cluster, useCluster } from "providers/cluster";
 import { useTokenRegistry } from "providers/mints/token-registry";
 import { TokenInfoMap } from "@solana/spl-token-registry";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export function SearchBar() {
   const [search, setSearch] = React.useState("");
@@ -39,30 +41,48 @@ export function SearchBar() {
 
   const resetValue = "" as any;
   return (
-    <div className="container my-4">
-      <div className="row align-items-center">
-        <div className="col">
-          <Select
-            ref={(ref) => (selectRef.current = ref)}
-            options={buildOptions(search, cluster, tokenRegistry)}
-            noOptionsMessage={() => "No Results"}
-            placeholder="Search for blocks, accounts, transactions, programs, and tokens"
-            value={resetValue}
-            inputValue={search}
-            blurInputOnSelect
-            onMenuClose={() => selectRef.current?.blur()}
-            onChange={onChange}
-            styles={{
-              /* work around for https://github.com/JedWatson/react-select/issues/3857 */
-              placeholder: (style) => ({ ...style, pointerEvents: "none" }),
-              input: (style) => ({ ...style, width: "100%" }),
-            }}
-            onInputChange={onInputChange}
-            components={{ DropdownIndicator }}
-            classNamePrefix="search-bar"
-          />
-        </div>
-      </div>
+    <div className="w-full max-w-3xl">
+      <Select
+        ref={(ref) => (selectRef.current = ref)}
+        options={buildOptions(search, cluster, tokenRegistry)}
+        theme={(theme) => ({
+          ...theme,
+          borderRadius: 0,
+          colors: {
+            ...theme.colors,
+            primary: "transparent",
+            primary25: "#242526",
+            neutral0: "#18191A",
+            neutral30: "transparent",
+            neutral80: "#B0B3B8"
+          }
+
+        })}
+        noOptionsMessage={() => "No Results"}
+        placeholder="Search"
+        // placeholder="Search for blocks, accounts, transactions, programs, and tokens"
+        value={resetValue}
+        inputValue={search}
+        blurInputOnSelect
+        onMenuClose={() => selectRef.current?.blur()}
+        onChange={onChange}
+        styles={{
+          /* work around for https://github.com/JedWatson/react-select/issues/3857 */
+          placeholder: (style) => ({ ...style, pointerEvents: "none" }),
+          input: (style) => ({ ...style, width: "100%" }),
+          menu: (style) => ({
+            ...style,
+            border: "1px solid #3A3B3C"
+          }),
+          control: (style, {isFocused}) => ({
+            ...style,
+            border: "1px solid transparent"
+          })
+        }}
+        onInputChange={onInputChange}
+        components={{ DropdownIndicator, IndicatorSeparator: () => null }}
+        classNamePrefix="search-bar"
+      />
     </div>
   );
 }
@@ -274,8 +294,8 @@ function buildOptions(
 
 function DropdownIndicator() {
   return (
-    <div className="search-indicator">
-      <span className="fe fe-search"></span>
+    <div className="px-2">
+      <FontAwesomeIcon icon={faSearch} className="text-secondary"/>
     </div>
   );
 }
