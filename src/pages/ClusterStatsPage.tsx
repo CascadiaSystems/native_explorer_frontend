@@ -131,7 +131,7 @@ function StakingComponent() {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 gap-6">
       <Paper className="p-4">
         <Typography color="secondary"> Circulating Supply </Typography>
         {/* <span className="ml-2 badge badge-primary rank" style={{opacity: 0.0}}>{displayLamports(supply.circulating)}</span> */}
