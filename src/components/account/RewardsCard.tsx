@@ -9,12 +9,14 @@ import { lamportsToSolString } from "utils";
 import { useAccountInfo } from "providers/accounts";
 import BN from "bn.js";
 import ContentCard from "components/common/ContentCard";
-import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Typography } from "@mui/material";
+import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 const MAX_EPOCH = new BN(2).pow(new BN(64)).sub(new BN(1));
 
 export function RewardsCard({ pubkey }: { pubkey: PublicKey }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const address = React.useMemo(() => pubkey.toBase58(), [pubkey]);
   const info = useAccountInfo(address);
   const account = info?.data;
@@ -59,8 +61,8 @@ export function RewardsCard({ pubkey }: { pubkey: PublicKey }) {
         <TableCell>
           <Slot slot={reward.effectiveSlot} link />
         </TableCell>
-        <TableCell align="right">{lamportsToSolString(reward.amount)}</TableCell>
-        <TableCell align="right">{lamportsToSolString(reward.postBalance)}</TableCell>
+        <TableCell align={matches?"right":"left"}>{lamportsToSolString(reward.amount)}</TableCell>
+        <TableCell align={matches?"right":"left"}>{lamportsToSolString(reward.postBalance)}</TableCell>
       </TableRow>
     );
   });
@@ -91,8 +93,8 @@ export function RewardsCard({ pubkey }: { pubkey: PublicKey }) {
             <TableRow>
               <TableCell>Epoch</TableCell>
               <TableCell>Effective Slot</TableCell>
-              <TableCell align="right">Reward Amount</TableCell>
-              <TableCell align="right">Post Balance</TableCell>
+              <TableCell align={matches?"right":"left"}>Reward Amount</TableCell>
+              <TableCell align={matches?"right":"left"}>Post Balance</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

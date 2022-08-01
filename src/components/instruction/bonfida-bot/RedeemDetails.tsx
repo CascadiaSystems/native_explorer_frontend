@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { Redeem } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function RedeemDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function RedeemDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,35 +29,35 @@ export function RedeemDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Token Mint</td>
         <td className="text-lg-right">
-          <Address pubkey={info.mintKey} alignRight link />
+          <Address pubkey={info.mintKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.poolKey} alignRight link />
+          <Address pubkey={info.poolKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Source Bot Token Owner</td>
         <td className="text-lg-right">
-          <Address pubkey={info.sourcePoolTokenKey} alignRight link />
+          <Address pubkey={info.sourcePoolTokenKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Source Bot Token Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.sourcePoolTokenKey} alignRight link />
+          <Address pubkey={info.sourcePoolTokenKey} alignRight={matches} link />
         </td>
       </tr>
 

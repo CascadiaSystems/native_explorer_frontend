@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { InitializeBot } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function InitializeBotDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function InitializeBotDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,21 +29,21 @@ export function InitializeBotDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Pool Account</td>
         <td className="text-lg-right">
-          <Address pubkey={info.poolAccount} alignRight link />
+          <Address pubkey={info.poolAccount} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Mint Account</td>
         <td className="text-lg-right">
-          <Address pubkey={info.mintAccount} alignRight link />
+          <Address pubkey={info.mintAccount} alignRight={matches} link />
         </td>
       </tr>
 

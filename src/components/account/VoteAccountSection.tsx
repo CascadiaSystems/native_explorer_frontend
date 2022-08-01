@@ -9,7 +9,7 @@ import {
 } from "components/common/Account";
 import { Slot } from "components/common/Slot";
 import ContentCard from "components/common/ContentCard";
-import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 export function VoteAccountSection({
   account,
@@ -18,8 +18,11 @@ export function VoteAccountSection({
   account: Account;
   voteAccount: VoteAccount;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   const rootSlot = voteAccount.info.rootSlot;
+
   return (
     <>
       <ContentCard
@@ -43,13 +46,13 @@ export function VoteAccountSection({
                   Authorized Voter
                   {voteAccount.info.authorizedVoters.length > 1 ? "s" : ""}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align={matches?"right":"left"}>
                   {voteAccount.info.authorizedVoters.map((voter) => {
                     return (
                       <Address
                         pubkey={voter.authorizedVoter}
                         key={voter.authorizedVoter.toString()}
-                        alignRight
+                        alignRight={matches}
                         raw
                         link
                       />
@@ -60,10 +63,10 @@ export function VoteAccountSection({
 
               <TableRow>
                 <TableCell>Authorized Withdrawer</TableCell>
-                <TableCell align="right">
+                <TableCell align={matches?"right":"left"}>
                   <Address
                     pubkey={voteAccount.info.authorizedWithdrawer}
-                    alignRight
+                    alignRight={matches}
                     raw
                     link
                   />
@@ -72,19 +75,19 @@ export function VoteAccountSection({
 
               <TableRow>
                 <TableCell>Last Timestamp</TableCell>
-                <TableCell align="right">
+                <TableCell align={matches?"right":"left"}>
                   {displayTimestamp(voteAccount.info.lastTimestamp.timestamp * 1000)}
                 </TableCell>
               </TableRow>
 
               <TableRow>
                 <TableCell>Commission</TableCell>
-                <TableCell align="right">{voteAccount.info.commission + "%"}</TableCell>
+                <TableCell align={matches?"right":"left"}>{voteAccount.info.commission + "%"}</TableCell>
               </TableRow>
 
               <TableRow>
                 <TableCell>Root Slot</TableCell>
-                <TableCell align="right">
+                <TableCell align={matches?"right":"left"}>
                   {rootSlot !== null ? <Slot slot={rootSlot} link /> : "N/A"}
                 </TableCell>
               </TableRow>

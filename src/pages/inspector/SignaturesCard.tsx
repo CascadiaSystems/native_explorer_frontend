@@ -5,7 +5,7 @@ import { Message, PublicKey } from "@velas/web3";
 import { Signature } from "components/common/Signature";
 import { Address } from "components/common/Address";
 import ContentCard from "components/common/ContentCard";
-import { TableContainer, Table, TableHead, Typography, TableRow, TableCell, TableBody } from "@mui/material";
+import { TableContainer, Table, TableHead, Typography, TableRow, TableCell, TableBody, useTheme, useMediaQuery } from "@mui/material";
 
 export function TransactionSignatures({
   signatures,
@@ -18,6 +18,8 @@ export function TransactionSignatures({
   rawMessage: Uint8Array;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const signatureRows = React.useMemo(() => {
     return signatures.map((signature, index) => {
       const publicKey = message.accountKeys[index];
@@ -56,8 +58,8 @@ export function TransactionSignatures({
               <TableCell>#</TableCell>
               <TableCell>Signature</TableCell>
               <TableCell>Signer</TableCell>
-              <TableCell align="right">Validity</TableCell>
-              <TableCell align="right">Details</TableCell>
+              <TableCell  align={matches?"right":"left"}>Validity</TableCell>
+              <TableCell  align={matches?"right":"left"}>Details</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -92,6 +94,9 @@ function SignatureRow({
   verified?: boolean;
   index: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
+  
   return (
     <TableRow>
       <TableCell>
@@ -108,7 +113,7 @@ function SignatureRow({
       <TableCell>
         <Address pubkey={signer} link />
       </TableCell>
-      <TableCell align="right">
+      <TableCell  align={matches?"right":"left"}>
         {verified === undefined ? (
           "N/A"
         ) : verified ? (
@@ -117,7 +122,7 @@ function SignatureRow({
           <span className="badge badge-soft-warning mr-1">Invalid</span>
         )}
       </TableCell>
-      <TableCell align="right">
+      <TableCell  align={matches?"right":"left"}>
         {index === 0 && (
           <span className="badge badge-soft-info mr-1">Fee Payer</span>
         )}

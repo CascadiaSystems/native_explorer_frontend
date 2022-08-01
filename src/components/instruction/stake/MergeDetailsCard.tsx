@@ -7,7 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { MergeInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function MergeDetailsCard(props: {
   ix: ParsedInstruction;
@@ -18,6 +18,8 @@ export function MergeDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -32,43 +34,43 @@ export function MergeDetailsCard(props: {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={StakeProgram.programId} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={StakeProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Stake Source</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.source} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.source} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Stake Destination</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.destination} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.destination} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Authority Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.stakeAuthority} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.stakeAuthority} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Clock Sysvar</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.clockSysvar} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.clockSysvar} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Stake History Sysvar</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.stakeHistorySysvar} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.stakeHistorySysvar} alignRight={matches} link />
         </TableCell>
       </TableRow>
     </InstructionCard>

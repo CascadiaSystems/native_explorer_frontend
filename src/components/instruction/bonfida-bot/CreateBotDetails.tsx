@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { CreateBot } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function CreateBotDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function CreateBotDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,42 +29,42 @@ export function CreateBotDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Token Mint</td>
         <td className="text-lg-right">
-          <Address pubkey={info.mintKey} alignRight link />
+          <Address pubkey={info.mintKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.poolKey} alignRight link />
+          <Address pubkey={info.poolKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Target Pool Token Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.targetPoolTokenKey} alignRight link />
+          <Address pubkey={info.targetPoolTokenKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Program ID</td>
         <td className="text-lg-right">
-          <Address pubkey={info.serumProgramId} alignRight link />
+          <Address pubkey={info.serumProgramId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Signal Provider Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.signalProviderKey} alignRight link />
+          <Address pubkey={info.signalProviderKey} alignRight={matches} link />
         </td>
       </tr>
 

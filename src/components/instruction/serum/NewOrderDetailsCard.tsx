@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { NewOrder } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function NewOrderDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function NewOrderDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,56 +29,56 @@ export function NewOrderDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Market</td>
         <td className="text-lg-right">
-          <Address pubkey={info.market} alignRight link />
+          <Address pubkey={info.market} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Open Orders</td>
         <td className="text-lg-right">
-          <Address pubkey={info.openOrders} alignRight link />
+          <Address pubkey={info.openOrders} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Request Queue</td>
         <td className="text-lg-right">
-          <Address pubkey={info.requestQueue} alignRight link />
+          <Address pubkey={info.requestQueue} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Payer</td>
         <td className="text-lg-right">
-          <Address pubkey={info.payer} alignRight link />
+          <Address pubkey={info.payer} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Owner</td>
         <td className="text-lg-right">
-          <Address pubkey={info.owner} alignRight link />
+          <Address pubkey={info.owner} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Base Vault</td>
         <td className="text-lg-right">
-          <Address pubkey={info.baseVault} alignRight link />
+          <Address pubkey={info.baseVault} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Quote Vault</td>
         <td className="text-lg-right">
-          <Address pubkey={info.quoteVault} alignRight link />
+          <Address pubkey={info.quoteVault} alignRight={matches} link />
         </td>
       </tr>
 

@@ -8,7 +8,7 @@ import { SolBalance } from "utils";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { WithdrawInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function WithdrawDetailsCard(props: {
   ix: ParsedInstruction;
@@ -19,6 +19,8 @@ export function WithdrawDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -34,28 +36,28 @@ export function WithdrawDetailsCard(props: {
       <TableRow>
         <TableCell>Program</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={StakeProgram.programId} alignRight link />
+          <Address pubkey={StakeProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Stake Address</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={info.stakeAccount} alignRight link />
+          <Address pubkey={info.stakeAccount} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Authority Address</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={info.withdrawAuthority} alignRight link />
+          <Address pubkey={info.withdrawAuthority} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>To Address</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={info.destination} alignRight link />
+          <Address pubkey={info.destination} alignRight={matches} link />
         </TableCell>
       </TableRow>
 

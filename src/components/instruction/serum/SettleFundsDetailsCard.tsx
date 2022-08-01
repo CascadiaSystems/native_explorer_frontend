@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { SettleFunds } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function SettleFundsDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function SettleFundsDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,63 +29,63 @@ export function SettleFundsDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Market</td>
         <td className="text-lg-right">
-          <Address pubkey={info.market} alignRight link />
+          <Address pubkey={info.market} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Open Orders</td>
         <td className="text-lg-right">
-          <Address pubkey={info.openOrders} alignRight link />
+          <Address pubkey={info.openOrders} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Owner</td>
         <td className="text-lg-right">
-          <Address pubkey={info.owner} alignRight link />
+          <Address pubkey={info.owner} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Base Vault</td>
         <td className="text-lg-right">
-          <Address pubkey={info.baseVault} alignRight link />
+          <Address pubkey={info.baseVault} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Quote Vault</td>
         <td className="text-lg-right">
-          <Address pubkey={info.quoteVault} alignRight link />
+          <Address pubkey={info.quoteVault} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Base Wallet</td>
         <td className="text-lg-right">
-          <Address pubkey={info.baseWallet} alignRight link />
+          <Address pubkey={info.baseWallet} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Quote Wallet</td>
         <td className="text-lg-right">
-          <Address pubkey={info.quoteWallet} alignRight link />
+          <Address pubkey={info.quoteWallet} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Vault Signer</td>
         <td className="text-lg-right">
-          <Address pubkey={info.vaultSigner} alignRight link />
+          <Address pubkey={info.vaultSigner} alignRight={matches} link />
         </td>
       </tr>
 
@@ -90,7 +93,7 @@ export function SettleFundsDetailsCard(props: {
         <tr>
           <td>Referrer Quote Wallet</td>
           <td className="text-lg-right">
-            <Address pubkey={info.referrerQuoteWallet} alignRight link />
+            <Address pubkey={info.referrerQuoteWallet} alignRight={matches} link />
           </td>
         </tr>
       )}

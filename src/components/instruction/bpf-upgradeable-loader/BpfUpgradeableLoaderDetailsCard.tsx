@@ -19,7 +19,7 @@ import {
   UpgradeInfo,
   WriteInfo,
 } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 type DetailsProps = {
   tx: ParsedTransaction;
@@ -36,23 +36,23 @@ export function BpfUpgradeableLoaderDetailsCard(props: DetailsProps) {
     const parsed = create(props.ix.parsed, ParsedInfo);
     switch (parsed.type) {
       case "write": {
-        return renderDetails<WriteInfo>(props, parsed, WriteInfo);
+        return RenderDetails<WriteInfo>(props, parsed, WriteInfo);
       }
       case "upgrade": {
-        return renderDetails<UpgradeInfo>(props, parsed, UpgradeInfo);
+        return RenderDetails<UpgradeInfo>(props, parsed, UpgradeInfo);
       }
       case "setAuthority": {
-        return renderDetails<SetAuthorityInfo>(props, parsed, SetAuthorityInfo);
+        return RenderDetails<SetAuthorityInfo>(props, parsed, SetAuthorityInfo);
       }
       case "deployWithMaxDataLen": {
-        return renderDetails<DeployWithMaxDataLenInfo>(
+        return RenderDetails<DeployWithMaxDataLenInfo>(
           props,
           parsed,
           DeployWithMaxDataLenInfo
         );
       }
       case "initializeBuffer": {
-        return renderDetails<InitializeBufferInfo>(
+        return RenderDetails<InitializeBufferInfo>(
           props,
           parsed,
           InitializeBufferInfo
@@ -69,17 +69,19 @@ export function BpfUpgradeableLoaderDetailsCard(props: DetailsProps) {
   }
 }
 
-function renderDetails<T>(
+function RenderDetails<T>(
   props: DetailsProps,
   parsed: ParsedInfo,
   struct: Struct<T>
 ) {
   const info = create(parsed.info, struct);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
 
   const attributes: JSX.Element[] = [];
   for (let [key, value] of Object.entries(info)) {
     if (value instanceof PublicKey) {
-      value = <Address pubkey={value} alignRight link />;
+      value = <Address pubkey={value} alignRight={matches} link />;
     } else if (key === "bytes") {
       value = (
         <pre className="inline-block text-left bg-grey-dark p-2">{value}</pre>
@@ -92,7 +94,7 @@ function renderDetails<T>(
           {camelToTitleCase(key)}{" "}
           {key === "bytes" && <span className="text-muted">(Base 64)</span>}
         </TableCell>
-        <TableCell align="right">{value}</TableCell>
+        <TableCell  align={matches?"right":"left"}>{value}</TableCell>
       </TableRow>
     );
   }
@@ -104,8 +106,8 @@ function renderDetails<T>(
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={props.ix.programId} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={props.ix.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
       {attributes}

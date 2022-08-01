@@ -14,6 +14,7 @@ import { addressLabel } from "utils/tx";
 import { useCluster } from "providers/cluster";
 import { ErrorCard } from "components/common/ErrorCard";
 import { UnknownAccountCard } from "components/account/UnknownAccountCard";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function UpgradeableLoaderAccountSection({
   account,
@@ -68,6 +69,8 @@ export function UpgradeableProgramSection({
   programAccount: ProgramAccountInfo;
   programData: ProgramDataAccountInfo;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   const { cluster } = useCluster();
   const label = addressLabel(account.pubkey.toBase58(), cluster);
@@ -90,7 +93,7 @@ export function UpgradeableProgramSection({
         <tr>
           <td>Address</td>
           <td className="text-lg-right">
-            <Address pubkey={account.pubkey} alignRight raw />
+            <Address pubkey={account.pubkey} alignRight={matches} raw />
           </td>
         </tr>
         {label && (
@@ -112,7 +115,7 @@ export function UpgradeableProgramSection({
         <tr>
           <td>Executable Data</td>
           <td className="text-lg-right">
-            <Address pubkey={programAccount.programData} alignRight link />
+            <Address pubkey={programAccount.programData} alignRight={matches} link />
           </td>
         </tr>
         <tr>
@@ -131,7 +134,7 @@ export function UpgradeableProgramSection({
           <tr>
             <td>Upgrade Authority</td>
             <td className="text-lg-right">
-              <Address pubkey={programData.authority} alignRight link />
+              <Address pubkey={programData.authority} alignRight={matches} link />
             </td>
           </tr>
         )}
@@ -147,6 +150,8 @@ export function UpgradeableProgramDataSection({
   account: Account;
   programData: ProgramDataAccountInfo;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   return (
     <div className="card">
@@ -167,7 +172,7 @@ export function UpgradeableProgramDataSection({
         <tr>
           <td>Address</td>
           <td className="text-lg-right">
-            <Address pubkey={account.pubkey} alignRight raw />
+            <Address pubkey={account.pubkey} alignRight={matches} raw />
           </td>
         </tr>
         <tr>
@@ -198,7 +203,7 @@ export function UpgradeableProgramDataSection({
           <tr>
             <td>Upgrade Authority</td>
             <td className="text-lg-right">
-              <Address pubkey={programData.authority} alignRight link />
+              <Address pubkey={programData.authority} alignRight={matches} link />
             </td>
           </tr>
         )}
@@ -214,6 +219,8 @@ export function UpgradeableProgramBufferSection({
   account: Account;
   programBuffer: ProgramBufferAccountInfo;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   return (
     <div className="card">
@@ -234,7 +241,7 @@ export function UpgradeableProgramBufferSection({
         <tr>
           <td>Address</td>
           <td className="text-lg-right">
-            <Address pubkey={account.pubkey} alignRight raw />
+            <Address pubkey={account.pubkey} alignRight={matches} raw />
           </td>
         </tr>
         <tr>
@@ -253,7 +260,7 @@ export function UpgradeableProgramBufferSection({
           <tr>
             <td>Deploy Authority</td>
             <td className="text-lg-right">
-              <Address pubkey={programBuffer.authority} alignRight link />
+              <Address pubkey={programBuffer.authority} alignRight={matches} link />
             </td>
           </tr>
         )}
@@ -261,7 +268,7 @@ export function UpgradeableProgramBufferSection({
           <tr>
             <td>Owner</td>
             <td className="text-lg-right">
-              <Address pubkey={account.details.owner} alignRight link />
+              <Address pubkey={account.details.owner} alignRight={matches} link />
             </td>
           </tr>
         )}

@@ -1,3 +1,4 @@
+import { useMediaQuery, useTheme } from "@mui/material";
 import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { Address } from "components/common/Address";
 import { InstructionCard } from "../InstructionCard";
@@ -11,6 +12,8 @@ export function GenericMngoAccountDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const {
     ix,
     index,
@@ -34,7 +37,7 @@ export function GenericMngoAccountDetailsCard(props: {
       <tr>
         <td>Mango account</td>
         <td>
-          <Address pubkey={mangoAccount.pubkey} alignRight link />
+          <Address pubkey={mangoAccount.pubkey} alignRight={matches} link />
         </td>
       </tr>
     </InstructionCard>

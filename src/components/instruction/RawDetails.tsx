@@ -1,9 +1,11 @@
 import React from "react";
 import { TransactionInstruction } from "@velas/web3";
 import { Address } from "components/common/Address";
-import { Chip, TableCell, TableRow } from "@mui/material";
+import { Chip, TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function RawDetails({ ix }: { ix: TransactionInstruction }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const data = ix.data.toString("hex");
   return (
     <>
@@ -20,8 +22,8 @@ export function RawDetails({ ix }: { ix: TransactionInstruction }) {
               )}
             </div>
           </TableCell>
-          <TableCell align="right">
-            <Address pubkey={pubkey} alignRight link />
+          <TableCell  align={matches?"right":"left"}>
+            <Address pubkey={pubkey} alignRight={matches} link />
           </TableCell>
         </TableRow>
       ))}
@@ -30,7 +32,7 @@ export function RawDetails({ ix }: { ix: TransactionInstruction }) {
         <TableCell>
           Instruction Data <span className="text-muted">(Hex)</span>
         </TableCell>
-        <TableCell align="right">
+        <TableCell  align={matches?"right":"left"}>
           <pre className="p-2 bg-grey-dark inline-block text-left max-w-md whitespace-pre-wrap break-words overflow-auto">{data}</pre>
           {/* {data} */}
         </TableCell>

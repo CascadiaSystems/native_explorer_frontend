@@ -7,7 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { DelegateInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function DelegateDetailsCard(props: {
   ix: ParsedInstruction;
@@ -18,6 +18,8 @@ export function DelegateDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -32,29 +34,29 @@ export function DelegateDetailsCard(props: {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={StakeProgram.programId} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={StakeProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Stake Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.stakeAccount} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.stakeAccount} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Delegated Vote Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.voteAccount} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.voteAccount} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Authority Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.stakeAuthority} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.stakeAuthority} alignRight={matches} link />
         </TableCell>
       </TableRow>
     </InstructionCard>

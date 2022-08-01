@@ -1,6 +1,6 @@
 import React from "react";
 import { ParsedInstruction } from "@velas/web3";
-import { TableRow, TableCell } from "@mui/material";
+import { TableRow, TableCell, useTheme, useMediaQuery } from "@mui/material";
 
 export function RawParsedDetails({
   ix,
@@ -9,6 +9,9 @@ export function RawParsedDetails({
   ix: ParsedInstruction;
   children?: React.ReactNode;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
+  
   return (
     <>
       {children}
@@ -16,7 +19,7 @@ export function RawParsedDetails({
         <TableCell>
           Instruction Data (JSON)
         </TableCell>
-        <TableCell align="right">
+        <TableCell  align={matches?"right":"left"}>
           <pre className="inline-block p-3 bg-grey-dark text-left">
             {JSON.stringify(ix.parsed, null, 2)}
           </pre>

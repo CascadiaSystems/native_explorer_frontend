@@ -14,13 +14,15 @@ import {
 import { FetchStatus } from "providers/cache";
 import { LoadingCard } from "components/common/LoadingCard";
 import { ErrorCard } from "components/common/ErrorCard";
-import { Table, TableRow, TableCell, TableContainer, TableHead, TableBody, Button, Typography } from "@mui/material";
+import { Table, TableRow, TableCell, TableContainer, TableHead, TableBody, Button, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { LoadingButton }  from '@mui/lab';
 import ContentCard from "components/common/ContentCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotate } from '@fortawesome/free-solid-svg-icons';
 
 export function TransactionHistoryCard({ pubkey }: { pubkey: PublicKey }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const address = pubkey.toBase58();
   const history = useAccountHistory(address);
   const fetchAccountHistory = useFetchAccountHistory();
@@ -69,12 +71,12 @@ export function TransactionHistoryCard({ pubkey }: { pubkey: PublicKey }) {
 
           {
             hasTimestamps && (
-              <TableCell align="right">
+              <TableCell  align={matches?"right":"left"}>
                 {blockTime ? <Moment date={blockTime * 1000} fromNow /> : "---"}
               </TableCell>
           )}
 
-          <TableCell align="right">
+          <TableCell  align={matches?"right":"left"}>
             { statusText }
             {/* <span className={`badge badge-soft-${statusClass}`}>
               {statusText}
@@ -133,8 +135,8 @@ export function TransactionHistoryCard({ pubkey }: { pubkey: PublicKey }) {
             <TableRow>
               <TableCell> Transaction Signature </TableCell>
               <TableCell> Slot </TableCell>
-              { hasTimestamps && <TableCell align="right"> Age </TableCell> }
-              <TableCell align="right"> Result </TableCell>
+              { hasTimestamps && <TableCell  align={matches?"right":"left"}> Age </TableCell> }
+              <TableCell  align={matches?"right":"left"}> Result </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { SettleFunds } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function SettleFundsDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function SettleFundsDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
   return (
     <InstructionCard
@@ -25,77 +28,77 @@ export function SettleFundsDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Market</td>
         <td className="text-lg-right">
-          <Address pubkey={info.market} alignRight link />
+          <Address pubkey={info.market} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Open Orders</td>
         <td className="text-lg-right">
-          <Address pubkey={info.openOrdersKey} alignRight link />
+          <Address pubkey={info.openOrdersKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.poolKey} alignRight link />
+          <Address pubkey={info.poolKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Token Mint</td>
         <td className="text-lg-right">
-          <Address pubkey={info.poolMintKey} alignRight link />
+          <Address pubkey={info.poolMintKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Coin Vault</td>
         <td className="text-lg-right">
-          <Address pubkey={info.coinVaultKey} alignRight link />
+          <Address pubkey={info.coinVaultKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Pc Vault</td>
         <td className="text-lg-right">
-          <Address pubkey={info.pcVaultKey} alignRight link />
+          <Address pubkey={info.pcVaultKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot's Coin Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.coinPoolAssetKey} alignRight link />
+          <Address pubkey={info.coinPoolAssetKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot's Pc Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.pcPoolAssetKey} alignRight link />
+          <Address pubkey={info.pcPoolAssetKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Vault Signer</td>
         <td className="text-lg-right">
-          <Address pubkey={info.vaultSignerKey} alignRight link />
+          <Address pubkey={info.vaultSignerKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Program ID</td>
         <td className="text-lg-right">
-          <Address pubkey={info.dexProgramKey} alignRight link />
+          <Address pubkey={info.dexProgramKey} alignRight={matches} link />
         </td>
       </tr>
 

@@ -8,7 +8,7 @@ import { SolBalance } from "utils";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { CreateAccountInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function CreateDetailsCard(props: {
   ix: ParsedInstruction;
@@ -19,6 +19,8 @@ export function CreateDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -33,41 +35,41 @@ export function CreateDetailsCard(props: {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={SystemProgram.programId} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={SystemProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>From Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.source} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.source} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>New Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.newAccount} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.newAccount} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Transfer Amount (VLX)</TableCell>
-        <TableCell align="right">
+        <TableCell  align={matches?"right":"left"}>
           <SolBalance lamports={info.lamports} />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Allocated Space (Bytes)</TableCell>
-        <TableCell align="right">{info.space}</TableCell>
+        <TableCell  align={matches?"right":"left"}>{info.space}</TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Assigned Owner</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.owner} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.owner} alignRight={matches} link />
         </TableCell>
       </TableRow>
     </InstructionCard>

@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { Deposit } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function DepositDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function DepositDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,49 +29,49 @@ export function DepositDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Signal Provider Fee Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.sigProviderFeeReceiverKey} alignRight link />
+          <Address pubkey={info.sigProviderFeeReceiverKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Insurance Funds</td>
         <td className="text-lg-right">
-          <Address pubkey={info.bonfidaFeeReceiverKey} alignRight link />
+          <Address pubkey={info.bonfidaFeeReceiverKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Buy and Burn</td>
         <td className="text-lg-right">
-          <Address pubkey={info.bonfidaBuyAndBurnKey} alignRight link />
+          <Address pubkey={info.bonfidaBuyAndBurnKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Token Mint</td>
         <td className="text-lg-right">
-          <Address pubkey={info.mintKey} alignRight link />
+          <Address pubkey={info.mintKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.poolKey} alignRight link />
+          <Address pubkey={info.poolKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Target Pool Token Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.targetPoolTokenKey} alignRight link />
+          <Address pubkey={info.targetPoolTokenKey} alignRight={matches} link />
         </td>
       </tr>
 

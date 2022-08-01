@@ -22,7 +22,7 @@ import { SimulatorCard } from "./SimulatorCard";
 import { MIN_MESSAGE_LENGTH, RawInput } from "./RawInputCard";
 import { InstructionsSection } from "./InstructionsSection";
 import base58 from "bs58";
-import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ContentCard from "components/common/ContentCard";
 
 export type TransactionData = {
@@ -299,6 +299,8 @@ function OverviewCard({
   raw: Uint8Array;
   onClear: () => void;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const fee =
     message.header.numRequiredSignatures * DEFAULT_FEES.lamportsPerSignature;
   const feePayerValidator = createFeePayerValidator(fee);
@@ -323,7 +325,7 @@ function OverviewCard({
             <TableBody>
               <TableRow>
                 <TableCell>Serialized Size</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   <div className="flex items-end flex-col gap-2">
                     {size} bytes
                     <span
@@ -338,7 +340,7 @@ function OverviewCard({
               </TableRow>
               <TableRow>
                 <TableCell>Fees</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   <div className="flex items-end flex-col gap-2">
                     <SolBalance lamports={fee} />
                     <span className="text-muted">

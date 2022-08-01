@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { CancelOrder } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function CancelOrderDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function CancelOrderDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,35 +29,35 @@ export function CancelOrderDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Market</td>
         <td className="text-lg-right">
-          <Address pubkey={info.market} alignRight link />
+          <Address pubkey={info.market} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Open Orders</td>
         <td className="text-lg-right">
-          <Address pubkey={info.openOrders} alignRight link />
+          <Address pubkey={info.openOrders} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Request Queue</td>
         <td className="text-lg-right">
-          <Address pubkey={info.requestQueue} alignRight link />
+          <Address pubkey={info.requestQueue} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Owner</td>
         <td className="text-lg-right">
-          <Address pubkey={info.owner} alignRight link />
+          <Address pubkey={info.owner} alignRight={matches} link />
         </td>
       </tr>
 

@@ -3,7 +3,7 @@ import { ParsedInstruction, SignatureResult } from "@velas/web3";
 import { InstructionCard } from "./InstructionCard";
 import { wrap } from "utils";
 import { Address } from "components/common/Address";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function MemoDetailsCard({
   ix,
@@ -20,6 +20,8 @@ export function MemoDetailsCard({
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const data = wrap(ix.parsed, 50);
   return (
     <InstructionCard
@@ -34,7 +36,7 @@ export function MemoDetailsCard({
       <TableRow>
         <TableCell>Program</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={ix.programId} alignRight link />
+          <Address pubkey={ix.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 

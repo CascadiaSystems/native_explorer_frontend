@@ -10,8 +10,8 @@ import { BlockResponse } from "@velas/web3";
 import { BlockProgramsCard } from "./BlockProgramsCard";
 import { BlockAccountsCard } from "./BlockAccountsCard";
 import ContentCard from "components/common/ContentCard";
-import { Typography, TableContainer, Table, TableBody, TableRow, TableCell } from "@mui/material";
-import { Tabs, Tab as MuiTab } from "@mui/material";
+import { Typography, TableContainer, Table, TableBody, TableRow, TableCell, useMediaQuery } from "@mui/material";
+import { Tabs, Tab as MuiTab, useTheme } from "@mui/material";
 export function BlockOverviewCard({
   slot,
   tab,
@@ -19,6 +19,8 @@ export function BlockOverviewCard({
   slot: number;
   tab?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const confirmedBlock = useBlock(slot);
   const fetchBlock = useFetchBlock();
   const { status } = useCluster();
@@ -54,37 +56,37 @@ export function BlockOverviewCard({
 
               <TableRow>
                 <TableCell>Slot</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   <Slot slot={slot} />
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Blockhash</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   <span className="font-mono">{block.blockhash}</span>
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Parent Slot</TableCell>
-                <TableCell align="right">
-                  <Slot slot={block.parentSlot} link align="end"/>
+                <TableCell  align={matches?"right":"left"}>
+                  <Slot slot={block.parentSlot} link  align={matches?"end":"start"}/>
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Parent Blockhash</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   <span className="font-mono">{block.previousBlockhash}</span>
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Processed Transactions</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   <span>{block.transactions.length}</span>
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Successful Transactions</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   <span>{committedTxs.length}</span>
                 </TableCell>
               </TableRow>

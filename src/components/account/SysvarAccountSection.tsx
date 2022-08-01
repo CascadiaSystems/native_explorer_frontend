@@ -21,7 +21,7 @@ import {
 import { displayTimestamp } from "utils/date";
 import { Slot } from "components/common/Slot";
 import ContentCard from "components/common/ContentCard";
-import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
@@ -106,6 +106,7 @@ function SysvarAccountRecentBlockhashesCard({
   sysvarAccount: SysvarRecentBlockhashesAccount;
 }) {
   const refresh = useFetchAccountInfo();
+
   return (
     <ContentCard
       title={<Typography variant="h3">Sysvar: Recent Blockhashes</Typography>}
@@ -168,6 +169,8 @@ function SysvarAccountSlotHistory({
   account: Account;
   sysvarAccount: SysvarSlotHistoryAccount;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   const history = Array.from(
     {
@@ -197,10 +200,10 @@ function SysvarAccountSlotHistory({
                 Slot History{" "}
                 <span className="text-muted">(previous 100 slots)</span>
               </TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 {history.map((val) => (
                   <p key={val} className="mb-0">
-                    <Slot slot={val} link align="end"/>
+                    <Slot slot={val} link align={matches?"end":"start"}/>
                   </p>
                 ))}
               </TableCell>
@@ -250,6 +253,8 @@ function SysvarAccountFeesCard({
   account: Account;
   sysvarAccount: SysvarFeesAccount;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   return (
     <ContentCard
@@ -268,7 +273,7 @@ function SysvarAccountFeesCard({
 
       <TableRow>
         <TableCell>Lamports Per Signature</TableCell>
-        <TableCell align="right">
+        <TableCell align={matches?"right":"left"}>
           {sysvarAccount.info.feeCalculator.lamportsPerSignature}
         </TableCell>
       </TableRow>
@@ -283,6 +288,8 @@ function SysvarAccountEpochScheduleCard({
   account: Account;
   sysvarAccount: SysvarEpochScheduleAccount;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   return (
     <ContentCard
@@ -304,34 +311,34 @@ function SysvarAccountEpochScheduleCard({
 
             <TableRow>
               <TableCell>Slots Per Epoch</TableCell>
-              <TableCell align="right">{sysvarAccount.info.slotsPerEpoch}</TableCell>
+              <TableCell align={matches?"right":"left"}>{sysvarAccount.info.slotsPerEpoch}</TableCell>
             </TableRow>
 
             <TableRow>
               <TableCell>Leader Schedule Slot Offset</TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 {sysvarAccount.info.leaderScheduleSlotOffset}
               </TableCell>
             </TableRow>
 
             <TableRow>
               <TableCell>Epoch Warmup Enabled</TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 <code>{sysvarAccount.info.warmup ? "true" : "false"}</code>
               </TableCell>
             </TableRow>
 
             <TableRow>
               <TableCell>First Normal Epoch</TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 {sysvarAccount.info.firstNormalEpoch}
               </TableCell>
             </TableRow>
 
             <TableRow>
               <TableCell>First Normal Slot</TableCell>
-              <TableCell align="right">
-                <Slot slot={sysvarAccount.info.firstNormalSlot} align="end"/>
+              <TableCell align={matches?"right":"left"}>
+                <Slot slot={sysvarAccount.info.firstNormalSlot} align={matches?"end":"start"}/>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -348,6 +355,8 @@ function SysvarAccountClockCard({
   account: Account;
   sysvarAccount: SysvarClockAccount;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   return (
     <ContentCard
@@ -369,27 +378,27 @@ function SysvarAccountClockCard({
 
             <TableRow>
               <TableCell>Timestamp</TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 {displayTimestamp(sysvarAccount.info.unixTimestamp * 1000)}
               </TableCell>
             </TableRow>
 
             <TableRow>
               <TableCell>Epoch</TableCell>
-              <TableCell align="right">{sysvarAccount.info.epoch}</TableCell>
+              <TableCell align={matches?"right":"left"}>{sysvarAccount.info.epoch}</TableCell>
             </TableRow>
 
             <TableRow>
               <TableCell>Leader Schedule Epoch</TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 {sysvarAccount.info.leaderScheduleEpoch}
               </TableCell>
             </TableRow>
 
             <TableRow>
               <TableCell>Slot</TableCell>
-              <TableCell align="right">
-                <Slot slot={sysvarAccount.info.slot} link align="end"/>
+              <TableCell align={matches?"right":"left"}>
+                <Slot slot={sysvarAccount.info.slot} link align={matches?"end":"start"}/>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -406,6 +415,8 @@ function SysvarAccountRentCard({
   account: Account;
   sysvarAccount: SysvarRentAccount;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   return (
     <ContentCard
@@ -422,21 +433,21 @@ function SysvarAccountRentCard({
 
       <TableRow>
         <TableCell>Burn Percent</TableCell>
-        <TableCell align="right">
+        <TableCell align={matches?"right":"left"}>
           {sysvarAccount.info.burnPercent + "%"}
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Exemption Threshold</TableCell>
-        <TableCell align="right">
+        <TableCell align={matches?"right":"left"}>
           {sysvarAccount.info.exemptionThreshold} years
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Lamports Per Byte Year</TableCell>
-        <TableCell align="right">
+        <TableCell align={matches?"right":"left"}>
           {sysvarAccount.info.lamportsPerByteYear}
         </TableCell>
       </TableRow>
@@ -451,6 +462,8 @@ function SysvarAccountRewardsCard({
   account: Account;
   sysvarAccount: SysvarRewardsAccount;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
 
   const validatorPointValueFormatted = new Intl.NumberFormat("en-US", {
@@ -471,7 +484,7 @@ function SysvarAccountRewardsCard({
 
         <TableRow>
           <TableCell>Validator Point Value</TableCell>
-          <TableCell align="right">
+          <TableCell align={matches?"right":"left"}>
             {validatorPointValueFormatted} lamports
           </TableCell>
         </TableRow>

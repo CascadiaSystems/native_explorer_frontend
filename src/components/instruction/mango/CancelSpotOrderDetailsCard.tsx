@@ -1,3 +1,4 @@
+import { useMediaQuery, useTheme } from "@mui/material";
 import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { Address } from "components/common/Address";
 import { InstructionCard } from "../InstructionCard";
@@ -11,6 +12,8 @@ export function CancelSpotOrderDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
   const mangoAccount = ix.keys[2];
   const spotMarketAccountMeta = ix.keys[4];
@@ -31,7 +34,7 @@ export function CancelSpotOrderDetailsCard(props: {
       <tr>
         <td>Mango account</td>
         <td>
-          <Address pubkey={mangoAccount.pubkey} alignRight link />
+          <Address pubkey={mangoAccount.pubkey} alignRight={matches} link />
         </td>
       </tr>
 
@@ -45,7 +48,7 @@ export function CancelSpotOrderDetailsCard(props: {
       <tr>
         <td>Spot market address</td>
         <td>
-          <Address pubkey={spotMarketAccountMeta.pubkey} alignRight link />
+          <Address pubkey={spotMarketAccountMeta.pubkey} alignRight={matches} link />
         </td>
       </tr>
 

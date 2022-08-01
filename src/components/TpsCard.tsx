@@ -2,7 +2,7 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 import CountUp from "react-countup";
 
-import { Table, TableContainer, TableBody, TableRow, TableCell, Typography } from '@mui/material'
+import { Table, TableContainer, TableBody, TableRow, TableCell, Typography, useTheme, useMediaQuery } from '@mui/material'
 
 import {
   usePerformanceInfo,
@@ -148,6 +148,8 @@ const CHART_OPTIONS = (historyMaxTps: number): ChartOptions => {
 
 type TpsBarChartProps = { performanceInfo: PerformanceInfo };
 function TpsBarChart({ performanceInfo }: TpsBarChartProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { perfHistory, avgTps, historyMaxTps } = performanceInfo;
   const [series, setSeries] = React.useState<Series>("short");
   const averageTps = Math.round(avgTps).toLocaleString("en-US");
@@ -180,15 +182,15 @@ function TpsBarChart({ performanceInfo }: TpsBarChartProps) {
           <TableBody>
             <TableRow>
               <TableCell>Transaction count</TableCell>
-              <TableCell align="right"><span className="font-mono">{transactionCount}</span></TableCell>
+              <TableCell align={matches?"right":"left"}><span className="font-mono">{transactionCount}</span></TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Transactions per second (TPS)</TableCell>
-              <TableCell align="right"> { averageTps } </TableCell>
+              <TableCell align={matches?"right":"left"}> { averageTps } </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>TPS Max</TableCell>
-              <TableCell align="right"> 50k+ </TableCell>
+              <TableCell align={matches?"right":"left"}> 50k+ </TableCell>
             </TableRow>
           </TableBody>
         </Table>

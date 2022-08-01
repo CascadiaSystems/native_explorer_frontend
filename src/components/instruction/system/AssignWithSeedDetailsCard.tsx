@@ -8,7 +8,7 @@ import { InstructionCard } from "../InstructionCard";
 import { Copyable } from "components/common/Copyable";
 import { Address } from "components/common/Address";
 import { AssignWithSeedInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function AssignWithSeedDetailsCard(props: {
   ix: ParsedInstruction;
@@ -19,6 +19,8 @@ export function AssignWithSeedDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -33,28 +35,28 @@ export function AssignWithSeedDetailsCard(props: {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={SystemProgram.programId} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={SystemProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Account Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.account} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.account} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Base Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.base} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.base} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Seed</TableCell>
-        <TableCell align="right">
+        <TableCell  align={matches?"right":"left"}>
           <Copyable text={info.seed}>
             <code>{info.seed}</code>
           </Copyable>
@@ -63,8 +65,8 @@ export function AssignWithSeedDetailsCard(props: {
 
       <TableRow>
         <TableCell>Assigned Owner</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.owner} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.owner} alignRight={matches} link />
         </TableCell>
       </TableRow>
     </InstructionCard>

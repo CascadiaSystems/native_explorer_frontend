@@ -13,7 +13,7 @@ import {
 } from "providers/transactions/raw";
 import { Address } from "components/common/Address";
 import ContentCard from "components/common/ContentCard";
-import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 type InstructionProps = {
   title: string;
@@ -38,6 +38,8 @@ export function InstructionCard({
   childIndex,
   className
 }: InstructionProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   // const [resultClass] = ixResult(result, index);
   const [showRaw, setShowRaw] = React.useState(defaultRaw || false);
   const signature = useContext(SignatureContext);
@@ -92,8 +94,8 @@ export function InstructionCard({
               <>
                 <TableRow>
                   <TableCell>Program</TableCell>
-                  <TableCell align="right">
-                    <Address pubkey={ix.programId} alignRight link />
+                  <TableCell  align={matches?"right":"left"}>
+                    <Address pubkey={ix.programId} alignRight={matches} link />
                   </TableCell>
                 </TableRow>
                 {"parsed" in ix ? (

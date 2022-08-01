@@ -20,6 +20,7 @@ import { Copyable } from "components/common/Copyable";
 import { CoingeckoStatus, useCoinGecko } from "utils/coingecko";
 import { displayTimestampWithoutDate } from "utils/date";
 import { LoadingCard } from "components/common/LoadingCard";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const getEthAddress = (link?: string) => {
   let address = "";
@@ -75,6 +76,8 @@ function MintAccountCard({
   account: Account;
   info: MintAccountInfo;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { tokenRegistry } = useTokenRegistry();
   const mintAddress = account.pubkey.toBase58();
   const fetchInfo = useFetchAccountInfo();
@@ -175,7 +178,7 @@ function MintAccountCard({
           <tr>
             <td>Address</td>
             <td className="text-lg-right">
-              <Address pubkey={account.pubkey} alignRight raw />
+              <Address pubkey={account.pubkey} alignRight={matches} raw />
             </td>
           </tr>
           <tr>
@@ -210,7 +213,7 @@ function MintAccountCard({
             <tr>
               <td>Mint Authority</td>
               <td className="text-lg-right">
-                <Address pubkey={info.mintAuthority} alignRight link />
+                <Address pubkey={info.mintAuthority} alignRight={matches} link />
               </td>
             </tr>
           )}
@@ -218,7 +221,7 @@ function MintAccountCard({
             <tr>
               <td>Freeze Authority</td>
               <td className="text-lg-right">
-                <Address pubkey={info.freezeAuthority} alignRight link />
+                <Address pubkey={info.freezeAuthority} alignRight={matches} link />
               </td>
             </tr>
           )}
@@ -277,6 +280,8 @@ function TokenAccountCard({
   account: Account;
   info: TokenAccountInfo;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   const { cluster } = useCluster();
   const { tokenRegistry } = useTokenRegistry();
@@ -317,7 +322,7 @@ function TokenAccountCard({
         <tr>
           <td>Address</td>
           <td className="text-lg-right">
-            <Address pubkey={account.pubkey} alignRight raw />
+            <Address pubkey={account.pubkey} alignRight={matches} raw />
           </td>
         </tr>
         {label && (
@@ -329,13 +334,13 @@ function TokenAccountCard({
         <tr>
           <td>Mint</td>
           <td className="text-lg-right">
-            <Address pubkey={info.mint} alignRight link />
+            <Address pubkey={info.mint} alignRight={matches} link />
           </td>
         </tr>
         <tr>
           <td>Owner</td>
           <td className="text-lg-right">
-            <Address pubkey={info.owner} alignRight link />
+            <Address pubkey={info.owner} alignRight={matches} link />
           </td>
         </tr>
         <tr>
@@ -375,6 +380,8 @@ function MultisigAccountCard({
   account: Account;
   info: MultisigAccountInfo;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
 
   return (
@@ -396,7 +403,7 @@ function MultisigAccountCard({
         <tr>
           <td>Address</td>
           <td className="text-lg-right">
-            <Address pubkey={account.pubkey} alignRight raw />
+            <Address pubkey={account.pubkey} alignRight={matches} raw />
           </td>
         </tr>
         <tr>
@@ -411,7 +418,7 @@ function MultisigAccountCard({
           <tr key={signer.toString()}>
             <td>Signer</td>
             <td className="text-lg-right">
-              <Address pubkey={signer} alignRight link />
+              <Address pubkey={signer} alignRight={matches} link />
             </td>
           </tr>
         ))}

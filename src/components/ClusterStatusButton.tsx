@@ -21,17 +21,17 @@ export function ClusterStatusBanner() {
   );
 }
 
-export function ClusterStatusButton() {
+export function ClusterStatusButton({className}: {className?: string}) {
   const [, setShow] = useClusterModal();
 
   return (
     <div onClick={() => setShow(true)}>
-      <Button />
+      <Button className={className}/>
     </div>
   );
 }
 
-function Button() {
+function Button({className}: {className?: string}) {
   const { status, cluster, name, customUrl } = useCluster();
   const statusName = cluster !== Cluster.Custom ? `${name}` : `${customUrl}`;
 
@@ -43,6 +43,7 @@ function Button() {
       loading={status===ClusterStatus.Connecting}
       loadingPosition="start"
       startIcon={<FontAwesomeIcon icon={status===ClusterStatus.Failure?faCircleXmark:faCircleCheck} />}
+      className={className}
     >
       {statusName}
     </LoadingButton>

@@ -2,7 +2,7 @@ import React from "react";
 import { Address } from "./Address";
 import { Account } from "providers/accounts";
 import { SolBalance } from "utils";
-import { TableRow, TableCell } from "@mui/material";
+import { TableRow, TableCell, useMediaQuery, useTheme } from "@mui/material";
 
 type AccountHeaderProps = {
   title: string;
@@ -26,22 +26,26 @@ export function AccountHeader({ title, refresh }: AccountHeaderProps) {
 }
 
 export function AccountAddressRow({ account }: AccountProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <TableRow>
       <TableCell>Address</TableCell>
-      <TableCell align="right">
-        <Address pubkey={account.pubkey} alignRight raw />
+      <TableCell  align={matches?"right":"left"}>
+        <Address pubkey={account.pubkey} alignRight={matches} raw />
       </TableCell>
     </TableRow>
   );
 }
 
 export function AccountBalanceRow({ account }: AccountProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { lamports } = account;
   return (
     <TableRow>
       <TableCell>Balance (VLX)</TableCell>
-      <TableCell align="right">
+      <TableCell  align={matches?"right":"left"}>
         <SolBalance lamports={lamports} />
       </TableCell>
     </TableRow>
@@ -49,12 +53,14 @@ export function AccountBalanceRow({ account }: AccountProps) {
 }
 
 export function AccountOwnerRow({ account }: AccountProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   if (account.details) {
     return (
       <TableRow>
         <TableCell>Owner</TableCell>
-        <TableCell align="right">
-          <Address pubkey={account.details.owner} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={account.details.owner} alignRight={matches} link />
         </TableCell>
       </TableRow>
     );

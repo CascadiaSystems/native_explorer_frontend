@@ -3,12 +3,14 @@ import { BlockResponse } from "@velas/web3";
 import { ErrorCard } from "components/common/ErrorCard";
 import { Signature } from "components/common/Signature";
 import ContentCard from "components/common/ContentCard";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Button, useTheme, useMediaQuery } from "@mui/material";
 
 const PAGE_SIZE = 25;
 
 export function BlockHistoryCard({ block }: { block: BlockResponse }) {
   const [numDisplayed, setNumDisplayed] = React.useState(PAGE_SIZE);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
 
   if (block.transactions.length === 0) {
     return <ErrorCard text="This block has no transactions" />;
@@ -34,7 +36,7 @@ export function BlockHistoryCard({ block }: { block: BlockResponse }) {
           <TableHead>
             <TableRow>
               <TableCell>Result</TableCell>
-              <TableCell align="right">Transaction Signature</TableCell>
+              <TableCell  align={matches?"right":"left"}>Transaction Signature</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -52,7 +54,7 @@ export function BlockHistoryCard({ block }: { block: BlockResponse }) {
 
               if (tx.transaction.signatures.length > 0) {
                 signature = (
-                  <Signature signature={tx.transaction.signatures[0]} link alignRight/>
+                  <Signature signature={tx.transaction.signatures[0]} link alignRight={matches}/>
                 );
               }
 
@@ -64,7 +66,7 @@ export function BlockHistoryCard({ block }: { block: BlockResponse }) {
                     </span>
                   </TableCell>
 
-                  <TableCell align="right">{signature}</TableCell>
+                  <TableCell  align={matches?"right":"left"}>{signature}</TableCell>
                 </TableRow>
               );
             })}

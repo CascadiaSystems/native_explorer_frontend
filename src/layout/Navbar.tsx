@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Typography } from '@mui/material';
 import { SearchBar } from "components/SearchBar";
-// import { IconButton, List, ListItem,  SwipeableDrawer, Typography } from '@mui/material';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { IconButton, List, ListItem,  SwipeableDrawer, Typography } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 
 import { clusterPath } from "utils/url";
@@ -28,6 +28,12 @@ const navItems = [
 const Navbar = () => {
   // TODO: use `collapsing` to animate collapsible navbar
   // const [collapse, setCollapse] = useState(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
+  const toggleDrawer = (val: boolean) => (event: React.MouseEvent | React.KeyboardEvent) => {
+    setMenuOpen(val);
+  }
+  
   
   return (
     // <nav className="navbar navbar-expand-md navbar-light">
@@ -89,16 +95,16 @@ const Navbar = () => {
     // </nav>
     <div className="bg-grey-main border-grey-light border-b">
       <div className="py-6 flex items-center justify-between gap-10" style={{ margin: '0 5%' }}>
-        <div className="flex items-center gap-20">
+        <div className="flex items-center gap-12">
           <NavLink to='/'>
             <Typography variant='h2'>Sophon</Typography>
           </NavLink>
-          <div className="gap-9 flex items-center">
+          <div className="gap-9 lg:flex items-center hidden">
             {
               navItems.map((item, index) => (
                 <NavLink
                   key={index}
-                  className="hover:text-primary text-secondary"
+                  className="hover:text-primary text-secondary whitespace-nowrap"
                   // className={({ isActive }) =>
                   //   isActive ? "text-primary" : "text-secondary"
                   // }
@@ -112,9 +118,9 @@ const Navbar = () => {
           </div>
         </div>        
         <SearchBar />
-        {/* <div className="block md:hidden">
+        <div className="block lg:hidden">
           <IconButton disableRipple onClick={toggleDrawer(true)}>
-            <FontAwesomeIcon icon={faBars} />
+            <FontAwesomeIcon icon={faBars} className="text-primary"/>
           </IconButton>
           <SwipeableDrawer
             anchor="top"
@@ -128,9 +134,10 @@ const Navbar = () => {
                 navItems.map((item, key) => (
                   <ListItem key={key} disablePadding>
                     <NavLink to={item.link}
-                      className={({ isActive })=>
-                        isActive ? "text-lg text-light-light w-full text-center p-4 bg-dark-dark" : "text-lg text-light-dark w-full text-center p-4 bg-dark-light" 
-                      }
+                      className="text-lg text-light-dark w-full text-center py-2 bg-dark-light"
+                      // className={({ isActive })=>
+                      //   isActive ? "text-lg text-light-light w-full text-center p-4 bg-dark-dark" : "text-lg text-light-dark w-full text-center p-4 bg-dark-light" 
+                      // }
                     >
                       {item.label}
                     </NavLink>
@@ -138,8 +145,11 @@ const Navbar = () => {
                 ))
               }
             </List>
+            <div className="p-2 border-t border-grey-light">
+              <ClusterStatusButton className="w-full"/>
+            </div>
           </SwipeableDrawer>
-        </div>       */}
+        </div>      
       </div>
     </div>
   );

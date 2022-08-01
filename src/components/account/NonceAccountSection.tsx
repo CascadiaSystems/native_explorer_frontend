@@ -8,6 +8,10 @@ import {
   AccountAddressRow,
   AccountBalanceRow,
 } from "components/common/Account";
+import ContentCard from "components/common/ContentCard";
+import { Button, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 export function NonceAccountSection({
   account,
@@ -16,40 +20,51 @@ export function NonceAccountSection({
   account: Account;
   nonceAccount: NonceAccount;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const refresh = useFetchAccountInfo();
   return (
-    <div className="card">
-      <AccountHeader
-        title="Nonce Account"
-        refresh={() => refresh(account.pubkey)}
-      />
+    <ContentCard
+      title={<Typography variant="h3">Nonce Account</Typography>}
+      action={(
+        <Button variant="outlined" size="small"
+          startIcon={<FontAwesomeIcon icon={faArrowsRotate} />}
+          onClick={() => refresh(account.pubkey)}
+        >
+          Refresh
+        </Button>
+      )}
+    >
+      <TableContainer>
+        <Table>
+          <TableBody>              
+            <AccountAddressRow account={account} />
+            <AccountBalanceRow account={account} />
 
-      <TableCardBody>
-        <AccountAddressRow account={account} />
-        <AccountBalanceRow account={account} />
+            <TableRow>
+              <TableCell>Authority</TableCell>
+              <TableCell align={matches?"right":"left"}>
+                <Address pubkey={nonceAccount.info.authority} alignRight={matches} raw link />
+              </TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Authority</td>
-          <td className="text-lg-right">
-            <Address pubkey={nonceAccount.info.authority} alignRight raw link />
-          </td>
-        </tr>
+            <TableRow>
+              <TableCell>Blockhash</TableCell>
+              <TableCell align={matches?"right":"left"}>
+                <code>{nonceAccount.info.blockhash}</code>
+              </TableCell>
+            </TableRow>
 
-        <tr>
-          <td>Blockhash</td>
-          <td className="text-lg-right">
-            <code>{nonceAccount.info.blockhash}</code>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Fee</td>
-          <td className="text-lg-right">
-            {nonceAccount.info.feeCalculator.lamportsPerSignature} lamports per
-            signature
-          </td>
-        </tr>
-      </TableCardBody>
-    </div>
+            <TableRow>
+              <TableCell>Fee</TableCell>
+              <TableCell align={matches?"right":"left"}>
+                {nonceAccount.info.feeCalculator.lamportsPerSignature} lamports per
+                signature
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ContentCard>
   );
 }

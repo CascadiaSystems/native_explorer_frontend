@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { ConsumeEvents } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function ConsumeEventsDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function ConsumeEventsDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,21 +29,21 @@ export function ConsumeEventsDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Market</td>
         <td className="text-lg-right">
-          <Address pubkey={info.market} alignRight link />
+          <Address pubkey={info.market} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Event Queue</td>
         <td className="text-lg-right">
-          <Address pubkey={info.eventQueue} alignRight link />
+          <Address pubkey={info.eventQueue} alignRight={matches} link />
         </td>
       </tr>
 
@@ -48,7 +51,7 @@ export function ConsumeEventsDetailsCard(props: {
         <td>Open Orders Accounts</td>
         <td className="text-lg-right">
           {info.openOrdersAccounts.map((account, index) => {
-            return <Address pubkey={account} key={index} alignRight link />;
+            return <Address pubkey={account} key={index} alignRight={matches} link />;
           })}
         </td>
       </tr>
