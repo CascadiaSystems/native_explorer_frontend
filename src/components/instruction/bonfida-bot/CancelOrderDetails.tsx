@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { CancelOrder } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function CancelOrderDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function CancelOrderDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,63 +29,63 @@ export function CancelOrderDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Market</td>
         <td className="text-lg-right">
-          <Address pubkey={info.market} alignRight link />
+          <Address pubkey={info.market} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Signal Provider Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.signalProviderKey} alignRight link />
+          <Address pubkey={info.signalProviderKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Open Orders</td>
         <td className="text-lg-right">
-          <Address pubkey={info.openOrdersKey} alignRight link />
+          <Address pubkey={info.openOrdersKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Event Queue</td>
         <td className="text-lg-right">
-          <Address pubkey={info.serumEventQueue} alignRight link />
+          <Address pubkey={info.serumEventQueue} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Bids</td>
         <td className="text-lg-right">
-          <Address pubkey={info.serumMarketBids} alignRight link />
+          <Address pubkey={info.serumMarketBids} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Asks</td>
         <td className="text-lg-right">
-          <Address pubkey={info.serumMarketAsks} alignRight link />
+          <Address pubkey={info.serumMarketAsks} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.poolKey} alignRight link />
+          <Address pubkey={info.poolKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Program ID</td>
         <td className="text-lg-right">
-          <Address pubkey={info.dexProgramKey} alignRight link />
+          <Address pubkey={info.dexProgramKey} alignRight={matches} link />
         </td>
       </tr>
 

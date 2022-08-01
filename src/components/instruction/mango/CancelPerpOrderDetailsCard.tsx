@@ -1,3 +1,4 @@
+import { useMediaQuery, useTheme } from "@mui/material";
 import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { Address } from "components/common/Address";
 import { InstructionCard } from "../InstructionCard";
@@ -11,6 +12,8 @@ export function CancelPerpOrderDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
   const mangoAccount = ix.keys[1];
   const perpMarketAccountMeta = ix.keys[3];
@@ -31,7 +34,7 @@ export function CancelPerpOrderDetailsCard(props: {
       <tr>
         <td>Mango account</td>
         <td>
-          <Address pubkey={mangoAccount.pubkey} alignRight link />
+          <Address pubkey={mangoAccount.pubkey} alignRight={matches} link />
         </td>
       </tr>
 
@@ -45,7 +48,7 @@ export function CancelPerpOrderDetailsCard(props: {
       <tr>
         <td>Perp market address</td>
         <td>
-          <Address pubkey={perpMarketAccountMeta.pubkey} alignRight link />
+          <Address pubkey={perpMarketAccountMeta.pubkey} alignRight={matches} link />
         </td>
       </tr>
 

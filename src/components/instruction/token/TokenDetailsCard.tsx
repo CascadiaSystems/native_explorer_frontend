@@ -25,7 +25,7 @@ import {
 import { normalizeTokenAmount } from "utils";
 import { reportError } from "utils/sentry";
 import { useTokenRegistry } from "providers/mints/token-registry";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 type DetailsProps = {
   tx: ParsedTransaction;
@@ -65,6 +65,8 @@ type InfoProps = {
 };
 
 function TokenInstruction(props: InfoProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { mintAddress: infoMintAddress, tokenAddress } = React.useMemo(() => {
     let mintAddress: string | undefined;
     let tokenAddress: string | undefined;
@@ -127,8 +129,8 @@ function TokenInstruction(props: InfoProps) {
     attributes.push(
       <TableRow key={mintAddress}>
         <TableCell>Token</TableCell>
-        <TableCell align="right">
-          <Address pubkey={new PublicKey(mintAddress)} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={new PublicKey(mintAddress)} alignRight={matches} link />
         </TableCell>
       </TableRow>
     );
@@ -147,8 +149,8 @@ function TokenInstruction(props: InfoProps) {
         attributes.push(
           <TableRow key={key + i}>
             <TableCell>{label}</TableCell>
-            <TableCell align="right">
-              <Address pubkey={publicKey} alignRight link />
+            <TableCell  align={matches?"right":"left"}>
+              <Address pubkey={publicKey} alignRight={matches} link />
             </TableCell>
           </TableRow>
         );
@@ -164,7 +166,7 @@ function TokenInstruction(props: InfoProps) {
     let tag;
     let labelSuffix = "";
     if (value instanceof PublicKey) {
-      tag = <Address pubkey={value} alignRight link />;
+      tag = <Address pubkey={value} alignRight={matches} link />;
     } else if (key === "amount") {
       let amount;
       if (decimals === undefined) {
@@ -190,7 +192,7 @@ function TokenInstruction(props: InfoProps) {
     attributes.push(
       <TableRow key={key}>
         <TableCell>{label}</TableCell>
-        <TableCell align="right">{tag}</TableCell>
+        <TableCell  align={matches?"right":"left"}>{tag}</TableCell>
       </TableRow>
     );
   }

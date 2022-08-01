@@ -3,6 +3,7 @@ import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { CollectFees } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function CollectFeesDetailsCard(props: {
   ix: TransactionInstruction;
@@ -12,6 +13,8 @@ export function CollectFeesDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -26,28 +29,28 @@ export function CollectFeesDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Signal Provider</td>
         <td className="text-lg-right">
-          <Address pubkey={info.signalProviderPoolTokenKey} alignRight link />
+          <Address pubkey={info.signalProviderPoolTokenKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Insurance Fund</td>
         <td className="text-lg-right">
-          <Address pubkey={info.bonfidaFeePoolTokenKey} alignRight link />
+          <Address pubkey={info.bonfidaFeePoolTokenKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Buy and Burn</td>
         <td className="text-lg-right">
-          <Address pubkey={info.bonfidaBnBPTKey} alignRight link />
+          <Address pubkey={info.bonfidaBnBPTKey} alignRight={matches} link />
         </td>
       </tr>
 

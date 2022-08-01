@@ -6,9 +6,11 @@ import { useCluster } from "providers/cluster";
 import { useTokenRegistry } from "providers/mints/token-registry";
 
 import ContentCard from "../../components/common/ContentCard";
-import { TableContainer, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
+import { TableContainer, Table, TableBody, TableRow, TableCell, Typography, useTheme, useMediaQuery } from "@mui/material";
 
 export function UnknownAccountCard({ account }: { account: Account }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { details, lamports } = account;
   const { cluster } = useCluster();
   const { tokenRegistry } = useTokenRegistry();
@@ -26,31 +28,31 @@ export function UnknownAccountCard({ account }: { account: Account }) {
           <TableBody>
             <TableRow>
               <TableCell> Address </TableCell>
-              <TableCell align="right"><Address pubkey={account.pubkey} alignRight raw /></TableCell>
+              <TableCell align={matches?"right":"left"}><Address pubkey={account.pubkey} alignRight={matches} raw /></TableCell>
             </TableRow>
             {label && (
               <TableRow>
                 <TableCell> Address Label </TableCell>
-                <TableCell align="right"> { label } </TableCell>
+                <TableCell align={matches?"right":"left"}> { label } </TableCell>
               </TableRow>
             )}
             <TableRow>
               <TableCell> Balance (VLX) </TableCell>
-              <TableCell align="right"><SolBalance lamports={lamports} /></TableCell>
+              <TableCell align={matches?"right":"left"}><SolBalance lamports={lamports} /></TableCell>
             </TableRow>
             {details?.space !== undefined && (
               <>
                 <TableRow>
                   <TableCell> Owner </TableCell>
-                  <TableCell align="right"> { details.space } </TableCell>
+                  <TableCell align={matches?"right":"left"}> { details.space } </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell> Data (Bytes) </TableCell>
-                  <TableCell align="right"><Address pubkey={details.owner} alignRight link /></TableCell>
+                  <TableCell align={matches?"right":"left"}><Address pubkey={details.owner} alignRight={matches} link /></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell> Executable </TableCell>
-                  <TableCell align="right"> { details.executable ? "Yes" : "No" } </TableCell>
+                  <TableCell align={matches?"right":"left"}> { details.executable ? "Yes" : "No" } </TableCell>
                 </TableRow>
               </>
             )}

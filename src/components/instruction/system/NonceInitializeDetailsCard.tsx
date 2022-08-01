@@ -7,7 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { InitializeNonceInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function NonceInitializeDetailsCard(props: {
   ix: ParsedInstruction;
@@ -18,6 +18,8 @@ export function NonceInitializeDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -32,22 +34,22 @@ export function NonceInitializeDetailsCard(props: {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={SystemProgram.programId} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={SystemProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Nonce Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.nonceAccount} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.nonceAccount} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Authority Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.nonceAuthority} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.nonceAuthority} alignRight={matches} link />
         </TableCell>
       </TableRow>
     </InstructionCard>

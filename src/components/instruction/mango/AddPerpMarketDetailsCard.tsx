@@ -1,3 +1,4 @@
+import { useMediaQuery, useTheme } from "@mui/material";
 import { SignatureResult, TransactionInstruction } from "@velas/web3";
 import moment from "moment";
 import { InstructionCard } from "../InstructionCard";
@@ -11,6 +12,8 @@ export function AddPerpMarketDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (

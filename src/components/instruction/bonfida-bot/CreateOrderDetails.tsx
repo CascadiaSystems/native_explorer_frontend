@@ -7,6 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { CreateOrder } from "./types";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 export function CreateOrderDetailsCard(props: {
   ix: TransactionInstruction;
@@ -16,6 +17,8 @@ export function CreateOrderDetailsCard(props: {
   innerCards?: JSX.Element[];
   childIndex?: number;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
   console.log("Test");
   return (
@@ -30,98 +33,98 @@ export function CreateOrderDetailsCard(props: {
       <tr>
         <td>Program</td>
         <td className="text-lg-right">
-          <Address pubkey={info.programId} alignRight link />
+          <Address pubkey={info.programId} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Signal Provider Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.signalProviderKey} alignRight link />
+          <Address pubkey={info.signalProviderKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Market</td>
         <td className="text-lg-right">
-          <Address pubkey={info.market} alignRight link />
+          <Address pubkey={info.market} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Payer Bot Asset Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.payerPoolAssetKey} alignRight link />
+          <Address pubkey={info.payerPoolAssetKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Open Order</td>
         <td className="text-lg-right">
-          <Address pubkey={info.openOrdersKey} alignRight link />
+          <Address pubkey={info.openOrdersKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Request Queue</td>
         <td className="text-lg-right">
-          <Address pubkey={info.serumRequestQueue} alignRight link />
+          <Address pubkey={info.serumRequestQueue} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Event Queue</td>
         <td className="text-lg-right">
-          <Address pubkey={info.serumEventQueue} alignRight link />
+          <Address pubkey={info.serumEventQueue} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Bids</td>
         <td className="text-lg-right">
-          <Address pubkey={info.serumMarketBids} alignRight link />
+          <Address pubkey={info.serumMarketBids} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Asks</td>
         <td className="text-lg-right">
-          <Address pubkey={info.serumMarketAsks} alignRight link />
+          <Address pubkey={info.serumMarketAsks} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Address</td>
         <td className="text-lg-right">
-          <Address pubkey={info.poolKey} alignRight link />
+          <Address pubkey={info.poolKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Coin Vault</td>
         <td className="text-lg-right">
-          <Address pubkey={info.coinVaultKey} alignRight link />
+          <Address pubkey={info.coinVaultKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Pc Vault</td>
         <td className="text-lg-right">
-          <Address pubkey={info.pcVaultKey} alignRight link />
+          <Address pubkey={info.pcVaultKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Serum Program ID</td>
         <td className="text-lg-right">
-          <Address pubkey={info.dexProgramKey} alignRight link />
+          <Address pubkey={info.dexProgramKey} alignRight={matches} link />
         </td>
       </tr>
 
       <tr>
         <td>Bot Token Mint</td>
         <td className="text-lg-right">
-          <Address pubkey={new PublicKey(info.targetMint)} alignRight link />
+          <Address pubkey={new PublicKey(info.targetMint)} alignRight={matches} link />
         </td>
       </tr>
 

@@ -30,7 +30,7 @@ import { InstructionsSection } from "components/transaction/InstructionsSection"
 import { ProgramLogSection } from "components/transaction/ProgramLogSection";
 import { clusterPath } from "utils/url";
 import ContentCard from "components/common/ContentCard";
-import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Tooltip } from "@mui/material";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Tooltip, useTheme, useMediaQuery } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
@@ -118,6 +118,8 @@ function StatusCard({
   signature,
   autoRefresh,
 }: SignatureProps & AutoRefreshProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const fetchStatus = useFetchTransactionStatus();
   const status = useTransactionStatus(signature);
   const details = useTransactionDetails(signature);
@@ -234,19 +236,19 @@ function StatusCard({
         <TableBody>
           <TableRow>
             <TableCell>Signature</TableCell>
-            <TableCell align="right">
-              <Signature signature={signature} alignRight />
+            <TableCell align={matches?"right":"left"}>
+              <Signature signature={signature} alignRight={matches} />
             </TableCell>
           </TableRow>
 
           <TableRow>
             <TableCell>Result</TableCell>
-            <TableCell align="right">{renderResult()}</TableCell>
+            <TableCell align={matches?"right":"left"}>{renderResult()}</TableCell>
           </TableRow>
 
           <TableRow>
             <TableCell>Timestamp</TableCell>
-            <TableCell align="right">
+            <TableCell align={matches?"right":"left"}>
               {info.timestamp !== "unavailable" ? (
                 <span className="font-mono">
                   {displayTimestamp(info.timestamp * 1000)}
@@ -265,20 +267,20 @@ function StatusCard({
 
           <TableRow>
             <TableCell>Confirmation Status</TableCell>
-            <TableCell align="right">
+            <TableCell align={matches?"right":"left"}>
               {info.confirmationStatus || "Unknown"}
             </TableCell>
           </TableRow>
 
           <TableRow>
             <TableCell>Confirmations</TableCell>
-            <TableCell align="right">{info.confirmations}</TableCell>
+            <TableCell align={matches?"right":"left"}>{info.confirmations}</TableCell>
           </TableRow>
 
           <TableRow>
             <TableCell>Block</TableCell>
-            <TableCell align="right">
-              <Slot slot={info.slot} link align="end"/>
+            <TableCell align={matches?"right":"left"}>
+              <Slot slot={info.slot} link align={matches?"end":"start"}/>
             </TableCell>
           </TableRow>
 
@@ -300,14 +302,14 @@ function StatusCard({
                   // </InfoTooltip>
                 )}
               </TableCell>
-              <TableCell align="right">{blockhash}</TableCell>
+              <TableCell align={matches?"right":"left"}>{blockhash}</TableCell>
             </TableRow>
           )}
 
           {fee && (
             <TableRow>
               <TableCell>Fee (VLX)</TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 <SolBalance lamports={fee} />
               </TableCell>
             </TableRow>
@@ -323,6 +325,8 @@ function AccountsCard({
   signature,
   autoRefresh,
 }: SignatureProps & AutoRefreshProps) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const details = useTransactionDetails(signature);
   const fetchDetails = useFetchTransactionDetails();
   const fetchStatus = useFetchTransactionStatus();
@@ -380,10 +384,10 @@ function AccountsCard({
         <TableCell>
           <BalanceDelta delta={delta} isSol />
         </TableCell>
-        <TableCell align="right">
+        <TableCell align={matches?"right":"left"}>
           <SolBalance lamports={post} />
         </TableCell>
-        <TableCell align="right">
+        <TableCell align={matches?"right":"left"}>
           {index === 0 && (
             <Chip label="Fee Payer" variant="filled" className="ml-2" size="small"/>
             )}
@@ -412,8 +416,8 @@ function AccountsCard({
             <TableRow>
               <TableCell>Address</TableCell>
               <TableCell>Change (VLX)</TableCell>
-              <TableCell align="right">Post Balance (VLX)</TableCell>
-              <TableCell align="right">Details</TableCell>
+              <TableCell align={matches?"right":"left"}>Post Balance (VLX)</TableCell>
+              <TableCell align={matches?"right":"left"}>Details</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{accountRows}</TableBody>

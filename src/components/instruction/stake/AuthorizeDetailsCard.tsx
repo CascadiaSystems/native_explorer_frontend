@@ -7,7 +7,7 @@ import {
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { AuthorizeInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function AuthorizeDetailsCard(props: {
   ix: ParsedInstruction;
@@ -18,6 +18,8 @@ export function AuthorizeDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -33,28 +35,28 @@ export function AuthorizeDetailsCard(props: {
       <TableRow>
         <TableCell>Program</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={StakeProgram.programId} alignRight link />
+          <Address pubkey={StakeProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Stake Address</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={info.stakeAccount} alignRight link />
+          <Address pubkey={info.stakeAccount} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Old Authority Address</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={info.authority} alignRight link />
+          <Address pubkey={info.authority} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>New Authority Address</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={info.newAuthority} alignRight link />
+          <Address pubkey={info.newAuthority} alignRight={matches} link />
         </TableCell>
       </TableRow>
 

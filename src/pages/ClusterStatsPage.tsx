@@ -19,7 +19,7 @@ import { useAccountInfo, useFetchAccountInfo } from "providers/accounts";
 import { FetchStatus } from "providers/cache";
 import { useVoteAccounts } from "providers/accounts/vote-accounts";
 
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography, CircularProgress } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
 // @ts-ignore
 import * as CoinGecko from "coingecko-api";
 
@@ -219,6 +219,8 @@ function displayLamports(value: number) {
 }
 
 function StatsCardBody() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const dashboardInfo = useDashboardInfo();
   const performanceInfo = usePerformanceInfo();
   const { setActive } = useStatsProvider();
@@ -262,13 +264,13 @@ function StatsCardBody() {
         <TableBody>
           <TableRow>
             <TableCell>Slot</TableCell>
-            <TableCell align="right"><Slot slot={absoluteSlot} link align="end" /></TableCell>
+            <TableCell align={matches?"right":"left"}><Slot slot={absoluteSlot} link align={matches?"end":"start"} /></TableCell>
           </TableRow>
           {
             blockHeight !== undefined && (
               <TableRow>
                 <TableCell>Block Height</TableCell>
-                <TableCell align="right"><Slot slot={blockHeight} /></TableCell>
+                <TableCell align={matches?"right":"left"}><Slot slot={blockHeight} /></TableCell>
               </TableRow>
             )
           }
@@ -276,29 +278,29 @@ function StatsCardBody() {
             blockTime && (
               <TableRow>
                 <TableCell>Cluster Time</TableCell>
-                <TableCell align="right"> { displayTimestampUtc(blockTime) } </TableCell>
+                <TableCell align={matches?"right":"left"}> { displayTimestampUtc(blockTime) } </TableCell>
               </TableRow>
             )
           }
           <TableRow>
             <TableCell>Slot time (1min average)</TableCell>
-            <TableCell align="right"> {`${averageSlotTime} ms`} </TableCell>
+            <TableCell align={matches?"right":"left"}> {`${averageSlotTime} ms`} </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Slot time (1hr average)</TableCell>
-            <TableCell align="right"> {`${hourlySlotTime} ms`} </TableCell>
+            <TableCell align={matches?"right":"left"}> {`${hourlySlotTime} ms`} </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Epoch</TableCell>
-            <TableCell align="right"> { currentEpoch } </TableCell>
+            <TableCell align={matches?"right":"left"}> { currentEpoch } </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Epoch progress</TableCell>
-            <TableCell align="right"> { epochProgress } </TableCell>
+            <TableCell align={matches?"right":"left"}> { epochProgress } </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Epoch time remaining (approx.)</TableCell>
-            <TableCell align="right"> { `~${epochTimeRemaining}` } </TableCell>
+            <TableCell align={matches?"right":"left"}> { `~${epochTimeRemaining}` } </TableCell>
           </TableRow>
         </TableBody>
       </Table>

@@ -4,7 +4,7 @@ import { CompiledInstruction, Message } from "@velas/web3";
 import { AddressWithContext, programValidator } from "./AddressWithContext";
 import { useCluster } from "providers/cluster";
 import { programLabel } from "utils/tx";
-import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 import ContentCard from "components/common/ContentCard";
 
 export function InstructionsSection({ message }: { message: Message }) {
@@ -28,6 +28,8 @@ function InstructionCard({
   index: number;
   className?: string
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const [expanded, setExpanded] = React.useState(false);
   const { cluster } = useCluster();
   const programId = message.accountKeys[ix.programIdIndex];
@@ -70,7 +72,7 @@ function InstructionCard({
               <TableBody>                
                 <TableRow>
                   <TableCell>Program</TableCell>
-                  <TableCell align="right">
+                  <TableCell  align={matches?"right":"left"}>
                     <AddressWithContext
                       pubkey={message.accountKeys[ix.programIdIndex]}
                       validator={programValidator}
@@ -93,7 +95,7 @@ function InstructionCard({
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell  align={matches?"right":"left"}>
                         <AddressWithContext
                           pubkey={message.accountKeys[accountIndex]}
                         />
@@ -105,7 +107,7 @@ function InstructionCard({
                   <TableCell>
                     Instruction Data <span className="text-secondary">(Hex)</span>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell  align={matches?"right":"left"}>
                     <pre className="inline-block p-3 bg-grey-dark text-left">
                       {data}
                     </pre>

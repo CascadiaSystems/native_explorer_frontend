@@ -9,7 +9,7 @@ import { InstructionCard } from "../InstructionCard";
 import { Copyable } from "components/common/Copyable";
 import { Address } from "components/common/Address";
 import { TransferWithSeedInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function TransferWithSeedDetailsCard(props: {
   ix: ParsedInstruction;
@@ -20,6 +20,8 @@ export function TransferWithSeedDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -34,42 +36,42 @@ export function TransferWithSeedDetailsCard(props: {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={SystemProgram.programId} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={SystemProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>From Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.source} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.source} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Destination Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.destination} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.destination} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Base Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.sourceBase} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.sourceBase} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Transfer Amount (VLX)</TableCell>
-        <TableCell align="right">
+        <TableCell  align={matches?"right":"left"}>
           <SolBalance lamports={info.lamports} />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Seed</TableCell>
-        <TableCell align="right">
+        <TableCell  align={matches?"right":"left"}>
           <Copyable text={info.sourceSeed}>
             <code>{info.sourceSeed}</code>
           </Copyable>
@@ -78,8 +80,8 @@ export function TransferWithSeedDetailsCard(props: {
 
       <TableRow>
         <TableCell>Source Owner</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.sourceOwner} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.sourceOwner} alignRight={matches} link />
         </TableCell>
       </TableRow>
     </InstructionCard>

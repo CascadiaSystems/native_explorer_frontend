@@ -2,7 +2,7 @@ import React from "react";
 import { BlockResponse, PublicKey } from "@velas/web3";
 import { Address } from "components/common/Address";
 import ContentCard from "components/common/ContentCard";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 type AccountStats = {
   reads: number;
@@ -12,6 +12,8 @@ type AccountStats = {
 const PAGE_SIZE = 25;
 
 export function BlockAccountsCard({ block }: { block: BlockResponse }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const [numDisplayed, setNumDisplayed] = React.useState(10);
   const totalTransactions = block.transactions.length;
 
@@ -76,8 +78,8 @@ export function BlockAccountsCard({ block }: { block: BlockResponse }) {
               <TableCell>Account</TableCell>
               <TableCell>Read-Write Count</TableCell>
               <TableCell>Read-Only Count</TableCell>
-              <TableCell align="right">Total Count</TableCell>
-              <TableCell align="right">% of Transactions</TableCell>
+              <TableCell  align={matches?"right":"left"}>Total Count</TableCell>
+              <TableCell  align={matches?"right":"left"}>% of Transactions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -91,8 +93,8 @@ export function BlockAccountsCard({ block }: { block: BlockResponse }) {
                     </TableCell>
                     <TableCell>{writes}</TableCell>
                     <TableCell>{reads}</TableCell>
-                    <TableCell align="right">{writes + reads}</TableCell>
-                    <TableCell align="right">
+                    <TableCell  align={matches?"right":"left"}>{writes + reads}</TableCell>
+                    <TableCell  align={matches?"right":"left"}>
                       {((100 * (writes + reads)) / totalTransactions).toFixed(
                         2
                       )}

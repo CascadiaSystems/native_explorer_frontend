@@ -8,7 +8,7 @@ import { SolBalance } from "utils";
 import { useQuery } from "utils/url";
 import { useSupply } from "providers/supply";
 import { Address } from "./common/Address";
-import { Button, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Button, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { SelectChangeEvent } from '@mui/material/Select';
 
 import ContentCard from "../components/common/ContentCard";
@@ -16,6 +16,8 @@ import ContentCard from "../components/common/ContentCard";
 type Filter = "circulating" | "nonCirculating" | "all" | null;
 
 export function TopAccountsCard() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const supply = useSupply();
   const richList = useRichList();
   const fetchRichList = useFetchRichList();
@@ -110,14 +112,14 @@ export function TopAccountsCard() {
                 <TableRow>
                   <TableCell> Rank </TableCell>
                   <TableCell> Address </TableCell>
-                  <TableCell align="right"> Balance (VLX) </TableCell>
-                  <TableCell align="right"> % of {header} Supply </TableCell>
+                  <TableCell align={matches?"right":"left"}> Balance (VLX) </TableCell>
+                  <TableCell align={matches?"right":"left"}> % of {header} Supply </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {
                   accounts.map((account, index) =>
-                    renderAccountRow(account, index, supplyCount)
+                    RenderAccountRow(account, index, supplyCount)
                   )
                 }
               </TableBody>
@@ -129,17 +131,20 @@ export function TopAccountsCard() {
   );
 }
 
-const renderAccountRow = (
+const RenderAccountRow = (
   account: AccountBalancePair,
   index: number,
   supply: number
 ) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
+
   return (
     <TableRow key={index}>
       <TableCell> { index + 1 } </TableCell>
       <TableCell> <Address pubkey={account.address} link /> </TableCell>
-      <TableCell align="right"> <SolBalance lamports={account.lamports} maximumFractionDigits={0} /> </TableCell>
-      <TableCell align="right"> {`${((100 * account.lamports) / supply).toFixed(3)}%`} </TableCell>
+      <TableCell align={matches?"right":"left"}> <SolBalance lamports={account.lamports} maximumFractionDigits={0} /> </TableCell>
+      <TableCell align={matches?"right":"left"}> {`${((100 * account.lamports) / supply).toFixed(3)}%`} </TableCell>
     </TableRow>
   );
 };

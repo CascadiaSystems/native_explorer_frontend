@@ -13,7 +13,7 @@ import { reportError } from "utils/sentry";
 import { UnknownDetailsCard } from "../UnknownDetailsCard";
 import { Address } from "components/common/Address";
 import { wrap } from "utils";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useTheme, useMediaQuery } from "@mui/material";
 
 type DetailsProps = {
   tx: ParsedTransaction;
@@ -60,6 +60,8 @@ type Props<T> = {
 };
 
 export function BpfLoaderWriteDetailsCard(props: Props<WriteInfo>) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
   const bytes = wrap(info.bytes, 50);
   return (
@@ -74,15 +76,15 @@ export function BpfLoaderWriteDetailsCard(props: Props<WriteInfo>) {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={BPF_LOADER_PROGRAM_ID} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={BPF_LOADER_PROGRAM_ID} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Account</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.account} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.account} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
@@ -90,20 +92,22 @@ export function BpfLoaderWriteDetailsCard(props: Props<WriteInfo>) {
         <TableCell>
           Bytes <span className="text-muted">(Base 64)</span>
         </TableCell>
-        <TableCell align="right">
+        <TableCell  align={matches?"right":"left"}>
           <pre className="inline-block text-left p-2 bg-grey-dark">{bytes}</pre>
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Offset</TableCell>
-        <TableCell align="right">{info.offset}</TableCell>
+        <TableCell  align={matches?"right":"left"}>{info.offset}</TableCell>
       </TableRow>
     </InstructionCard>
   );
 }
 
 export function BpfLoaderFinalizeDetailsCard(props: Props<FinalizeInfo>) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex } = props;
 
   return (
@@ -117,15 +121,15 @@ export function BpfLoaderFinalizeDetailsCard(props: Props<FinalizeInfo>) {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={BPF_LOADER_PROGRAM_ID} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={BPF_LOADER_PROGRAM_ID} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Account</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.account} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.account} alignRight={matches} link />
         </TableCell>
       </TableRow>
     </InstructionCard>

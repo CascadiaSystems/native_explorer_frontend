@@ -5,11 +5,13 @@ import { ErrorCard } from "./common/ErrorCard";
 import { SolBalance } from "utils";
 
 import ContentCard from "../components/common/ContentCard";
-import { Typography, Table, TableContainer, TableBody, TableRow, TableCell } from "@mui/material";
+import { Typography, Table, TableContainer, TableBody, TableRow, TableCell, useMediaQuery, useTheme } from "@mui/material";
 
 export function SupplyCard() {
   const supply = useSupply();
   const fetchSupply = useFetchSupply();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
 
   // Fetch supply on load
   React.useEffect(() => {
@@ -38,11 +40,11 @@ export function SupplyCard() {
           <TableBody>
             <TableRow>
               <TableCell> Total Supply (VLX) </TableCell>
-              <TableCell align="right"> <SolBalance lamports={supply.total} maximumFractionDigits={0} /> </TableCell>
+              <TableCell align={matches?"right":"left"}> <SolBalance lamports={supply.total} maximumFractionDigits={0} /> </TableCell>
             </TableRow>
             <TableRow>
               <TableCell> Circulating Supply (VLX) </TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 <SolBalance
                   lamports={supply.circulating}
                   maximumFractionDigits={0}
@@ -51,7 +53,7 @@ export function SupplyCard() {
             </TableRow>
             <TableRow>
               <TableCell> Non-Circulating Supply (VLX) </TableCell>
-              <TableCell align="right">
+              <TableCell align={matches?"right":"left"}>
                 <SolBalance
                   lamports={supply.nonCirculating}
                   maximumFractionDigits={0}

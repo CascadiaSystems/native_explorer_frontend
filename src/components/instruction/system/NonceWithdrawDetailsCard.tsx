@@ -8,7 +8,7 @@ import { SolBalance } from "utils";
 import { InstructionCard } from "../InstructionCard";
 import { Address } from "components/common/Address";
 import { WithdrawNonceInfo } from "./types";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function NonceWithdrawDetailsCard(props: {
   ix: ParsedInstruction;
@@ -19,6 +19,8 @@ export function NonceWithdrawDetailsCard(props: {
   childIndex?: number;
   className?: string;
 }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const { ix, index, result, info, innerCards, childIndex, className } = props;
 
   return (
@@ -33,35 +35,35 @@ export function NonceWithdrawDetailsCard(props: {
     >
       <TableRow>
         <TableCell>Program</TableCell>
-        <TableCell align="right">
-          <Address pubkey={SystemProgram.programId} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={SystemProgram.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Nonce Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.nonceAccount} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.nonceAccount} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Authority Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.nonceAuthority} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.nonceAuthority} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>To Address</TableCell>
-        <TableCell align="right">
-          <Address pubkey={info.destination} alignRight link />
+        <TableCell  align={matches?"right":"left"}>
+          <Address pubkey={info.destination} alignRight={matches} link />
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell>Withdraw Amount (VLX)</TableCell>
-        <TableCell align="right">
+        <TableCell  align={matches?"right":"left"}>
           <SolBalance lamports={info.lamports} />
         </TableCell>
       </TableRow>

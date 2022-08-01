@@ -18,7 +18,7 @@ import { InstructionDetailsProps } from "components/transaction/InstructionsSect
 import { camelToTitleCase } from "utils";
 import { useCluster } from "providers/cluster";
 import { reportError } from "utils/sentry";
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, useMediaQuery, useTheme } from "@mui/material";
 
 export function VoteDetailsCard(props: InstructionDetailsProps) {
   const { url } = useCluster();
@@ -28,25 +28,25 @@ export function VoteDetailsCard(props: InstructionDetailsProps) {
 
     switch (parsed.type) {
       case "vote":
-        return renderDetails<VoteInfo>(props, parsed, VoteInfo);
+        return RenderDetails<VoteInfo>(props, parsed, VoteInfo);
       case "authorize":
-        return renderDetails<AuthorizeInfo>(props, parsed, AuthorizeInfo);
+        return RenderDetails<AuthorizeInfo>(props, parsed, AuthorizeInfo);
       case "withdraw":
-        return renderDetails<WithdrawInfo>(props, parsed, WithdrawInfo);
+        return RenderDetails<WithdrawInfo>(props, parsed, WithdrawInfo);
       case "updateValidator":
-        return renderDetails<UpdateValidatorInfo>(
+        return RenderDetails<UpdateValidatorInfo>(
           props,
           parsed,
           UpdateValidatorInfo
         );
       case "updateCommission":
-        return renderDetails<UpdateCommissionInfo>(
+        return RenderDetails<UpdateCommissionInfo>(
           props,
           parsed,
           UpdateCommissionInfo
         );
       case "voteSwitch":
-        return renderDetails<VoteSwitchInfo>(props, parsed, VoteSwitchInfo);
+        return RenderDetails<VoteSwitchInfo>(props, parsed, VoteSwitchInfo);
     }
   } catch (error) {
     reportError(error, {
@@ -57,24 +57,26 @@ export function VoteDetailsCard(props: InstructionDetailsProps) {
   return <UnknownDetailsCard {...props} />;
 }
 
-function renderDetails<T>(
+function RenderDetails<T>(
   props: InstructionDetailsProps,
   parsed: ParsedInfo,
   struct: Struct<T>
 ) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
   const info = create(parsed.info, struct);
   const attributes: JSX.Element[] = [];
 
   for (let [key, value] of Object.entries(info)) {
     if (value instanceof PublicKey) {
-      value = <Address pubkey={value} alignRight link />;
+      value = <Address pubkey={value} alignRight={matches} link />;
     }
 
     if (key === "vote") {
       attributes.push(
         <TableRow key="vote-hash">
           <TableCell>Vote Hash</TableCell>
-          <TableCell align="right">
+          <TableCell  align={matches?"right":"left"}>
             <pre className="inline-block text-left p-2 bg-grey-dark">{value.hash}</pre>
           </TableCell>
         </TableRow>
@@ -84,7 +86,7 @@ function renderDetails<T>(
         attributes.push(
           <TableRow key="timestamp">
             <TableCell>Timestamp</TableCell>
-            <TableCell align="right">
+            <TableCell  align={matches?"right":"left"}>
               {displayTimestamp(value.timestamp * 1000)}
             </TableCell>
           </TableRow>
@@ -94,7 +96,7 @@ function renderDetails<T>(
       attributes.push(
         <TableRow key="vote-slots">
           <TableCell>Slots</TableCell>
-          <TableCell align="right">
+          <TableCell  align={matches?"right":"left"}>
             <pre className="inline-block p-2 bg-grey-dark text-left">
               {value.slots.join("\n")}
             </pre>
@@ -105,7 +107,7 @@ function renderDetails<T>(
       attributes.push(
         <TableRow key={key}>
           <TableCell>{camelToTitleCase(key)} </TableCell>
-          <TableCell align="right">{value}</TableCell>
+          <TableCell  align={matches?"right":"left"}>{value}</TableCell>
         </TableRow>
       );
     }
@@ -119,7 +121,7 @@ function renderDetails<T>(
       <TableRow>
         <TableCell>Program</TableCell>
         <TableCell className="text-lg-right">
-          <Address pubkey={props.ix.programId} alignRight link />
+          <Address pubkey={props.ix.programId} alignRight={matches} link />
         </TableCell>
       </TableRow>
       {attributes}

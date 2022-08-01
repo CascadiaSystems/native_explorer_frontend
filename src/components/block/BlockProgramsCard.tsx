@@ -2,9 +2,12 @@ import React from "react";
 import { BlockResponse, PublicKey } from "@velas/web3";
 import { Address } from "components/common/Address";
 import ContentCard from "components/common/ContentCard";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 export function BlockProgramsCard({ block }: { block: BlockResponse }) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
+
   const totalTransactions = block.transactions.length;
   const txSuccesses = new Map<string, number>();
   const txFrequency = new Map<string, number>();
@@ -64,13 +67,13 @@ export function BlockProgramsCard({ block }: { block: BlockResponse }) {
             <TableBody>
               <TableRow>
                 <TableCell>Unique Programs Count</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   {programEntries.length}
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Total Instructions</TableCell>
-                <TableCell align="right">
+                <TableCell  align={matches?"right":"left"}>
                   {totalInstructions}
                 </TableCell>
               </TableRow>
@@ -91,9 +94,9 @@ export function BlockProgramsCard({ block }: { block: BlockResponse }) {
                   <TableCell>Program</TableCell>
                   <TableCell>Transaction Count</TableCell>
                   <TableCell>% of Total</TableCell>
-                  <TableCell align="right">Instruction Count</TableCell>
-                  <TableCell align="right">% of Total</TableCell>
-                  <TableCell align="right">Success Rate</TableCell>
+                  <TableCell  align={matches?"right":"left"}>Instruction Count</TableCell>
+                  <TableCell  align={matches?"right":"left"}>% of Total</TableCell>
+                  <TableCell  align={matches?"right":"left"}>Success Rate</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -107,9 +110,9 @@ export function BlockProgramsCard({ block }: { block: BlockResponse }) {
                       </TableCell>
                       <TableCell>{txFreq}</TableCell>
                       <TableCell>{((100 * txFreq) / totalTransactions).toFixed(2)}%</TableCell>
-                      <TableCell align="right">{ixFreq}</TableCell>
-                      <TableCell align="right">{((100 * ixFreq) / totalInstructions).toFixed(2)}%</TableCell>
-                      <TableCell align="right">{((100 * successes) / txFreq).toFixed(0)}%</TableCell>
+                      <TableCell  align={matches?"right":"left"}>{ixFreq}</TableCell>
+                      <TableCell  align={matches?"right":"left"}>{((100 * ixFreq) / totalInstructions).toFixed(2)}%</TableCell>
+                      <TableCell  align={matches?"right":"left"}>{((100 * successes) / txFreq).toFixed(0)}%</TableCell>
                     </TableRow>
                   );
                 })}
