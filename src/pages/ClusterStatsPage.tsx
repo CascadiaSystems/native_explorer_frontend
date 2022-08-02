@@ -125,18 +125,18 @@ function StakingComponent() {
     ).toFixed(1);
   }
 
-  let solanaInfo;
-  if (coinInfo.status === CoingeckoStatus.Success) {
-    solanaInfo = coinInfo.coinInfo;
-  }
+  // let solanaInfo;
+  // if (coinInfo.status === CoingeckoStatus.Success) {
+  //   solanaInfo = coinInfo.coinInfo;
+  // }
 
   return (
-    <div className="grid md:grid-cols-3 gap-6">
+    <div className="grid sm:grid-cols-2 gap-6">
       <Paper className="p-4">
         <Typography color="secondary"> Circulating Supply </Typography>
         {/* <span className="ml-2 badge badge-primary rank" style={{opacity: 0.0}}>{displayLamports(supply.circulating)}</span> */}
         <div className="flex flex-row items-end gap-1 py-1">
-          <Typography variant="h3"> { `${displayLamports(supply.circulating)} /` } </Typography>
+          <Typography variant="h2"> { `${displayLamports(supply.circulating)} /` } </Typography>
           <Typography color="secondary"> { displayLamports(supply.total) } </Typography>
         </div>
         <Typography color="secondary" variant="body2"> { `${circulatingPercentage}% is circulating` } </Typography>
@@ -145,8 +145,8 @@ function StakingComponent() {
       <Paper className="p-4">
         <Typography color="secondary"> Active Staking </Typography>
         {/* <span className="ml-2 badge badge-primary rank" style={{opacity: 0.0}}>{displayLamports(stakeHistory.effective)}</span> */}
-        <div className="flex flex-row items-end gap-1 py-1">
-          <Typography variant="h3"> {`${displayLamports(stakeHistory.effective)} /`}</Typography>
+        <div className="flex flex-row items-end gap-1 py-2">
+          <Typography variant="h2"> {`${displayLamports(stakeHistory.effective)} /`}</Typography>
           <Typography color="secondary"> { displayLamports(supply.total) } </Typography>
         </div>
         {
@@ -158,7 +158,7 @@ function StakingComponent() {
         }        
       </Paper>
 
-      <Paper className="p-4">
+      {/* <Paper className="p-4">
         {
           solanaInfo && (
             <>
@@ -201,7 +201,7 @@ function StakingComponent() {
             </>
           )
         }
-      </Paper>
+      </Paper> */}
     </div>
   );
 }
