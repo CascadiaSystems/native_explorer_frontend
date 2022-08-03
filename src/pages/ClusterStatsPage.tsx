@@ -326,7 +326,7 @@ export function StatsNotReady({ error }: { error: boolean }) {
 
   if (error || !active) {
     return (
-      <div className="flex flex-row items-center justify-center gap-2 p-4">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-2 p-4">
         There was a problem loading cluster stats.
         <Button
           variant="outlined"
@@ -342,7 +342,7 @@ export function StatsNotReady({ error }: { error: boolean }) {
   }
 
   return (
-    <div className="flex justify-center items-center gap-2 p-4">
+    <div className="flex flex-col sm:flex-row justify-center items-center gap-2 p-4">
       <CircularProgress size={20} color="primary" />
       Loading
     </div>
