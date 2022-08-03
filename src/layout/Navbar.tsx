@@ -32,67 +32,9 @@ const Navbar = () => {
 
   const toggleDrawer = (val: boolean) => (event: React.MouseEvent | React.KeyboardEvent) => {
     setMenuOpen(val);
-  }
-  
+  }  
   
   return (
-    // <nav className="navbar navbar-expand-md navbar-light">
-    //   <div className="container">
-    //     <Link to={clusterPath("/")}>
-    //       <img src={Logo} height="30" alt="Velas Native Explorer" />
-    //     </Link>
-
-    //     <button
-    //       className="navbar-toggler"
-    //       type="button"
-    //       onClick={() => setCollapse((value) => !value)}
-    //     >
-    //       <span className="navbar-toggler-icon"></span>
-    //     </button>
-
-    //     <div
-    //       className={`collapse navbar-collapse ml-auto mr-4 ${collapse ? "show" : ""
-    //         }`}
-    //     >
-    //       <ul className="navbar-nav mr-auto tabs">
-    //         <li className="nav-item">
-    //           <NavLink className="nav-link" to={clusterPath("/")} exact>
-    //             Cluster Stats
-    //           </NavLink>
-    //         </li>
-    //         <li className="nav-item">
-    //           <NavLink className="nav-link" to={clusterPath("/supply")}>
-    //             Supply
-    //           </NavLink>
-    //         </li>
-    //         <li className="nav-item">
-    //           <NavLink className="nav-link" to={clusterPath("/tx/inspector")}>
-    //             Inspector
-    //           </NavLink>
-    //         </li>
-    //         <li className="nav-item">
-    //           <a className="nav-link url-link" href="https://velasvalidators.com" target="_blank" rel="noreferrer">
-    //           velasvalidators.com
-    //           </a>
-    //         </li>
-    //         <li className="nav-item">
-    //           <a className="nav-link url-link" href="https://velasity.com/" target="_blank" rel="noreferrer">
-    //           velasity.com
-    //           </a>
-    //         </li>
-    //         <li className="nav-item">
-    //           <a className="nav-link url-link" href="https://evmexplorer.velas.com/" target="_blank" rel="noreferrer">
-    //             EVM Explorer
-    //           </a>
-    //         </li>
-    //       </ul>
-    //     </div>
-
-    //     <div className="d-none d-md-block">
-    //       <ClusterStatusButton />
-    //     </div>
-    //   </div>
-    // </nav>
     <div className="bg-grey-main border-grey-light border-b">
       <div className="py-6 flex items-center justify-between gap-10" style={{ margin: '0 5%' }}>
         <div className="flex items-center gap-12">
@@ -103,11 +45,12 @@ const Navbar = () => {
             {
               navItems.map((item, index) => (
                 <NavLink
+                  exact
                   key={index}
                   className="hover:text-primary text-secondary whitespace-nowrap"
-                  // className={({ isActive }) =>
-                  //   isActive ? "text-primary" : "text-secondary"
-                  // }
+                  activeStyle={{
+                    color: "#E4E6EB"
+                  }}
                   to={clusterPath(item.link)}
                 >
                   {item.label}
@@ -134,10 +77,12 @@ const Navbar = () => {
                 navItems.map((item, key) => (
                   <ListItem key={key} disablePadding>
                     <NavLink to={item.link}
-                      className="text-lg text-light-dark w-full text-center py-2 bg-dark-light"
-                      // className={({ isActive })=>
-                      //   isActive ? "text-lg text-light-light w-full text-center p-4 bg-dark-dark" : "text-lg text-light-dark w-full text-center p-4 bg-dark-light" 
-                      // }
+                      exact
+                      className="text-lg text-secondary w-full text-center py-2 bg-grey-main"
+                      activeStyle={{
+                        backgroundColor: "#18191A",
+                        color: "#E4E6EB"
+                      }}
                     >
                       {item.label}
                     </NavLink>
